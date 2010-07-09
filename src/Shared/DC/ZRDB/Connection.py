@@ -18,7 +18,6 @@ from logging import getLogger
 import string
 import sys
 
-from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import view_management_screens
 from AccessControl.Permissions import change_database_connections
 from AccessControl.Permissions import test_database_connections
@@ -29,10 +28,22 @@ from App.Dialogs import MessageDialog
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
-from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import BadRequest
+
+# BBB Zope 2.12
+try:
+    from AccessControl.class_init import InitializeClass
+except ImportError:
+    from App.class_init import InitializeClass
+
+# BBB Zope 2.12
+try:
+    from OFS.role import RoleManager
+except ImportError:
+    from AccessControl.Role import RoleManager
+
 
 from Aqueduct import custom_default_report
 import RDB

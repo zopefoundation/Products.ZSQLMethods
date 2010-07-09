@@ -22,10 +22,15 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from DocumentTemplate import File
 from DocumentTemplate import HTML
-from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import Redirect
+
+# BBB Zope 2.12
+try:
+    from OFS.role import RoleManager
+except ImportError:
+    from AccessControl.Role import RoleManager
 
 
 dtml_dir=os.path.join(package_home(globals()), 'dtml')

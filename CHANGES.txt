@@ -4,6 +4,8 @@ Changelog
 2.13.2 (unreleased)
 -------------------
 
+- Actually establish Zope 2.12 compatibility by dealing with all cases of
+  moved classes and functions.
 
 2.13.1 (2010-07-09)
 -------------------

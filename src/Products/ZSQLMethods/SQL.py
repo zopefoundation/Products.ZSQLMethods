@@ -11,11 +11,16 @@
 #
 ##############################################################################
 
-from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_methods
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.special_dtml import DTMLFile
 from Shared.DC.ZRDB.DA import DA
+
+# BBB Zope 2.12
+try:
+    from AccessControl.class_init import InitializeClass
+except ImportError:
+    from App.class_init import InitializeClass
 
 
 def SQLConnectionIDs(self):
