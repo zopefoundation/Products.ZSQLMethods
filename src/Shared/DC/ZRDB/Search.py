@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''Search Interface Wizard
-
-$Id$'''
-__version__='$Revision: 1.22 $'[11:-2]
+'''Search Interface Wizard'''
 
 from string import join
 from cgi import escape

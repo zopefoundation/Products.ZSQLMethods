@@ -47,24 +47,12 @@
     however, if x is ommitted or an empty string, then the value
     inserted is 'null'.
 '''
-__rcs_id__='$Id$'
-
-############################################################################
-#     Copyright
-#
-#       Copyright 1996 Digital Creations, L.C., 910 Princess Anne
-#       Street, Suite 300, Fredericksburg, Virginia 22401 U.S.A. All
-#       rights reserved.
-#
-############################################################################
-__version__='$Revision: 1.15 $'[11:-2]
 
 from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
-from string import find, split, join, atoi, atof
+from string import atoi, atof
 
 StringType = str
 
-str = __builtins__['str']
 
 class SQLVar:
     name='sqlvar'

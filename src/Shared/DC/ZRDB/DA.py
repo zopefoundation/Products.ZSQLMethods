@@ -10,8 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''Generic Database adapter'''
-__version__='$Revision: 1.116 $'[11:-2]
+'''Generic Database adapter'''
 
 from cStringIO import StringIO
 import re

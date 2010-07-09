@@ -12,10 +12,10 @@
 ##############################################################################
 import unittest
 
-from UserDict import UserDict
 
 def _sql_quote(v):
     return '"%s"' % v
+
 
 class SQLGroupTests(unittest.TestCase):
 
@@ -206,6 +206,3 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(SQLGroupTests))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

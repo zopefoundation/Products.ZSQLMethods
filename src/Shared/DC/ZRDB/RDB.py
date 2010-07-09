@@ -10,13 +10,9 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''Class for reading RDB files
+'''Class for reading RDB files'''
 
-
-$Id$'''
-__version__='$Revision: 1.33 $'[11:-2]
-
-from string import split, strip, lower, upper, atof, atoi, atol, find, join,find
+from string import split, strip, lower, upper, atof, atoi, atol, find, join
 import DateTime,re
 from Missing import MV
 from array import array

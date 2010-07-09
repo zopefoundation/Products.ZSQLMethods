@@ -27,4 +27,3 @@ class TestTM(TestCase):
 
 def test_suite():
     return TestSuite((makeSuite(TestTM),))
-

@@ -1,6 +1,4 @@
 """ Unit tests for Products.RHGDelivery.simpleresults
-
-$Id: test_results.py,v 1.2 2005/09/07 21:25:47 tseaver Exp $
 """
 import unittest
 
@@ -188,6 +186,3 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestResults))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

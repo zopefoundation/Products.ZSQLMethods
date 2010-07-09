@@ -59,25 +59,10 @@
     other than whitespace characters.  If it does, then it is inserted
     with the appropriate boolean operator, as indicated by use of an
     'and' or 'or' tag, otherwise, no text is inserted.
-
-$Id$
 """
 
-############################################################################
-#     Copyright
-#
-#       Copyright 1996 Digital Creations, L.C., 910 Princess Anne
-#       Street, Suite 300, Fredericksburg, Virginia 22401 U.S.A. All
-#       rights reserved.
-#
-############################################################################
-__rcs_id__='$Id$'
-__version__='$Revision: 1.10 $'[11:-2]
-
 from DocumentTemplate.DT_Util import parse_params
-str = __builtins__['str']
 from string import strip, join
-import sys
 
 _TNAME_MAPPING = {'comma': ','}
 

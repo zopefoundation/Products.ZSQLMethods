@@ -10,10 +10,6 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''Shared classes and functions
-
-$Id$'''
-__version__='$Revision: 1.58 $'[11:-2]
 
 import binascii
 from cStringIO import StringIO

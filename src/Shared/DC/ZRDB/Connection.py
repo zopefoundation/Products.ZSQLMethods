@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''Generic Database Connection Support
-
-$Id$'''
-__version__='$Revision: 1.39 $'[11:-2]
+'''Generic Database Connection Support'''
 
 from cgi import escape
 from cStringIO import StringIO

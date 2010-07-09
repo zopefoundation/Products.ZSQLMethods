@@ -55,23 +55,10 @@
     'and' or 'or' tag, otherwise, no text is inserted.
 
 '''
-__rcs_id__='$Id$'
 
-############################################################################
-#     Copyright
-#
-#       Copyright 1996 Digital Creations, L.C., 910 Princess Anne
-#       Street, Suite 300, Fredericksburg, Virginia 22401 U.S.A. All
-#       rights reserved.
-#
-############################################################################
-__version__='$Revision: 1.5 $'[11:-2]
-
-import sys
 from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
-str=__builtins__['str']
 
-from string import find, split, join, atoi, atof
+from string import join, atoi, atof
 from types import ListType, TupleType, StringType
 
 class SQLTest:

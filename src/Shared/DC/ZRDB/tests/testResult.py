@@ -1,13 +1,15 @@
-from unittest import TestCase, TestSuite, makeSuite, main
+from unittest import TestCase, TestSuite, makeSuite
 from cStringIO import StringIO
 from ExtensionClass import Base
 from Shared.DC.ZRDB.Results import Results
 from Shared.DC.ZRDB import RDB
 
+
 class Brain:
     def __init__(self, *args): pass
 
 Parent = Base()
+
 
 class TestResults(TestCase):
 
@@ -63,6 +65,3 @@ class TestResults(TestCase):
 
 def test_suite():
     return TestSuite((makeSuite(TestResults),))
-
-if __name__ == '__main__':
-    main(defaultTest='test_suite')

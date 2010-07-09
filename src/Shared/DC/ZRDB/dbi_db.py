@@ -10,19 +10,8 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''short description
 
-
-$Id$'''
-#     Copyright
-#
-#       Copyright 1997 Digital Creations, Inc, 910 Princess Anne
-#       Street, Suite 300, Fredericksburg, Virginia 22401 U.S.A. All
-#       rights reserved.
-#
-__version__='$Revision: 1.11 $'[11:-2]
-
-import string, sys
+import sys
 from string import strip, split, find, join
 
 import transaction
