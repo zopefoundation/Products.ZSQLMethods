@@ -4,6 +4,7 @@ Changelog
 2.13.1 (unreleased)
 -------------------
 
+- Made compatible with Zope 2.12.9.
 
 2.13.0 (2010-07-09)
 -------------------
