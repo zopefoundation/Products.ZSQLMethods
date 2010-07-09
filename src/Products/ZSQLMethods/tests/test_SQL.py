@@ -1,5 +1,6 @@
 import unittest
 
+
 class SQLMethodTests(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -19,6 +20,3 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(SQLMethodTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

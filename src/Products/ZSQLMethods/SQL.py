@@ -10,17 +10,13 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-__doc__='''SQL Methods
-
-
-$Id$'''
-__version__='$Revision: 1.21 $'[11:-2]
 
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_methods
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.special_dtml import DTMLFile
 from Shared.DC.ZRDB.DA import DA
+
 
 def SQLConnectionIDs(self):
     """Find SQL database connections in the current folder and above
@@ -34,22 +30,29 @@ def SQLConnectionIDs(self):
     while self is not None:
         if hasattr(self, 'objectValues'):
             for o in self.objectValues():
-                if (hasattr(o,'_isAnSQLConnection') and o._isAnSQLConnection
-                    and hasattr(o,'id')):
-                    id=o.id
-                    if type(id) is not StringType: id=id()
+                if (hasattr(o, '_isAnSQLConnection') and o._isAnSQLConnection
+                    and hasattr(o, 'id')):
+                    id = o.id
+                    if type(id) is not StringType:
+                        id = id()
                     if not have_id(id):
-                        if hasattr(o,'title_and_id'): o=o.title_and_id()
-                        else: o=id
-                        ids[id]=id
-        if hasattr(self, 'aq_parent'): self=self.aq_parent
-        else: self=None
+                        if hasattr(o, 'title_and_id'):
+                            o = o.title_and_id()
+                        else:
+                            o = id
+                        ids[id] = id
+        if hasattr(self, 'aq_parent'):
+            self=self.aq_parent
+        else:
+            self=None
 
-    ids=map(lambda item: (item[1], item[0]), ids.items())
+    ids = map(lambda item: (item[1], item[0]), ids.items())
     ids.sort()
     return ids
 
 manage_addZSQLMethodForm=DTMLFile('dtml/add', globals())
+
+
 def manage_addZSQLMethod(self, id, title,
                                 connection_id, arguments, template,
                                 REQUEST=None, submit=None):
@@ -69,17 +72,20 @@ def manage_addZSQLMethod(self, id, title,
     # Note - type checking is handled by _setObject and constructor.
     self._setObject(id, SQL(id, title, connection_id, arguments, template))
     if REQUEST is not None:
-        try: u=self.DestinationURL()
-        except: u=REQUEST['URL1']
+        try:
+            u = self.DestinationURL()
+        except Exception:
+            u = REQUEST['URL1']
         if submit==" Add and Edit ":
-            u="%s/%s/manage_main" % (u,id)
+            u = "%s/%s/manage_main" % (u, id)
         elif submit==" Add and Test ":
-            u="%s/%s/manage_testForm" % (u,id)
+            u = "%s/%s/manage_testForm" % (u, id)
         else:
-            u=u+'/manage_main'
+            u = u+'/manage_main'
 
         REQUEST.RESPONSE.redirect(u)
     return ''
+
 
 class SQL(DA):
     """SQL Database methods

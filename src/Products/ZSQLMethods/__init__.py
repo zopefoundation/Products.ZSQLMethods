@@ -11,13 +11,16 @@
 #
 ##############################################################################
 """SQL Method Product.
-
-$Id$
 """
 
-import Shared.DC.ZRDB.Search, Shared.DC.ZRDB.Aqueduct, SQL
+import Shared.DC.ZRDB.Search
+import Shared.DC.ZRDB.Aqueduct
 import Shared.DC.ZRDB.RDB
-import Shared.DC.ZRDB.sqlvar, Shared.DC.ZRDB.sqlgroup, Shared.DC.ZRDB.sqltest
+import Shared.DC.ZRDB.sqlvar
+import Shared.DC.ZRDB.sqlgroup
+import Shared.DC.ZRDB.sqltest
+
+from Products.ZSQLMethods import SQL
 
 
 def initialize(context):
@@ -28,31 +31,29 @@ def initialize(context):
         constructors=(SQL.manage_addZSQLMethodForm, SQL.manage_addZSQLMethod),
         icon='sqlmethod.gif',
         # XXX: can this permission be removed?
-        permissions=('Open/Close Database Connections',),
-        legacy=(SQL.SQLConnectionIDs,)
-        )
+        permissions=('Open/Close Database Connections', ),
+        legacy=(SQL.SQLConnectionIDs, ))
 
     context.registerClass(
         meta_type='Z Search Interface',
         permission='Add Documents, Images, and Files',
         constructors=(Shared.DC.ZRDB.Search.addForm,
                       Shared.DC.ZRDB.Search.manage_addZSearch),
-        legacy=(Shared.DC.ZRDB.Search.ZQueryIds,)
-        )
+        legacy=(Shared.DC.ZRDB.Search.ZQueryIds, ))
 
     context.registerHelp()
     context.registerHelpTitle('Zope Help')
 
 
 __module_aliases__=(
-    ('Products.AqueductSQLMethods','Products.ZSQLMethods'),
+    ('Products.AqueductSQLMethods', 'Products.ZSQLMethods'),
     ('Aqueduct', Shared.DC.ZRDB),
     ('AqueductDA', Shared.DC.ZRDB),
     ('Products.AqueductSQLMethods.SQL', SQL),
     ('Aqueduct.Aqueduct', Shared.DC.ZRDB.Aqueduct),
-    ('AqueductDA.DA',     Shared.DC.ZRDB.DA),
-    ('Aqueduct.RDB',     Shared.DC.ZRDB.RDB),
-    ('AqueductDA.sqlvar',     Shared.DC.ZRDB.sqlvar),
-    ('AqueductDA.sqltest',     Shared.DC.ZRDB.sqltest),
-    ('AqueductDA.sqlgroup',     Shared.DC.ZRDB.sqlgroup),
+    ('AqueductDA.DA', Shared.DC.ZRDB.DA),
+    ('Aqueduct.RDB', Shared.DC.ZRDB.RDB),
+    ('AqueductDA.sqlvar', Shared.DC.ZRDB.sqlvar),
+    ('AqueductDA.sqltest', Shared.DC.ZRDB.sqltest),
+    ('AqueductDA.sqlgroup', Shared.DC.ZRDB.sqlgroup),
     )
