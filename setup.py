@@ -24,6 +24,7 @@ setup(name='Products.ZSQLMethods',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       packages=find_packages('src'),
+      namespace_packages=['Products', 'Shared', 'Shared.DC'],
       package_dir={'': 'src'},
       install_requires=[
         'setuptools',
