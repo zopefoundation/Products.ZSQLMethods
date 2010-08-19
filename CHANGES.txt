@@ -4,6 +4,9 @@ Changelog
 2.13.3 (unreleased)
 -------------------
 
+- LP #142689: Actually use SQL connection titles in the list of 
+  connections returned by SQL.SQLConnectionIDs
+
 
 2.13.2 (2010-07-09)
 -------------------

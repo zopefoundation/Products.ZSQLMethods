@@ -14,6 +14,8 @@
 from AccessControl.Permissions import change_database_methods
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.special_dtml import DTMLFile
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Shared.DC.ZRDB.DA import DA
 
 # BBB Zope 2.12
@@ -23,36 +25,37 @@ except ImportError:
     from App.class_init import InitializeClass
 
 
-def SQLConnectionIDs(self):
+def SQLConnectionIDs(container):
     """Find SQL database connections in the current folder and above
 
-    This function return a list of ids.
+    This function returns a list of two-element tuples. The second element
+    is the connection ID, the first element either its title, or if the 
+    title is empty, its ID.
     """
-    ids={}
-    have_id=ids.has_key
-    StringType=type('')
+    ids = {}
 
-    while self is not None:
-        if hasattr(self, 'objectValues'):
-            for o in self.objectValues():
-                if (hasattr(o, '_isAnSQLConnection') and o._isAnSQLConnection
-                    and hasattr(o, 'id')):
-                    id = o.id
-                    if type(id) is not StringType:
-                        id = id()
-                    if not have_id(id):
-                        if hasattr(o, 'title_and_id'):
-                            o = o.title_and_id()
+    while container is not None:
+        if getattr(container, 'objectValues', None) is not None:
+            for ob in container.objectValues():
+                if ( getattr(ob, '_isAnSQLConnection', None) and
+                     getattr(ob, 'id', None) ):
+                    ob_id = ob.id
+
+                    if callable(ob_id):
+                        ob_id = ob_id()
+
+                    if ob_id not in ids:
+                        if hasattr(ob, 'title_and_id'):
+                            title = ob.title_and_id()
                         else:
-                            o = id
-                        ids[id] = id
-        if hasattr(self, 'aq_parent'):
-            self=self.aq_parent
-        else:
-            self=None
+                            title = ob_id
+                        ids[ob_id] = title
 
-    ids = map(lambda item: (item[1], item[0]), ids.items())
+        container = aq_parent(aq_inner(container))
+
+    ids = [(item[1], item[0]) for item in ids.items()]
     ids.sort()
+
     return ids
 
 manage_addZSQLMethodForm=DTMLFile('dtml/add', globals())
