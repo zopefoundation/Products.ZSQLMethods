@@ -72,6 +72,9 @@ class Connection(Persistent,
 
     _v_connected=''
     connection_string=''
+    # Should the database connection be established when the object
+    # is loaded from the ZODB (in __setstate__)?
+    connect_on_load=True
 
     def __init__(self, id, title, connection_string, check=None):
         self.id=str(id)
@@ -79,7 +82,7 @@ class Connection(Persistent,
 
     def __setstate__(self, state):
         Persistent.__setstate__(self, state)
-        if self.connection_string:
+        if self.connect_on_load and self.connection_string:
             try: self.connect(self.connection_string)
             except:
                 LOG.error('Error connecting to relational database.',
