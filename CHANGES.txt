@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.13.3 (unreleased)
+2.13.3 (2010-08-31)
 -------------------
 
 - LP #142501: Only connect upon ZODB load if a new flag ``connect_on_load``
