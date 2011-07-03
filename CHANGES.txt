@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.13.4 (unreleased)
+2.13.4 (2011-07-03)
 -------------------
 
 - Copy code from `App.Extensions` to keep compatibility with Zope 2.14.

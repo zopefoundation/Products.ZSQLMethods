@@ -15,7 +15,7 @@
 from setuptools import setup, find_packages
 
 setup(name='Products.ZSQLMethods',
-      version = '2.13.4dev',
+      version = '2.13.4',
       url='http://pypi.python.org/pypi/Products.ZSQLMethods',
       license='ZPL 2.1',
       description="SQL method support for Zope 2.",
