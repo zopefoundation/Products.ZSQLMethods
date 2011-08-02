@@ -7,7 +7,7 @@ class DummyDB:
     conn_num = 1
 
     result = None
-    
+
     def query(self,query,max_rows):
         if self.result:
             return self.result
@@ -25,11 +25,11 @@ class DummyTime:
 
     def __call__(self):
         return self.t
-    
+
 class TestCaching(TestCase):
 
     echo = False
-    
+
     def setUp(self):
         from Shared.DC.ZRDB import DA
         self.DA = DA
@@ -80,7 +80,7 @@ class TestCaching(TestCase):
             for r in extra:
                 result.append(repr(r))
         return result
-        
+
     def _check_cache(self,cache,tcache):
         if self.echo:
             print "cache:"
@@ -99,7 +99,7 @@ class TestCaching(TestCase):
             result.extend(r)
         if result:
             self.fail('\n\n'+'\n'.join(result))
-        
+
     def test_bad_aquisition(self):
         # checks that something called _v_cache isn't acquired from anywhere
         from ExtensionClass import Base
@@ -109,7 +109,7 @@ class TestCaching(TestCase):
         self.da = self.da.__of__(obj)
         del self.da._v_cache
         self._do_query('query',1)
-        
+
     def test_same_query_different_seconds(self):
         # this tests a sequence of requests for the same
         # query, but where the item returned is always in the cache
@@ -168,7 +168,7 @@ class TestCaching(TestCase):
             {4.3: ('query3',1,'conn_id'),
              8.4: ('query4',1,'conn_id'),}
             )
-        
+
     def test_different_queries_same_second(self):
         # This tests different queries being fired into the cache
         # in the same second in sufficient quantities to exercise
@@ -205,10 +205,40 @@ class TestCaching(TestCase):
              1.3: ('query4',1,'conn_id'),}
             )
 
+    def test_different_queries_same_timestamp(self):
+        # This tests different queries being fired into the cache with the
+        # same timestamp. This expecially might happen on windows where the
+        # resolution of time.time() is not that good. This tests a bug which
+        # let to a KeyError when purging the cache.
+        self._check_cache({},{})
+        # Two queries are added at the same time.time():
+        self._do_query('query1',1.0)
+        self._do_query('query2',1.0)
+        # There is only one entry in the timestamp cache:
+        self._check_cache(
+            {('query1',1,'conn_id'): (1.0,'result for query1'),
+             ('query2',1,'conn_id'): (1.0,'result for query2'),},
+            {1.0: ('query2',1,'conn_id')})
+        # Querying first query after cache time out purges the second one
+        # from the timestamp cache:
+        self._do_query('query1',11.0)
+        self._check_cache(
+            {('query1',1,'conn_id'): (11.0,'result for query1'),
+             ('query2',1,'conn_id'): (1.0,'result for query2'),},
+            {11.0: ('query1',1,'conn_id')})
+        # Querying the second query after cache time out let to the KeyError
+        # while trying to delete the entry from the timestamp cache:
+        self._do_query('query2',12.0)
+        self._check_cache(
+            {('query1',1,'conn_id'): (11.0,'result for query1'),
+             ('query2',1,'conn_id'): (12.0,'result for query2'),},
+            {11.0: ('query1',1,'conn_id'),
+             12.0: ('query2',1,'conn_id')})
+
     def test_time_tcache_expires(self):
         # This tests that once the cache purging code is triggered,
         # it will actively hoover out all expired cache entries
-        
+
         # the first query gets cached
         self._do_query('query1',1)
         self._check_cache(
@@ -230,12 +260,12 @@ class TestCaching(TestCase):
             {('query',1,'conn_id'): (23,'result for query')},
             {23:('query',1,'conn_id')}
             )
-    
+
     def test_time_refreshed_cache(self):
         # This tests that when a cached query is expired when it comes
         # to check for a cached entry for that query, the stale entry is
         # removed and replaced with a fresh entry.
-        
+
         # the first query gets cached
         self._do_query('query1',1)
         self._check_cache(
@@ -261,7 +291,7 @@ class DummyDA:
 class Hook:
 
     conn_num = 1
-    
+
     def __call__(self):
         conn_to_use = 'conn'+str(self.conn_num)
         self.conn_num += 1
@@ -275,7 +305,7 @@ class TestCacheKeys(TestCase):
         self.cache_key = query,row_count,conn_id
         # we return something that can be safely turned into an empty Result
         return ((),())
-        
+
     def setUp(self):
         from Shared.DC.ZRDB.DA import DA
         self.da = DA('da','title','conn_id','arg1 arg2','some sql')
@@ -288,12 +318,12 @@ class TestCacheKeys(TestCase):
     def test_default(self):
         self.da()
         self.assertEqual(self.cache_key,('some sql',1000,'conn_id'))
-        
+
     def test_different_max_rows(self):
         self.da.max_rows_ = 123
         self.da()
         self.assertEqual(self.cache_key,('some sql',123,'conn_id'))
-        
+
     def test_connection_hook(self):
         self.da.connection_hook = 'hook_method'
         self.da.hook_method = Hook()
@@ -309,9 +339,9 @@ class TestFullChain(TestCase):
 
     def setUp(self):
         from Shared.DC.ZRDB.DA import DA
-        self.da = DA('da','title','conn_id','arg1 arg2','some sql')        
+        self.da = DA('da','title','conn_id','arg1 arg2','some sql')
         self.da.conn_id = DummyDA()
-        
+
     def test_args_match(self):
         # This checks is that DA._cached_result's call signature
         # matches that expected by DA.__call__
@@ -333,7 +363,7 @@ class TestFullChain(TestCase):
         self.da.max_cache_ = 1
         # check that we get an exception
         self.assertRaises(TypeError,self.da)
-        
+
 def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestCaching))

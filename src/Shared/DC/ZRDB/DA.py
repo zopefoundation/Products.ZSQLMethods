@@ -155,21 +155,21 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
         if dot > 0:
             realName = name[dot+1:]
             toplevel = name[:dot]
-            
+
             rdot = toplevel.rfind('.')
             if rdot > -1:
                 module = __import__(toplevel, globals(), {}, toplevel[rdot+1:])
             else:
                 module = __import__(toplevel)
-    
+
             prefix = os.path.join(module.__path__[0], prefix, realName)
-            
+
             for suffix in suffixes:
                 if suffix:
                     fn = "%s.%s" % (prefix, suffix)
                 else:
                     fn = prefix
-                if os.path.exists(fn): 
+                if os.path.exists(fn):
                     return fn
     except:
         pass
@@ -575,7 +575,7 @@ class DA(BaseQuery,
         now=time()
         # the oldest time which is not stale
         t=now-self.cache_time_
-        
+
         # if the cache is too big, we purge entries from it
         if len(cache) >= max_cache:
             keys=tcache.keys()
@@ -602,7 +602,13 @@ class DA(BaseQuery,
             else:
                 # delete stale cache entries
                 del cache[cache_key]
-                del tcache[k]
+                try:
+                    del tcache[k]
+                except KeyError:
+                    # If there were two querys at the same timestamp, the
+                    # entry in `tcache` might have been already deleted when
+                    # purging the other query, so do not complain:
+                    pass
 
         # call the pure query
         result=DB__.query(query,max_rows)
@@ -656,7 +662,7 @@ class DA(BaseQuery,
         # go get the connection hook and call it
         if hk:
             c = getattr(self, hk)()
-           
+
         try:
             dbc=getattr(self, c)
         except AttributeError:
