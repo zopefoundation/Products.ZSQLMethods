@@ -1,0 +1,15 @@
+bin
+build
+develop-eggs
+dist
+lib
+include
+man
+parts
+
+__pycache__
+.*
+*.dll
+*.pyc
+*.pyo
+*.so

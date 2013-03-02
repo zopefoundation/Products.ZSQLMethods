@@ -14,19 +14,22 @@
 
 from setuptools import setup, find_packages
 
-setup(name='Products.ZSQLMethods',
-      version = '2.13.5dev',
-      url='http://pypi.python.org/pypi/Products.ZSQLMethods',
-      license='ZPL 2.1',
-      description="SQL method support for Zope 2.",
-      author='Zope Foundation and Contributors',
-      author_email='zope-dev@zope.org',
-      long_description=open('README.txt').read() + '\n' +
-                       open('CHANGES.txt').read(),
-      packages=find_packages('src'),
-      namespace_packages=['Products', 'Shared', 'Shared.DC'],
-      package_dir={'': 'src'},
-      install_requires=[
+__version__ = '2.13.5dev'
+
+setup(
+    name='Products.ZSQLMethods',
+    version=__version__,
+    url='http://pypi.python.org/pypi/Products.ZSQLMethods',
+    license='ZPL 2.1',
+    description="SQL method support for Zope 2.",
+    author='Zope Foundation and Contributors',
+    author_email='zope-dev@zope.org',
+    long_description=(open('README.rst').read() + '\n' +
+                      open('CHANGES.rst').read()),
+    packages=find_packages('src'),
+    namespace_packages=['Products', 'Shared', 'Shared.DC'],
+    package_dir={'': 'src'},
+    install_requires=[
         'setuptools',
         'Acquisition',
         'DateTime',
@@ -42,7 +45,7 @@ setup(name='Products.ZSQLMethods',
         # 'AccessControl',
         # 'DocumentTemplate',
         # 'zExceptions',
-      ],
-      include_package_data=True,
-      zip_safe=False,
-      )
+    ],
+    include_package_data=True,
+    zip_safe=False,
+)
