@@ -13,3 +13,5 @@ __pycache__
 *.pyc
 *.pyo
 *.so
+eggs/
+*.egg-info/
