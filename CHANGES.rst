@@ -4,6 +4,8 @@ Changelog
 2.13.5 (unreleased)
 -------------------
 
+- Update buildout to use dependency versions from Zope 2.13 branch.
+
 - Fixed a bug which might occur on Windows when two cache entries have been
   stored without `time.time()` having changed and the cache gets purged
   afterwards.
