@@ -33,7 +33,7 @@ setup(
         'setuptools',
         'Acquisition',
         'DateTime',
-        'ExtensionClass>=4.1a1',
+        'ExtensionClass',
         'Missing',
         'Persistence',
         'Record',
