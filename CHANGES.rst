@@ -4,6 +4,8 @@ Changelog
 2.13.5 (unreleased)
 -------------------
 
+- Strip ``NUL`` bytes when quoting SQL string literals.
+
 - Update buildout to use dependency versions from Zope 2.13 branch.
 
 - Fixed a bug which might occur on Windows when two cache entries have been
