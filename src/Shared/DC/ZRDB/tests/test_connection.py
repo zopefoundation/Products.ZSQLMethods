@@ -12,29 +12,48 @@
 ##############################################################################
 import unittest
 
-def faux_connect(self, connection_string):
-    setattr(self, '_connected_to', connection_string)
-
 
 class ConnectionTests(unittest.TestCase):
 
     def _getTargetClass(self):
         from Shared.DC.ZRDB.Connection import Connection
-        Connection.connect = faux_connect
         return Connection
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_connect_on_load(self):
-        conn1 = self._makeOne('conn1', '', 'conn string 1')
+
+        class _Connection(self._getTargetClass()):
+
+            def connect(self, connection_string):
+                setattr(self, '_connected_to', connection_string)
+
+        conn1 = _Connection('conn1', '', 'conn string 1')
         conn1.__setstate__(None)
         self.assertEqual(conn1._connected_to, 'conn string 1')
 
-        conn2 = self._makeOne('conn2', '', 'conn string 2')
+        conn2 = _Connection('conn2', '', 'conn string 2')
         conn2.connect_on_load = False
         conn2.__setstate__(None)
-        self.failIf(hasattr(conn2, '_connected_to'))
+        self.assertFalse(hasattr(conn2, '_connected_to'))
+
+    def test_sql_quote___miss(self):
+        TO_QUOTE = "no quoting required"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE), "'%s'" % TO_QUOTE)
+
+    def test_sql_quote___embedded_apostrophe(self):
+        TO_QUOTE = "w'embedded apostrophe"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'w''embedded apostrophe'")
+
+    def test_sql_quote___embedded_null(self):
+        TO_QUOTE = "w'embedded apostrophe and \x00null"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'w''embedded apostrophe and null'")
 
 
 def test_suite():

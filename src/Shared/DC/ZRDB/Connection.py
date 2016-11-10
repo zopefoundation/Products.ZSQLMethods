@@ -216,6 +216,8 @@ class Connection(Persistent,
     def sql_quote__(self, v):
         if string.find(v,"\'") >= 0:
             v = string.join(string.split(v,"\'"),"''")
+        if string.find(v,"\x00") >= 0:
+            v = string.join(string.split(v,"\x00"), "")
         return "'%s'" % v
 
 InitializeClass(Connection)
