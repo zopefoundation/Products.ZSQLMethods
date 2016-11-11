@@ -1,7 +1,12 @@
 Changelog
 =========
 
-2.13.5 (unreleased)
+3.0 (unreleased)
+----------------
+
+- Target use with Zope 4:  no longer support 2.13.x.
+
+2.13.5 (2016-11-10)
 -------------------
 
 - Strip ``NUL`` bytes when quoting SQL string literals.

@@ -14,7 +14,13 @@
 
 from setuptools import setup, find_packages
 
-__version__ = '2.13.5dev'
+__version__ = '3.0dev0'
+
+with open('README.rst') as f:
+    README = f.read()
+
+with open('CHANGES.rst') as f:
+    CHANGES = f.read()
 
 setup(
     name='Products.ZSQLMethods',
@@ -24,27 +30,25 @@ setup(
     description="SQL method support for Zope 2.",
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    long_description=(open('README.rst').read() + '\n' +
-                      open('CHANGES.rst').read()),
+    long_description=(README + '\n' + CHANGES),
     packages=find_packages('src'),
     namespace_packages=['Products', 'Shared', 'Shared.DC'],
     package_dir={'': 'src'},
     install_requires=[
         'setuptools',
+        'Zope2 >= 4.0dev',
+        'AccessControl >= 4.0dev',
         'Acquisition',
         'DateTime',
-        'ExtensionClass>=4.1a1',
+        'DocumentTemplate',
+        'ExtensionClass >= 4.1a1',
         'Missing',
         'Persistence',
         'Record',
         'transaction',
-        'ZODB3',
         'zope.interface',
-        'Zope2 > 2.12.8',
-        # These are only available with Zope >= 2.13.0a1
-        # 'AccessControl',
-        # 'DocumentTemplate',
-        # 'zExceptions',
+        'zExceptions',
+        'ZServer >= 4.0dev',  # webdav
     ],
     include_package_data=True,
     zip_safe=False,
