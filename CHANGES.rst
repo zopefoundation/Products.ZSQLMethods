@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.13.5 (unreleased)
+2.13.5 (2016-11-10)
 -------------------
 
 - Strip ``NUL`` bytes when quoting SQL string literals.
