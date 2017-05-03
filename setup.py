@@ -48,7 +48,6 @@ setup(
         'transaction',
         'zope.interface',
         'zExceptions',
-        'ZServer >= 4.0dev',  # webdav
     ],
     include_package_data=True,
     zip_safe=False,

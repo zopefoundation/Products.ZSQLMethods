@@ -33,11 +33,16 @@ from DocumentTemplate.html_quote import html_quote
 from DateTime.DateTime import DateTime
 from ExtensionClass import Base
 from BTrees.OOBTree import OOBucket as Bucket
+from OFS import bbb
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 import Products
-from webdav.Resource import Resource
-from webdav.Lockable import ResourceLockedError
+if bbb.HAS_ZSERVER:
+    from webdav.Resource import Resource
+    from webdav.Lockable import ResourceLockedError
+else:
+    Resource = bbb.Resource
+    from zExceptions import ResourceLockedError
 from zExceptions import BadRequest
 from zExceptions import NotFound
 
