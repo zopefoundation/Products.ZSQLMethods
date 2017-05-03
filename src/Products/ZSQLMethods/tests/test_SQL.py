@@ -12,7 +12,10 @@ class SQLMethodTests(unittest.TestCase):
 
     def test_class_conforms_to_IWriteLock(self):
         from zope.interface.verify import verifyClass
-        from webdav.interfaces import IWriteLock
+        try:
+            from OFS.interfaces import IWriteLock
+        except ImportError:
+            from webdav.interfaces import IWriteLock
         verifyClass(IWriteLock, self._getTargetClass())
 
 

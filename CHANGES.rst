@@ -6,6 +6,9 @@ Changelog
 
 - Target use with Zope 4:  no longer support 2.13.x.
 
+- Make webdav from ZServer optional
+  [dataflake]
+
 2.13.5 (2016-11-10)
 -------------------
 
