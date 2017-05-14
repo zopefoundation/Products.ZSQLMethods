@@ -236,7 +236,7 @@ def getObject(module, name, reload=0,
                        "in module, '%s'." % (name, module))
 
 
-class NoBrains:
+class NoBrains(Base):
     pass
 
 
@@ -720,9 +720,9 @@ class DA(BaseQuery,
             f=StringIO()
             f.write(result)
             f.seek(0)
-            result = File(f,brain,p, None)
+            result = File(f, brain, p)
         else:
-            result = Results(result, brain, p, None)
+            result = Results(result, brain, p)
         columns = result._searchable_result_columns()
         if test__ and columns != self._col:
             self._col=columns

@@ -5,8 +5,9 @@ from Shared.DC.ZRDB.Results import Results
 from Shared.DC.ZRDB import RDB
 
 
-class Brain:
-    def __init__(self, *args): pass
+class Brain(Base):
+    def __init__(self, *args):
+        pass
 
 Parent = Base()
 
