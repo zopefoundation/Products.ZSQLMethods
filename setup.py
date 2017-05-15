@@ -37,7 +37,7 @@ setup(
     install_requires=[
         'setuptools',
         'six',
-        'Zope2 >= 4.0dev',
+        'Zope2 > 4.0a4',
         'RestrictedPython >= 4.0dev',
         'AccessControl >= 4.0dev',
         'Persistence >= 3.0dev',
