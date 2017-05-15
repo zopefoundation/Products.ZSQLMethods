@@ -119,7 +119,7 @@ class Results:
         return fields
 
     def tuples(self):
-        return map(tuple, self)
+        return list(map(tuple, self))
 
     def dictionaries(self):
         return [
