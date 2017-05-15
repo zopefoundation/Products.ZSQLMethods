@@ -49,8 +49,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
-		"Topic :: Database",
-		"Topic :: Database :: Front-Ends",
+        "Topic :: Database",
+        "Topic :: Database :: Front-Ends",
     ],
     install_requires=[
         'setuptools',
