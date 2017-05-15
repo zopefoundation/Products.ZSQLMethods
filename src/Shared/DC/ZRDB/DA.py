@@ -12,10 +12,10 @@
 ##############################################################################
 '''Generic Database adapter'''
 
-from cStringIO import StringIO
 import imp
 import os
 import re
+from six import StringIO
 import string
 import sys
 from time import time

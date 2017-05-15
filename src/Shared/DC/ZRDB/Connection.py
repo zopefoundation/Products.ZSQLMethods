@@ -13,8 +13,8 @@
 '''Generic Database Connection Support'''
 
 from cgi import escape
-from cStringIO import StringIO
 from logging import getLogger
+from six import StringIO
 import string
 import sys
 

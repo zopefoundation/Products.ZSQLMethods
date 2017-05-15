@@ -12,9 +12,9 @@
 ##############################################################################
 
 import binascii
-from cStringIO import StringIO
 import os
 import re
+from six import StringIO
 import string
 
 from Acquisition import Implicit

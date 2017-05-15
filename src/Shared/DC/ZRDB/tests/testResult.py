@@ -1,5 +1,5 @@
+from six import StringIO
 from unittest import TestCase, TestSuite, makeSuite
-from cStringIO import StringIO
 from ExtensionClass import Base
 from Shared.DC.ZRDB.Results import Results
 from Shared.DC.ZRDB import RDB

@@ -36,6 +36,7 @@ setup(
     package_dir={'': 'src'},
     install_requires=[
         'setuptools',
+        'six',
         'Zope2 >= 4.0dev',
         'RestrictedPython >= 4.0dev',
         'AccessControl >= 4.0dev',

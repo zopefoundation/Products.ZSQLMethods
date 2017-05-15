@@ -48,8 +48,9 @@
     inserted is 'null'.
 '''
 
+import six
+
 from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
-from string import atoi, atof
 
 StringType = str
 
