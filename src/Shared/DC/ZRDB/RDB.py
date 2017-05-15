@@ -32,13 +32,16 @@ def parse_text(s):
     return '\\'.join(r)
 
 
-Parsers = {
-    'n': string.atof,
-    'i': string.atoi,
-    'l': string.atol,
-    'd': DateTime,
-    't': parse_text,
-}
+if six.PY3:
+    long = int
+
+Parsers={'n': float,
+         'i': int,
+         'l': long,
+         'd': DateTime,
+         't': parse_text,
+         }
+
 
 class SQLAlias(Base):
 
@@ -75,17 +78,17 @@ class DatabaseResults(object):
             line = line[:-1]
         self._names = names = [name.strip() for name in line.split('\t')]
         if not names:
-            raise ValueError, 'No column names'
+            raise ValueError('No column names')
 
         aliases = []
         self._schema = schema = {}
         i = 0
         for name in names:
             if not name:
-                raise ValueError, 'Empty column name, %s' % name
+                raise ValueError('Empty column name, %s' % name)
 
-            if schema.has_key(name):
-                raise ValueError, 'Duplicate column name, %s' % name
+            if name in schema:
+                raise ValueError('Duplicate column name, %s' % name)
 
             schema[name] = i
             i = i + 1
@@ -107,10 +110,10 @@ class DatabaseResults(object):
         self._defs = defs = [_def.strip() for _def in line.split('\t')]
 
         if not defs:
-            raise ValueError, 'No column definitions'
+            raise ValueError('No column definitions')
 
         if len(defs) != nv:
-            raise ValueError, (
+            raise ValueError(
                 """The number of column names and the number of column
                 definitions are different.""")
 
@@ -121,13 +124,12 @@ class DatabaseResults(object):
         self.__items__ = items = []
 
         for _def in defs:
-
             if not _def:
-                raise ValueError, ('Empty column definition for %s' % names[i])
+                raise ValueError('Empty column definition for %s' % names[i])
 
             mo = defre.match(_def)
             if mo is None:
-                raise ValueError, (
+                raise ValueError(
                     'Invalid column definition for, %s, for %s'
                     % _def, names[i])
 
@@ -135,7 +137,7 @@ class DatabaseResults(object):
             width = mo.group(1)
 
             if width:
-                width = string.atoi(width)
+                width = int(width)
             else:
                 width = 8
 
@@ -207,7 +209,7 @@ class DatabaseResults(object):
             if l < nv:
                 fields = fields+['']*(nv-l)
             else:
-                raise ValueError, (
+                raise ValueError(
                     """The number of items in record %s is invalid
                     <pre>%s\n%s\n%s\n%s</pre>
                     """
@@ -217,7 +219,7 @@ class DatabaseResults(object):
                 v = parser(fields[i])
             except:
                 if fields[i]:
-                    raise ValueError, (
+                    raise ValueError(
                         """Invalid value, %s, for %s in record %s"""
                         % (fields[i], self._names[i], index))
                 else:

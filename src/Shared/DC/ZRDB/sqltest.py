@@ -56,10 +56,10 @@
 
 '''
 
+import six
+
 from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
 
-from string import join, atoi, atof
-from types import ListType, TupleType, StringType
 
 class SQLTest:
     name='sqltest'
@@ -76,26 +76,26 @@ class SQLTest:
         self.__name__, self.expr = name, expr
 
         self.args=args
-        if not args.has_key('type'):
-            raise ParseError, ('the type attribute is required', 'sqltest')
+        if not 'type' in args:
+            raise ParseError('the type attribute is required', 'sqltest')
 
         self.type=t=args['type']
-        if not valid_type(t):
-            raise ParseError, ('invalid type, %s' % t, 'sqltest')
+        if t not in valid_types:
+            raise ParseError('invalid type, %s' % t, 'sqltest')
 
-        if args.has_key('optional'): self.optional=args['optional']
-        if args.has_key('multiple'): self.multiple=args['multiple']
-        if args.has_key('column'):
+        if 'optional' in args: self.optional=args['optional']
+        if 'multiple' in args: self.multiple=args['multiple']
+        if 'column' in args:
             self.column=args['column']
         elif self.__name__ is None:
             err = ' the column attribute is required if an expression is used'
-            raise ParseError, (err, 'sqltest')
+            raise ParseError(err, 'sqltest')
         else:
             self.column=self.__name__
 
         # Deal with optional operator specification
         op = '='                        # Default
-        if args.has_key('op'):
+        if 'op' in args:
             op = args['op']
             # Try to get it from the chart, otherwise use the one provided
             op = comparison_operators.get(op, op)
@@ -113,62 +113,62 @@ class SQLTest:
             else:
                 v=expr(md)
         except KeyError:
-            if args.has_key('optional') and args['optional']:
+            if 'optional' in args and args['optional']:
                 return ''
-            raise ValueError, 'Missing input variable, <em>%s</em>' % name
+            raise ValueError('Missing input variable, <em>%s</em>' % name)
 
-        if type(v) in (ListType, TupleType):
+        if isinstance(v, (list, tuple)):
             if len(v) > 1 and not self.multiple:
-                raise ValueError, (
+                raise ValueError(
                     'multiple values are not allowed for <em>%s</em>'
                     % name)
         else: v=[v]
 
         vs=[]
         for v in v:
-            if not v and type(v) is StringType and t != 'string': continue
+            if not v and isinstance(v, str) and t != 'string': continue
             if t=='int':
                 try:
-                    if type(v) is StringType:
+                    if isinstance(v, str):
                         if v[-1:]=='L':
                             v=v[:-1]
-                        atoi(v)
+                        int(v)
                     else: v=str(int(v))
                 except ValueError:
-                    raise ValueError, (
+                    raise ValueError(
                         'Invalid integer value for <em>%s</em>' % name)
             elif t=='float':
-                if not v and type(v) is StringType: continue
+                if not v and isinstance(v, str): continue
                 try:
-                    if type(v) is StringType: atof(v)
+                    if isinstance(v, str): float(v)
                     else: v=str(float(v))
                 except ValueError:
-                    raise ValueError, (
+                    raise ValueError(
                         'Invalid floating-point value for <em>%s</em>' % name)
 
             else:
-                if not isinstance(v, (str, unicode)):
+                if not isinstance(v, (str, six.text_type)):
                     v = str(v)
                 v=md.getitem('sql_quote__',0)(v)
-                #if find(v,"\'") >= 0: v=join(split(v,"\'"),"''")
+                #if v.find("\'") >= 0: v="''".(v.split("\'"))
                 #v="'%s'" % v
             vs.append(v)
 
         if not vs and t=='nb':
-            if args.has_key('optional') and args['optional']:
+            if 'optional' in args and args['optional']:
                 return ''
             else:
                 err = 'Invalid empty string value for <em>%s</em>' % name
-                raise ValueError, err
+                raise ValueError(err)
 
 
         if not vs:
             if self.optional: return ''
-            raise ValueError, (
+            raise ValueError(
                 'No input was provided for <em>%s</em>' % name)
 
         if len(vs) > 1:
-            vs=join(map(str,vs),', ')
+            vs=', '.join(map(str,vs))
             if self.op == '<>':
                 ## Do the equivalent of 'not-equal' for a list,
                 ## "a not in (b,c)"
@@ -180,7 +180,7 @@ class SQLTest:
 
     __call__=render
 
-valid_type={'int':1, 'float':1, 'string':1, 'nb': 1}.has_key
+valid_types = {'int':1, 'float':1, 'string':1, 'nb': 1}
 
 comparison_operators = { 'eq': '=', 'ne': '<>',
                          'lt': '<', 'le': '<=', 'lte': '<=',

@@ -12,7 +12,6 @@
 ##############################################################################
 
 import sys
-from string import strip, split, find, join
 
 import transaction
 
@@ -36,7 +35,7 @@ class DB:
 
     def Database_Connection(self, string):
         # Create a dbi-compatible database connection
-        raise NotImplemetedError, (
+        raise NotImplemetedError(
             'attempt to create a database connection for an abstract dbi')
 
     Database_Error='Should be overriden by subclass'
@@ -72,13 +71,13 @@ class DB:
         try:
             c=self.cursor
             self.register()
-            queries=filter(None, map(strip,split(query_string, '\0')))
-            if not queries: raise QueryError, 'empty query'
+            queries=filter(None, [x.strip() for x in query_string.split('\0')]))
+            if not queries: raise QueryError('empty query')
             if len(queries) > 1:
                 result=[]
                 for qs in queries:
                     r=c.execute(qs)
-                    if r is None: raise QueryError, (
+                    if r is None: raise QueryError(
                         'select in multiple sql-statement query'
                         )
                     result.append((qs, str(`r`), calls))
@@ -94,14 +93,14 @@ class DB:
                     desc=nonselect_desc
             failures=0
             c.close()
-        except self.Database_Error, mess:
+        except self.Database_Error as mess:
             c.close()
             self.db.rollback()
             failures=failures+1
-            if ((find(mess,": invalid") < 0 and
-                 find(mess,"PARSE") < 0) or
+            if ((mess.find(": invalid") < 0 and
+                 mess.find("PARSE") < 0) or
                 # DBI IS stupid
-                find(mess,
+                mess.find(
                      "Error while trying to retrieve text for error") > 0
                 or
                 # If we have a large number of consecutive failures,
@@ -122,23 +121,21 @@ class DB:
                 raise sys.exc_info()
 
         if result:
-            result=join(
+            result='\n'.join(
                     map(
                         lambda row, self=self:
-                        join(map(self.str,row),'\t'),
-                        result),
-                    '\n')+'\n'
+                        '\t'.join(map(self.str,row)),
+                        result))+'\n'
         else:
             result=''
 
         return (
             "%s\n%s\n%s" % (
-                join(map(lambda d: d[0],desc), '\t'),
-                join(
+                '\t'.join(map(lambda d: d[0],desc)),
+                '\t'.join(
                     map(
                         lambda d, defs=self.defs: "%d%s" % (d[2],defs[d[1]]),
-                        desc),
-                    '\t'),
+                        desc)),
                 result,
                 )
             )

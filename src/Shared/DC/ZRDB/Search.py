@@ -12,14 +12,13 @@
 ##############################################################################
 '''Search Interface Wizard'''
 
-from string import join
 from cgi import escape
 
 from App.special_dtml import DTMLFile
-from Aqueduct import custom_default_report
-from Aqueduct import custom_default_zpt_report
-from Aqueduct import nicify
-from Aqueduct import Args
+from .Aqueduct import custom_default_report
+from .Aqueduct import custom_default_zpt_report
+from .Aqueduct import nicify
+from .Aqueduct import Args
 from AccessControl import getSecurityManager
 
 addForm=DTMLFile('dtml/searchAdd', globals())
@@ -28,13 +27,13 @@ def manage_addZSearch(self, report_id, report_title, report_style,
         REQUEST=None):
     'add a report'
 
-    if not queries: raise ValueError, (
+    if not queries: raise ValueError(
         'No <em>searchable objects</em> were selected')
 
-    if not report_id: raise ValueError, (
+    if not report_id: raise ValueError(
         'No <em>report id</em> were specified')
 
-    if input_title and not input_id: raise ValueError, (
+    if input_title and not input_id: raise ValueError(
         'No <em>input id</em> were specified')
 
     qs=map(lambda q, self=self: _getquery(self, q), queries)
@@ -52,7 +51,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
                 arguments[key]=arg
                 keys.append(key)
         if q._searchable_result_columns() is None:
-            raise ValueError,(
+            raise ValueError(
                 """The input searchable object, <em>%s</em>,
                 has not been tested.  Until it has been tested,
                 it\'s output schema is unknown, and a report
@@ -64,7 +63,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
     if object_type == 'dtml_methods':
 
         if not checkPermission('Add DTML Methods', self):
-            raise Unauthorized, (
+            raise Unauthorized(
                   'You are not authorized to add DTML Methods.'
                   )
 
@@ -79,16 +78,17 @@ def manage_addZSearch(self, report_id, report_title, report_style,
             ('<html><head><title><dtml-var title_or_id></title>'
              '</head><body bgcolor="#FFFFFF">\n%s\n'
              '</body></html>' %
-             join(map(lambda q, report_style=report_style:
-                      custom_default_report(q.id, q, no_table=report_style), qs),
-                  '\n<hr>\n')))
+             '\n<hr>\n'.join(map(lambda q, report_style=report_style:
+                      custom_default_report(q.id, q, no_table=report_style), qs))
+             )
+            )
 
         if REQUEST: return self.manage_main(self,REQUEST)
 
     elif object_type == 'page_templates':
 
         if not checkPermission('Add Page Templates', self):
-            raise Unauthorized, (
+            raise Unauthorized(
                   'You are not authorized to add Page Templates.'
                   )
 
@@ -103,9 +103,10 @@ def manage_addZSearch(self, report_id, report_title, report_style,
             report_id,report_title,
             ('<html><body>\n%s\n'
              '</body></html>' %
-             join(map(lambda q, report_style=report_style:
-                      custom_default_zpt_report(q.id, q, no_table=report_style), qs),
-                  '\n<hr>\n')))
+             '\n<hr>\n'.join(map(lambda q, report_style=report_style:
+                      custom_default_zpt_report(q.id, q, no_table=report_style), qs))
+             )
+            )
 
         if REQUEST: return self.manage_main(self,REQUEST)
 
@@ -153,7 +154,7 @@ def _getquery(self,id):
                 except: pass
                 return q
         except: pass
-        if i > 100: raise AttributeError, id
+        if i > 100: raise AttributeError(id)
         i=i+1
         o=o.aq_parent
 
@@ -171,7 +172,7 @@ def default_input_form(arguments,action='query',
                 'Enter query parameters:<br>'
                 '<table>\n'
                 % (tabs,action),
-                join(
+                '\n'.join(
                     map(
                         lambda a:
                         ('<tr><th>%s</th>\n'
@@ -187,8 +188,7 @@ def default_input_form(arguments,action='query',
                             a[1].has_key('default') and a[1]['default'] or ''
                             ))
                         , items
-                        ),
-                '\n'),
+                        )),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '</td></tr>\n</table>\n</form>\n'
@@ -222,7 +222,7 @@ def default_input_zpt_form(arguments,action='query',
                 'Enter query parameters:<br>'
                 '<table>\n'
                 % (tabs,action),
-                join(
+                '\n'.join(
                     map(
                         lambda a:
                         ('<tr><th>%s</th>\n'
@@ -238,8 +238,7 @@ def default_input_zpt_form(arguments,action='query',
                             a[1].has_key('default') and a[1]['default'] or ''
                             ))
                         , items
-                        ),
-                '\n'),
+                        )),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '</td></tr>\n</table>\n</form>\n'
