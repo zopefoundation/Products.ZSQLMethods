@@ -48,8 +48,9 @@
     inserted is 'null'.
 '''
 
+import six
+
 from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
-from string import atoi, atof
 
 StringType = str
 
@@ -66,10 +67,10 @@ class SQLVar:
         self.__name__, self.expr = name, expr
 
         self.args=args
-        if not args.has_key('type'):
+        if not 'type' in args:
             raise ParseError('the type attribute is required', 'dtvar')
         t=args['type']
-        if not valid_type(t):
+        if not t in valid_types:
             raise ParseError('invalid type, %s' % t, 'dtvar')
 
     def render(self, md):
@@ -81,55 +82,55 @@ class SQLVar:
             if type(expr) is type(''): v=md[expr]
             else: v=expr(md)
         except:
-            if args.has_key('optional') and args['optional']:
+            if 'optional' in args and args['optional']:
                 return 'null'
             if type(expr) is not type(''):
                 raise
-            raise ValueError, 'Missing input variable, <em>%s</em>' % name
+            raise ValueError('Missing input variable, <em>%s</em>' % name)
 
         if v is None:
             return 'null'
 
         if t=='int':
             try:
-                if type(v) is StringType:
+                if isinstance(v, str):
                     if v[-1:]=='L':
                         v=v[:-1]
-                    atoi(v)
+                    int(v)
                 else: v=str(int(v))
             except:
-                if not v and args.has_key('optional') and args['optional']:
+                if not v and 'optional' in args and args['optional']:
                     return 'null'
-                raise ValueError, (
+                raise ValueError(
                     'Invalid integer value for <em>%s</em>' % name)
         elif t=='float':
             try:
-                if type(v) is StringType:
+                if isinstance(v, str):
                     if v[-1:]=='L':
                         v=v[:-1]
-                    atof(v)
+                    float(v)
                 else: v=str(float(v))
             except:
-                if not v and args.has_key('optional') and args['optional']:
+                if not v and 'optional' in args and args['optional']:
                     return 'null'
-                raise ValueError, (
+                raise ValueError(
                     'Invalid floating-point value for <em>%s</em>' % name)
         else:
-            if not isinstance(v, (str, unicode)):
+            if not isinstance(v, (str, six.text_type)):
                 v=str(v)
             if not v and t=='nb':
-                if args.has_key('optional') and args['optional']:
+                if 'optional' in args and args['optional']:
                     return 'null'
                 else:
-                    raise ValueError, (
+                    raise ValueError(
                         'Invalid empty string value for <em>%s</em>' % name)
 
             v=md.getitem('sql_quote__',0)(v)
-            #if find(v,"\'") >= 0: v=join(split(v,"\'"),"''")
+            #if v.find("\'") >= 0: v="''".join(v.split("\'"))
             #v="'%s'" % v
 
         return v
 
     __call__=render
 
-valid_type={'int':1, 'float':1, 'string':1, 'nb': 1}.has_key
+valid_types = {'int':1, 'float':1, 'string':1, 'nb': 1}

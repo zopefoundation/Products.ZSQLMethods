@@ -13,8 +13,8 @@
 '''Generic Database Connection Support'''
 
 from cgi import escape
-from cStringIO import StringIO
 from logging import getLogger
+from six import StringIO
 import string
 import sys
 
@@ -45,9 +45,9 @@ except ImportError:
     from AccessControl.Role import RoleManager
 
 
-from Aqueduct import custom_default_report
-import RDB
-from Results import Results
+from .Aqueduct import custom_default_report
+from . import RDB
+from .Results import Results
 
 LOG = getLogger('ZRDB.Connection')
 
@@ -193,7 +193,7 @@ class Connection(Persistent,
             if s:
                 self.connect(s)
                 return self._v_database_connection
-            raise BadRequest,(
+            raise BadRequest(
                 '''The database connection is not connected''')
 
     def connect(self,s):
@@ -204,20 +204,20 @@ class Connection(Persistent,
                 self._v_database_connection=DB(s)
             except:
                 t, v, tb = sys.exc_info()
-                raise BadRequest, (
+                raise BadRequest(
                     '<strong>Error connecting to DB.</strong><br>\n'
                     '<!--\n%s\n%s\n-->\n'
-                    % (t,v)), tb
+                    % (t,v)).with_traceback(tb)
         finally: tb=None
         self._v_connected=DateTime()
 
         return self
 
     def sql_quote__(self, v):
-        if string.find(v,"\'") >= 0:
-            v = string.join(string.split(v,"\'"),"''")
-        if string.find(v,"\x00") >= 0:
-            v = string.join(string.split(v,"\x00"), "")
+        if v.find("\'") >= 0:
+            v = "''".join(v.split("\'"))
+        if v.find("\x00") >= 0:
+            v = "".join(v.split("\x00"))
         return "'%s'" % v
 
 InitializeClass(Connection)

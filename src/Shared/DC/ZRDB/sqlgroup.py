@@ -62,7 +62,6 @@
 """
 
 from DocumentTemplate.DT_Util import parse_params
-from string import strip, join
 
 _TNAME_MAPPING = {'comma': ','}
 
@@ -80,15 +79,15 @@ class SQLGroup:
         tname, args, section = blocks[0]
         self.__name__ = "%s %s" % (tname, args)
         args = parse_params(args, required=1, where=1, set=1, noparens=1)
-        if args.has_key(''):
+        if '' in args:
             args[args['']] = 1
-        if args.has_key('required'):
+        if 'required' in args:
             self.required = args['required']
-        if args.has_key('where'):
+        if 'where' in args:
             self.where = args['where']
-        if args.has_key('set'):
+        if 'set' in args:
             self.set = args['set']
-        if args.has_key('noparens'):
+        if 'noparens' in args:
             self.noparens = args['noparens']
 
     def render(self,md):
@@ -96,7 +95,7 @@ class SQLGroup:
         r = []
         for tname, args, section in self.blocks:
             __traceback_info__ = tname
-            s = strip(section(None, md))
+            s = (section(None, md)).strip()
             if s:
                 if r:
                     r.append(_TNAME_MAPPING.get(tname, tname))
@@ -107,9 +106,9 @@ class SQLGroup:
         if r:
             if len(r) > 1:
                 if self.noparens:
-                    r = "%s\n" % join(r,' ')
+                    r = "%s\n" % ' '.join(r)
                 else:
-                    r = "(%s)\n" % join(r,' ')
+                    r = "(%s)\n" % ' '.join(r)
             else:
                 r = r[0]
             if self.set:
@@ -119,7 +118,7 @@ class SQLGroup:
             return r
 
         if self.required:
-            raise ValueError, 'Not enough input was provided!<p>'
+            raise ValueError('Not enough input was provided!<p>')
 
         return ''
 

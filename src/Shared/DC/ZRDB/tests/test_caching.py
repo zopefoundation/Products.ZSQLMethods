@@ -83,11 +83,11 @@ class TestCaching(TestCase):
 
     def _check_cache(self,cache,tcache):
         if self.echo:
-            print "cache:"
+            print("cache:")
             pprint(self.da._v_cache[0])
-            print "tcache:"
+            print("tcache:")
             pprint(self.da._v_cache[1])
-            print
+            print()
         result = []
         r = self._check_mapping(cache,self.da._v_cache[0])
         if r:

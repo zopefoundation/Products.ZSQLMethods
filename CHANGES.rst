@@ -4,6 +4,8 @@ Changelog
 3.0.0 (unreleased)
 ------------------
 
+- Python 3 compatibility
+
 
 3.0.0b1 (2017-05-03)
 --------------------

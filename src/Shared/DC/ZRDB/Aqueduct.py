@@ -12,9 +12,9 @@
 ##############################################################################
 
 import binascii
-from cStringIO import StringIO
 import os
 import re
+from six import StringIO
 import string
 
 from Acquisition import Implicit
@@ -99,9 +99,9 @@ class BaseQuery(Persistent, Item, Implicit, RoleManager):
         # to work as supposed to work.
 
 #        if missing:
-#            raise self.MissingArgumentError,  \
+#            raise self.MissingArgumentError(  \
 #                "The following arguments were omitted " \
-#                " from the ZSQL method call: %s" % str(missing)
+#                " from the ZSQL method call: %s" % str(missing))
 #
 
         return r
@@ -136,7 +136,7 @@ class Searchable(BaseQuery):
 
     def index_html(self, URL1):
         " "
-        raise Redirect, ("%s/manage_testForm" % URL1)
+        raise Redirect("%s/manage_testForm" % URL1)
 
 class Composite:
 
@@ -153,7 +153,7 @@ class Composite:
                     except: pass
                     return q
             except: pass
-            if i > 100: raise AttributeError, id
+            if i > 100: raise AttributeError(id)
             i=i+1
             o=o.aq_parent
 
@@ -252,7 +252,7 @@ def custom_default_report(id, result, action='', no_table=0,
     for c in columns:
         n=c['name']
         if goofy(n) is not None:
-            n='expr="_[\'%s]"' % (`'"'+n`[2:])
+            n='expr="_[\'%s]"' % (repr('"'+n)[2:])
         row.append('          %s<dtml-var %s%s>%s'
                    % (td,n,c['type']!='s' and ' null=""' or '',_td))
 
@@ -294,7 +294,7 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
 
 
 def detypify(arg):
-    l=string.find(arg,':')
+    l=arg.find(':')
     if l > 0: arg=arg[:l]
     return arg
 
@@ -372,7 +372,7 @@ def parse(text,
                 l       = len(mo.group(1))
             else:
                 if not text or not text.strip(): return Args(result,keys)
-                raise InvalidParameter, text
+                raise InvalidParameter(text)
 
     lt=name.find(':')
     if lt > 0:
@@ -399,8 +399,8 @@ def quotedHTML(text,
     return text
 
 def nicify(name):
-    name=string.replace(string.strip(name), '_',' ')
-    return string.upper(name[:1])+name[1:]
+    name=string.replace(name.strip(), '_',' ')
+    return name[:1].upper() + name[1:]
 
 def decapitate(html, RESPONSE=None,
                header_re=re.compile(
@@ -420,7 +420,7 @@ def decapitate(html, RESPONSE=None,
 
     headers, html = mo.group(1,3)
 
-    headers=string.split(headers,'\n')
+    headers=headers.split('\n')
 
     i=1
     while i < len(headers):
@@ -439,9 +439,9 @@ def decapitate(html, RESPONSE=None,
         mo = name_re.match(headers[i])
         if mo:
             k,v = mo.group(1,2)
-            v=string.strip(v)
+            v = v.strip()
         else:
-            raise ValueError, 'Invalid Header (%d): %s ' % (i,headers[i])
+            raise ValueError('Invalid Header (%d): %s ' % (i,headers[i]))
         RESPONSE.setHeader(k,v)
 
     return html
@@ -452,11 +452,9 @@ def delimited_output(results,REQUEST,RESPONSE):
     try: output_type=REQUEST['output-type']
     except: output_type='text/plain'
     RESPONSE.setHeader('content-type', output_type)
-    join=string.join
     return "%s\n%s\n" % (
-        join(results.names(),delim),
-        join(map(lambda row, delim=delim, join=join:
-                 join(map(str,row),delim),
-                 results),
-             '\n')
+        delim.join(results.names()),
+        '\n'.join(map(lambda row, delim=delim:
+                 delim.join(map(str,row)),
+                 results)),
         )

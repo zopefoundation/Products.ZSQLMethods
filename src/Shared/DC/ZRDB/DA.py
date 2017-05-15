@@ -12,10 +12,10 @@
 ##############################################################################
 '''Generic Database adapter'''
 
-from cStringIO import StringIO
 import imp
 import os
 import re
+from six import StringIO
 import string
 import sys
 from time import time
@@ -64,15 +64,15 @@ try:
 except ImportError:
     from AccessControl.Role import RoleManager
 
-from Aqueduct import BaseQuery
-from Aqueduct import custom_default_report
-from Aqueduct import default_input_form
-from Aqueduct import parse
-from RDB import File
-from Results import Results
-from sqlgroup import SQLGroup
-from sqltest import SQLTest
-from sqlvar import SQLVar
+from .Aqueduct import BaseQuery
+from .Aqueduct import custom_default_report
+from .Aqueduct import default_input_form
+from .Aqueduct import parse
+from .RDB import File
+from .Results import Results
+from .sqlgroup import SQLGroup
+from .sqltest import SQLTest
+from .sqlvar import SQLVar
 
 
 def _getPath(home, prefix, name, suffixes):
@@ -221,7 +221,7 @@ def getObject(module, name, reload=0,
             raise NotFound("The specified module, '%s', "
                            "couldn't be opened." % module)
         module_dict = {}
-        exec execsrc in module_dict
+        exec(execsrc, module_dict)
 
     if old is not None:
         # XXX Accretive??
@@ -371,12 +371,12 @@ class DA(BaseQuery,
         SQL Template.
         """
 
-        if self._size_changes.has_key(SUBMIT):
+        if SUBMIT in self._size_changes:
             return self._er(title,connection_id,arguments,template,
                             SUBMIT,dtpref_cols,dtpref_rows,REQUEST)
 
         if self.wl_isLocked():
-            raise ResourceLockedError, 'SQL Method is locked via WebDAV'
+            raise ResourceLockedError('SQL Method is locked via WebDAV')
 
         self.title=str(title)
         self.connection_id=str(connection_id)
@@ -517,8 +517,8 @@ class DA(BaseQuery,
         try:
             try:
                 src, result=self(REQUEST, test__=1)
-                if string.find(src,'\0'):
-                    src=string.join(string.split(src,'\0'),'\n'+'-'*60+'\n')
+                if src.find('\0'):
+                    src= ('\n'+'-'*60+'\n').join(src.split('\0'))
                 if result._searchable_result_columns():
                     r=custom_default_report(self.id, result)
                 else:
@@ -597,7 +597,7 @@ class DA(BaseQuery,
                 del keys[0]
 
         # okay, now see if we have a cached result
-        if cache.has_key(cache_key):
+        if cache_key in cache:
             k, r = cache[cache_key]
             # the result may still be stale, as we only hoover out
             # stale results above if the cache gets too large.
@@ -671,13 +671,13 @@ class DA(BaseQuery,
         try:
             dbc=getattr(self, c)
         except AttributeError:
-            raise AttributeError, (
+            raise AttributeError(
                 "The database connection <em>%s</em> cannot be found." % (
                 c))
 
         try:
             DB__=dbc()
-        except: raise DatabaseError, (
+        except: raise DatabaseError(
             '%s is not connected to a database' % self.id)
 
         if hasattr(self, 'aq_parent'):
@@ -693,10 +693,10 @@ class DA(BaseQuery,
         security.addContext(self)
         try:
             try:
-                query=apply(self.template, (p,), argdata)
-            except TypeError, msg:
+                query=self.template(p, **argdata)
+            except TypeError as msg:
                 msg = str(msg)
-                if string.find(msg,'client') >= 0:
+                if msg.find('client') >= 0:
                     raise NameError("'client' may not be used as an " +
                         "argument name in this context")
                 else: raise
@@ -741,8 +741,8 @@ class DA(BaseQuery,
         if self.allow_simple_one_argument_traversal and len(args)==1:
             results=self({args.keys()[0]: key})
             if results:
-                if len(results) > 1: raise KeyError, key
-            else: raise KeyError, key
+                if len(results) > 1: raise KeyError(key)
+            else: raise KeyError(key)
             r=results[0]
             # if hasattr(self, 'aq_parent'): r=r.__of__(self.aq_parent)
             return r
@@ -795,8 +795,8 @@ class Traverse(Base):
         if results:
             if len(results) > 1:
                 try: return results[string.atoi(key)].__of__(da)
-                except: raise KeyError, key
-        else: raise KeyError, key
+                except: raise KeyError(key)
+        else: raise KeyError(key)
         r=results[0]
         # if hasattr(da, 'aq_parent'): r=r.__of__(da.aq_parent)
         self._r=r
@@ -808,8 +808,8 @@ class Traverse(Base):
             except: pass
 
         try: return getattr(r,key)
-        except AttributeError, v:
-            if str(v) != key: raise AttributeError, v
+        except AttributeError as v:
+            if str(v) != key: raise AttributeError(v)
 
         return r[key]
 

@@ -53,10 +53,10 @@ class Results:
             name = item['name'].strip()
 
             if not name:
-                raise ValueError, 'Empty column name, %s' % name
+                raise ValueError('Empty column name, %s' % name)
 
             if name in schema:
-                raise ValueError, 'Duplicate column name, %s' % name
+                raise ValueError('Duplicate column name, %s' % name)
 
             schema[name] = i
             i += 1
@@ -119,7 +119,7 @@ class Results:
         return fields
 
     def tuples(self):
-        return map(tuple, self)
+        return list(map(tuple, self))
 
     def dictionaries(self):
         return [

@@ -12,7 +12,7 @@
 ##############################################################################
 import unittest
 
-from UserDict import UserDict
+from six.moves import UserDict
 
 
 def _sql_quote(v):
