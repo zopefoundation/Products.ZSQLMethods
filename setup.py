@@ -46,7 +46,7 @@ setup(
         'DocumentTemplate',
         'ExtensionClass >= 4.1a1',
         'Missing',
-        'Record',
+        'Record > 3.3',
         'transaction',
         'zope.interface',
         'zExceptions',
