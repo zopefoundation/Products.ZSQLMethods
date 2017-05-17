@@ -4,6 +4,8 @@ Changelog
 3.0.0 (unreleased)
 ------------------
 
+- added tox configuration
+
 - Python 3 compatibility
 
 
