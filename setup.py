@@ -14,7 +14,7 @@
 
 from setuptools import setup, find_packages
 
-__version__ = '3.0.0.dev0'
+__version__ = '3.0.0'
 
 with open('README.rst') as f:
     README = f.read()
