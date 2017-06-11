@@ -3,6 +3,7 @@
 from Acquisition import Implicit
 from ExtensionClass import Base
 
+
 class DummySQLConnection(Base, Implicit):
 
     _isAnSQLConnection = True

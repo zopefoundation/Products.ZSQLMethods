@@ -45,7 +45,7 @@ def initialize(context):
     context.registerHelpTitle('Zope Help')
 
 
-__module_aliases__=(
+__module_aliases__ = (
     ('Products.AqueductSQLMethods', 'Products.ZSQLMethods'),
     ('Aqueduct', Shared.DC.ZRDB),
     ('AqueductDA', Shared.DC.ZRDB),
@@ -56,4 +56,4 @@ __module_aliases__=(
     ('AqueductDA.sqlvar', Shared.DC.ZRDB.sqlvar),
     ('AqueductDA.sqltest', Shared.DC.ZRDB.sqltest),
     ('AqueductDA.sqlgroup', Shared.DC.ZRDB.sqlgroup),
-    )
+)

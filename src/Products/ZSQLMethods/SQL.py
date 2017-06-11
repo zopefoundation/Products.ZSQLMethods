@@ -29,7 +29,7 @@ def SQLConnectionIDs(container):
     """Find SQL database connections in the current folder and above
 
     This function returns a list of two-element tuples. The second element
-    is the connection ID, the first element either its title, or if the 
+    is the connection ID, the first element either its title, or if the
     title is empty, its ID.
     """
     ids = {}
@@ -37,8 +37,8 @@ def SQLConnectionIDs(container):
     while container is not None:
         if getattr(container, 'objectValues', None) is not None:
             for ob in container.objectValues():
-                if ( getattr(ob, '_isAnSQLConnection', None) and
-                     getattr(ob, 'id', None) ):
+                if (getattr(ob, '_isAnSQLConnection', None) and
+                        getattr(ob, 'id', None)):
                     ob_id = ob.id
 
                     if callable(ob_id):
@@ -58,12 +58,13 @@ def SQLConnectionIDs(container):
 
     return ids
 
-manage_addZSQLMethodForm=DTMLFile('dtml/add', globals())
+
+manage_addZSQLMethodForm = DTMLFile('dtml/add', globals())
 
 
 def manage_addZSQLMethod(self, id, title,
-                                connection_id, arguments, template,
-                                REQUEST=None, submit=None):
+                         connection_id, arguments, template,
+                         REQUEST=None, submit=None):
     """Add an SQL Method
 
     The 'connection_id' argument is the id of a database connection
@@ -84,12 +85,12 @@ def manage_addZSQLMethod(self, id, title,
             u = self.DestinationURL()
         except Exception:
             u = REQUEST['URL1']
-        if submit==" Add and Edit ":
+        if submit == " Add and Edit ":
             u = "%s/%s/manage_main" % (u, id)
-        elif submit==" Add and Test ":
+        elif submit == " Add and Test ":
             u = "%s/%s/manage_testForm" % (u, id)
         else:
-            u = u+'/manage_main'
+            u = u + '/manage_main'
 
         REQUEST.RESPONSE.redirect(u)
     return ''
@@ -133,13 +134,14 @@ class SQL(DA):
            employees/employee_id/1234/service_record
 
     """
-    meta_type='Z SQL Method'
+    meta_type = 'Z SQL Method'
 
     security = ClassSecurityInfo()
 
     security.declareProtected(change_database_methods, 'manage')
     security.declareProtected(change_database_methods, 'manage_main')
-    manage=manage_main=DTMLFile('dtml/edit', globals())
+    manage = manage_main = DTMLFile('dtml/edit', globals())
     manage_main._setName('manage_main')
+
 
 InitializeClass(SQL)

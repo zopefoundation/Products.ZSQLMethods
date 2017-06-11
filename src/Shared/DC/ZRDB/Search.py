@@ -115,7 +115,7 @@ def ZQueryIds(self):
     # Note that report server configurations will expend on this
     t=[]
     ids={}
-    old=ids.has_key
+    old=ids.__contains__
     o=self
     n=0
     while 1:
@@ -181,11 +181,11 @@ def default_input_form(arguments,action='query',
                          '</td></tr>'
                          % (nicify(a[0]),
                             (
-                                a[1].has_key('type') and
+                                'type' in a[1] and
                                 ("%s:%s" % (a[0],a[1]['type'])) or
                                 a[0]
                                 ),
-                            a[1].has_key('default') and a[1]['default'] or ''
+                            'default' in a[1] and a[1]['default'] or ''
                             ))
                         , items
                         )),
@@ -231,11 +231,11 @@ def default_input_zpt_form(arguments,action='query',
                          '</td></tr>'
                          % (nicify(a[0]),
                             (
-                                a[1].has_key('type') and
+                                'type' in a[1] and
                                 ("%s:%s" % (a[0],a[1]['type'])) or
                                 a[0]
                                 ),
-                            a[1].has_key('default') and a[1]['default'] or ''
+                            'default' in a[1] and a[1]['default'] or ''
                             ))
                         , items
                         )),

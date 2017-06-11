@@ -11,6 +11,7 @@
 #
 ##############################################################################
 
+
 def manage_addZSQLMethod(id, title,
                          connection_id, arguments, template):
     """
@@ -65,7 +66,7 @@ class ZSQLMethod:
 
     """
 
-    __constructor__=manage_addZSQLMethod
+    __constructor__ = manage_addZSQLMethod
 
     def __call__(REQUEST=None, **kw):
         """
@@ -82,8 +83,7 @@ class ZSQLMethod:
 
         """
 
-
-    def manage_edit(title,connection_id,arguments,template):
+    def manage_edit(title, connection_id, arguments, template):
         """
 
         Change database method properties.

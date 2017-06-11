@@ -4,6 +4,8 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
+- More PEP8 compliance.
+
 
 3.0.0 (2017-05-23)
 ------------------
