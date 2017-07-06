@@ -71,7 +71,7 @@ class DB:
         try:
             c=self.cursor
             self.register()
-            queries=filter(None, [x.strip() for x in query_string.split('\0')]))
+            queries=filter(None, [x.strip() for x in query_string.split('\0')])
             if not queries: raise QueryError('empty query')
             if len(queries) > 1:
                 result=[]
