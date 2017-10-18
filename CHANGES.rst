@@ -4,6 +4,8 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
+- Fix syntax error in `Shared/DC/ZRDB/dbi_db.py`.
+
 - More PEP8 compliance.
 
 
