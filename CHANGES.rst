@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.1 (2017-10-18)
 ------------------
 
 - Fix syntax error in `Shared/DC/ZRDB/dbi_db.py`.
