@@ -14,7 +14,7 @@
 
 from setuptools import setup, find_packages
 
-__version__ = '3.0.1.dev0'
+version = '3.0.1.dev0'
 
 with open('README.rst') as f:
     README = f.read()
@@ -24,7 +24,7 @@ with open('CHANGES.rst') as f:
 
 setup(
     name='Products.ZSQLMethods',
-    version=__version__,
+    version=version,
     url='http://pypi.python.org/pypi/Products.ZSQLMethods',
     license='ZPL 2.1',
     description="SQL method support for Zope 2.",
