@@ -10,3 +10,4 @@ global-exclude *.pyo
 
 include *.py
 include buildout.cfg
+include tox.ini
