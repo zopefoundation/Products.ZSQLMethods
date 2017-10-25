@@ -20,10 +20,10 @@ class TestTM(TestCase):
         tm = TM()
         # the default Transaction Manager should have .sortKey() of 1 for
         # backward compatibility
-        self.assertEqual(tm.sortKey(), 1)
+        self.assertEquals(tm.sortKey(), 1)
         # but the sortKey() should be adjustable
         tm.setSortKey(())
-        self.assertEqual(tm.sortKey(), ())
+        self.assertEquals(tm.sortKey(), ())
 
 def test_suite():
     return TestSuite((makeSuite(TestTM),))

@@ -16,6 +16,7 @@ import imp
 import os
 import re
 from six import StringIO
+import string
 import sys
 from time import time
 
@@ -429,11 +430,11 @@ class DA(BaseQuery,
         """
         # paranoid type checking
         if not isinstance(max_rows, int):
-            max_rows = int(max_rows)
+            max_rows = string.atoi(max_rows)
         if not isinstance(max_cache, int):
-            max_cache = int(max_cache)
+            max_cache = string.atoi(max_cache)
         if not isinstance(cache_time, int):
-            cache_time = int(cache_time)
+            cache_time = string.atoi(cache_time)
         class_name = str(class_name)
         class_file = str(class_file)
 
@@ -536,7 +537,7 @@ class DA(BaseQuery,
                 '</body></html>'
                 % (r, html_quote(src)))
 
-            report = report(*(self, REQUEST), **{self.id: result})
+            report = apply(report, (self, REQUEST), {self.id: result})
 
             if tb is not None:
                 self.raise_standardErrorMessage(
@@ -808,7 +809,7 @@ class Traverse(Base):
         if results:
             if len(results) > 1:
                 try:
-                    return results[int(key)].__of__(da)
+                    return results[string.atoi(key)].__of__(da)
                 except Exception:
                     raise KeyError(key)
         else:

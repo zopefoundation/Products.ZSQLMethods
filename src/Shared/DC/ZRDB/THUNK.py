@@ -11,13 +11,13 @@
 #
 ##############################################################################
 
-import thread
+from six.moves._thread import allocate_lock
 
-import TM
-from TM import Surrogate
+from . import TM
+from .TM import Surrogate
 import transaction
 
-thunk_lock = thread.allocate_lock()
+thunk_lock = allocate_lock()
 
 class THUNKED_TM(TM.TM):
     """A big heavy hammer for handling non-thread safe DAs
