@@ -4,7 +4,7 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add test coverage computation.
 
 
 3.0.1 (2017-10-18)
