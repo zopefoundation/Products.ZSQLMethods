@@ -29,42 +29,42 @@ class SQLGroupTests(unittest.TestCase):
     def test_ctor_empty_args(self):
         group = self._makeOne([('sqlgroup', '', None)])
         self.assertEqual(group.__name__, 'sqlgroup ')
-        self.assertFalse(group.required)
-        self.assertFalse(group.where)
-        self.assertFalse(group.set)
-        self.assertFalse(group.noparens)
+        self.failIf(group.required)
+        self.failIf(group.where)
+        self.failIf(group.set)
+        self.failIf(group.noparens)
 
     def test_ctor_required(self):
         group = self._makeOne([('sqlgroup', 'required', None)])
         self.assertEqual(group.__name__, 'sqlgroup required')
-        self.assertTrue(group.required)
-        self.assertFalse(group.where)
-        self.assertFalse(group.set)
-        self.assertFalse(group.noparens)
+        self.failUnless(group.required)
+        self.failIf(group.where)
+        self.failIf(group.set)
+        self.failIf(group.noparens)
 
     def test_ctor_where(self):
         group = self._makeOne([('sqlgroup', 'where', None)])
         self.assertEqual(group.__name__, 'sqlgroup where')
-        self.assertFalse(group.required)
-        self.assertTrue(group.where)
-        self.assertFalse(group.set)
-        self.assertFalse(group.noparens)
+        self.failIf(group.required)
+        self.failUnless(group.where)
+        self.failIf(group.set)
+        self.failIf(group.noparens)
 
     def test_ctor_noparens(self):
         group = self._makeOne([('sqlgroup', 'noparens', None)])
         self.assertEqual(group.__name__, 'sqlgroup noparens')
-        self.assertFalse(group.required)
-        self.assertFalse(group.where)
-        self.assertFalse(group.set)
-        self.assertTrue(group.noparens)
+        self.failIf(group.required)
+        self.failIf(group.where)
+        self.failIf(group.set)
+        self.failUnless(group.noparens)
 
     def test_ctor_set(self):
         group = self._makeOne([('sqlgroup', 'set', None)])
         self.assertEqual(group.__name__, 'sqlgroup set')
-        self.assertFalse(group.required)
-        self.assertFalse(group.where)
-        self.assertTrue(group.set)
-        self.assertFalse(group.noparens)
+        self.failIf(group.required)
+        self.failIf(group.where)
+        self.failUnless(group.set)
+        self.failIf(group.noparens)
 
     def test_render_empty_optional(self):
         group = self._makeOne([('sqlgroup', '', lambda x, y:'')])

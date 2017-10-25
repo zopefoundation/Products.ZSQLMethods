@@ -20,22 +20,22 @@ class TestResults(TestCase):
                      ((1, 2), (3, 4))),
                     brains=Brain,
                     parent=Parent)
-        self.assertEquals(len(r), 2)
+        self.assertEqual(len(r), 2)
         row = r[0]
-        self.assertEquals(row[0], 1)
-        self.assertEquals(row[1], 2)
-        self.assertEquals(row.foo, 1)
-        self.assertEquals(row.bar, 2)
-        self.assertEquals(row.FOO, 1)
-        self.assertEquals(row.BAR, 2)
+        self.assertEqual(row[0], 1)
+        self.assertEqual(row[1], 2)
+        self.assertEqual(row.foo, 1)
+        self.assertEqual(row.bar, 2)
+        self.assertEqual(row.FOO, 1)
+        self.assertEqual(row.BAR, 2)
         row = r[1]
-        self.assertEquals(row[0], 3)
-        self.assertEquals(row[1], 4)
-        self.assertEquals(row.foo, 3)
-        self.assertEquals(row.bar, 4)
-        self.assertEquals(row.FOO, 3)
-        self.assertEquals(row.BAR, 4)
-        self.failUnless(isinstance(row, Brain))
+        self.assertEqual(row[0], 3)
+        self.assertEqual(row[1], 4)
+        self.assertEqual(row.foo, 3)
+        self.assertEqual(row.bar, 4)
+        self.assertEqual(row.FOO, 3)
+        self.assertEqual(row.BAR, 4)
+        self.assertTrue(isinstance(row, Brain))
 
     def test_rdb_file(self):
         infile = StringIO("""\
@@ -47,22 +47,22 @@ class TestResults(TestCase):
         r = RDB.File(infile,
                      brains=Brain,
                      parent=Parent)
-        self.assertEquals(len(r), 2)
+        self.assertEqual(len(r), 2)
         row = r[0]
-        self.assertEquals(row[0], 1)
-        self.assertEquals(row[1], 2)
-        self.assertEquals(row.foo, 1)
-        self.assertEquals(row.bar, 2)
-        self.assertEquals(row.FOO, 1)
-        self.assertEquals(row.BAR, 2)
+        self.assertEqual(row[0], 1)
+        self.assertEqual(row[1], 2)
+        self.assertEqual(row.foo, 1)
+        self.assertEqual(row.bar, 2)
+        self.assertEqual(row.FOO, 1)
+        self.assertEqual(row.BAR, 2)
         row = r[1]
-        self.assertEquals(row[0], 3)
-        self.assertEquals(row[1], 4)
-        self.assertEquals(row.foo, 3)
-        self.assertEquals(row.bar, 4)
-        self.assertEquals(row.FOO, 3)
-        self.assertEquals(row.BAR, 4)
-        self.failUnless(isinstance(row, Brain))
+        self.assertEqual(row[0], 3)
+        self.assertEqual(row[1], 4)
+        self.assertEqual(row.foo, 3)
+        self.assertEqual(row.bar, 4)
+        self.assertEqual(row.FOO, 3)
+        self.assertEqual(row.BAR, 4)
+        self.assertTrue(isinstance(row, Brain))
 
 def test_suite():
     return TestSuite((makeSuite(TestResults),))
