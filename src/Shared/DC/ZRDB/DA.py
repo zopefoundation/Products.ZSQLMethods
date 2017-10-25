@@ -16,7 +16,6 @@ import imp
 import os
 import re
 from six import StringIO
-import string
 import sys
 from time import time
 
@@ -430,11 +429,11 @@ class DA(BaseQuery,
         """
         # paranoid type checking
         if not isinstance(max_rows, int):
-            max_rows = string.atoi(max_rows)
+            max_rows = int(max_rows)
         if not isinstance(max_cache, int):
-            max_cache = string.atoi(max_cache)
+            max_cache = int(max_cache)
         if not isinstance(cache_time, int):
-            cache_time = string.atoi(cache_time)
+            cache_time = int(cache_time)
         class_name = str(class_name)
         class_file = str(class_file)
 
@@ -809,7 +808,7 @@ class Traverse(Base):
         if results:
             if len(results) > 1:
                 try:
-                    return results[string.atoi(key)].__of__(da)
+                    return results[int(key)].__of__(da)
                 except Exception:
                     raise KeyError(key)
         else:

@@ -15,7 +15,6 @@
 from cgi import escape
 from logging import getLogger
 from six import StringIO
-import string
 import sys
 
 from AccessControl.Permissions import view_management_screens

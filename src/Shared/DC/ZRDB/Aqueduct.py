@@ -15,7 +15,6 @@ import binascii
 import os
 import re
 from six import StringIO
-import string
 
 from Acquisition import Implicit
 from App.Common import package_home
@@ -188,7 +187,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
                 'Enter query parameters:<br>'
                 '<table>\n'
                 % (id, tabs, action, id),
-                string.joinfields(
+                '/n'.join(
                     map(
                         lambda a:
                         ('<tr> <th>%s</th>\n'
@@ -204,8 +203,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
                             'default' in a[1] and a[1]['default'] or ''
                             ))
                         , items
-                    ),
-                '\n'),
+                    )),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '<dtml-if HTTP_REFERER>\n'
@@ -248,11 +246,10 @@ def custom_default_report(id, result, action='', no_table=0,
     columns = result._searchable_result_columns()
     __traceback_info__ = columns
     heading = ('<tr>\n%s        </tr>' %
-               string.joinfields(
+               ''.join(
                    map(lambda c:
                        '          <th>%s</th>\n' % nicify(c['name']),
-                       columns),
-                   ''
+                       columns)
                ))
 
     if no_table:
@@ -269,7 +266,7 @@ def custom_default_report(id, result, action='', no_table=0,
                    % (td, n, c['type'] != 's' and ' null=""' or '', _td))
 
     row = ('     %s\n%s\n        %s' % (
-        tr, string.joinfields(row, delim), _tr))
+        tr, delim.join(row), _tr))
 
     return custom_default_report_src(
         id=id, heading=heading, row=row, action=action, no_table=no_table)
@@ -281,11 +278,10 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
     columns = result._searchable_result_columns()
     __traceback_info__ = columns
     heading = ('<tr>\n%s        </tr>' %
-               string.joinfields(
+               ''.join(
                    map(lambda c:
                        '          <th>%s</th>\n' % nicify(c['name']),
-                       columns),
-                   ''
+                       columns)
                ))
 
     if no_table:
@@ -300,7 +296,7 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
                    % (td, n, n, _td))
 
     row = ('     %s\n%s\n        %s' % (
-        tr, string.joinfields(row, delim), _tr))
+        tr, delim.join(row), _tr))
 
     return custom_default_zpt_report_src(
         id=id, heading=heading, row=row, action=action, no_table=no_table)
@@ -425,13 +421,13 @@ def quotedHTML(text,
                    ('"', '&quot;'))):
 
     for char, name in character_entities:
-        text = string.replace(text, char, name)
+        text = text.replace(char, name)
 
     return text
 
 
 def nicify(name):
-    name = string.replace(name.strip(), '_', ' ')
+    name = name.strip().replace('_', ' ')
     return name[:1].upper() + name[1:]
 
 

@@ -14,7 +14,6 @@
 
 import array
 import re
-import string
 
 from Acquisition import Implicit
 from DateTime import DateTime
