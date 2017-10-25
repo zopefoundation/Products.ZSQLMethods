@@ -4,6 +4,8 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- Add flake8 code checking
+
 - Add test coverage computation.
 
 - Various small Python 3 compatibility changes.
