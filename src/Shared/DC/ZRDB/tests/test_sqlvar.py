@@ -50,7 +50,6 @@ class SQLVarTests(unittest.TestCase):
         self.assertRaises(ParseError, self._makeOne, 'foo type="nonesuch"')
 
     def test_constructor_valid_type(self):
-        from DocumentTemplate.DT_Util import ParseError
         v = self._makeOne('foo type="string"')
         self.assertEqual(v.__name__, 'foo')
         self.assertEqual(v.expr, 'foo')

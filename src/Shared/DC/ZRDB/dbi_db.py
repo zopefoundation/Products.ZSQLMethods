@@ -35,7 +35,7 @@ class DB:
 
     def Database_Connection(self, string):
         # Create a dbi-compatible database connection
-        raise NotImplemetedError(
+        raise NotImplementedError(
             'attempt to create a database connection for an abstract dbi')
 
     Database_Error='Should be overriden by subclass'

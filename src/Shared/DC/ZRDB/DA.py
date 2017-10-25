@@ -12,7 +12,6 @@
 ##############################################################################
 '''Generic Database adapter'''
 
-import imp
 import os
 import re
 from six import StringIO
@@ -43,7 +42,6 @@ else:
     Resource = bbb.Resource
     from zExceptions import ResourceLockedError
 from zExceptions import BadRequest
-from zExceptions import NotFound
 
 # BBB Zope 2.12
 try:
@@ -179,61 +177,6 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
     except Exception:
         pass
 
-
-def getObject(module, name, reload=0,
-              # The use of a mutable default is intentional here,
-              # because modules is a module cache.
-              modules={}
-              ):
-    # The use of modules here is not thread safe, however, there is
-    # no real harm in a race condition here.  If two threads
-    # update the cache, then one will have simply worked a little
-    # harder than need be.  So, in this case, we won't incur
-    # the expense of a lock.
-    old = modules.get(module)
-    if old is not None and name in old and not reload:
-        return old[name]
-
-    base, ext = os.path.splitext(module)
-    if ext in ('py', 'pyc'):
-        # XXX should never happen; splitext() keeps '.' with the extension
-        prefix = base
-    else:
-        prefix = module
-
-    path = getPath('Extensions', prefix, suffixes=('', 'py', 'pyc'))
-    if path is None:
-        raise NotFound(
-            "The specified module, '%s', couldn't be found." % module)
-
-    __traceback_info__ = path, module
-
-    base, ext = os.path.splitext(path)
-    if ext == '.pyc':
-        file = open(path, 'rb')
-        binmod = imp.load_compiled('Extension', path, file)
-        file.close()
-        module_dict = binmod.__dict__
-    else:
-        try:
-            execsrc = open(path)
-        except:
-            raise NotFound("The specified module, '%s', "
-                           "couldn't be opened." % module)
-        module_dict = {}
-        exec(execsrc, module_dict)
-
-    if old is not None:
-        # XXX Accretive??
-        old.update(module_dict)
-    else:
-        modules[module] = module_dict
-
-    try:
-        return module_dict[name]
-    except KeyError:
-        raise NotFound("The specified object, '%s', was not found "
-                       "in module, '%s'." % (name, module))
 
 
 class NoBrains(Base):

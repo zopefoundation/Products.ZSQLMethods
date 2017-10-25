@@ -20,6 +20,7 @@ from .Aqueduct import custom_default_zpt_report
 from .Aqueduct import nicify
 from .Aqueduct import Args
 from AccessControl import getSecurityManager
+from zExceptions import Unauthorized
 
 addForm=DTMLFile('dtml/searchAdd', globals())
 def manage_addZSearch(self, report_id, report_title, report_style,

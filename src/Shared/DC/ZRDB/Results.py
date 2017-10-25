@@ -72,7 +72,7 @@ class Results:
             dd[name] = item
             names.append(name)
 
-        self._nv = nv =len(names)
+        self._nv = len(names)
 
         # Create a record class to hold the records.
         names = tuple(names)
