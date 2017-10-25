@@ -9,6 +9,7 @@ parts
 
 __pycache__
 .*
+*.bak
 *.dll
 *.pyc
 *.pyo
