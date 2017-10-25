@@ -157,7 +157,7 @@ class Connection(Persistent,
             '</body></html>'
             % (r, query))
 
-        report = apply(report,(self,REQUEST),{self.id:result})
+        report = report(*(self,REQUEST), **{self.id:result})
 
         return report
 

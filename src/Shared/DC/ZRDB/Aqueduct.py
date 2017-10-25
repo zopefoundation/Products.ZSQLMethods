@@ -137,7 +137,7 @@ class Searchable(BaseQuery):
 
         result = self(REQUEST)
         report = HTML(custom_default_report(self.id, result))
-        return apply(report, (self, REQUEST), {self.id: result})
+        return report(*(self, REQUEST), **{self.id: result})
 
     def index_html(self, URL1):
         " "

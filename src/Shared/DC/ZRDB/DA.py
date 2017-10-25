@@ -537,7 +537,7 @@ class DA(BaseQuery,
                 '</body></html>'
                 % (r, html_quote(src)))
 
-            report = apply(report, (self, REQUEST), {self.id: result})
+            report = report(*(self, REQUEST), **{self.id: result})
 
             if tb is not None:
                 self.raise_standardErrorMessage(
