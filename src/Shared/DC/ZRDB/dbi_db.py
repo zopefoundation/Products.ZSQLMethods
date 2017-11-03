@@ -80,7 +80,7 @@ class DB:
                     if r is None: raise QueryError(
                         'select in multiple sql-statement query'
                         )
-                    result.append((qs, str(`r`), calls))
+                    result.append((qs, str(repr(r)), calls))
                 desc=nonselect_desc
             else:
                 query_string=queries[0]
@@ -89,7 +89,7 @@ class DB:
                     result=c.fetchmany(max_rows)
                     desc=c.description
                 else:
-                    result=((query_string, str(`r`), calls),)
+                    result=((query_string, str(repr(r)), calls),)
                     desc=nonselect_desc
             failures=0
             c.close()
