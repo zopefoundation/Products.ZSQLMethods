@@ -25,9 +25,9 @@ with open('CHANGES.rst') as f:
 setup(
     name='Products.ZSQLMethods',
     version=version,
-    url='http://pypi.python.org/pypi/Products.ZSQLMethods',
+    url='https://github.com/zopefoundation/Products.ZSQLMethods',
     license='ZPL 2.1',
-    description="SQL method support for Zope 2.",
+    description="SQL method support for Zope.",
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
     long_description=(README + '\n' + CHANGES),
