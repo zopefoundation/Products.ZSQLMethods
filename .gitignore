@@ -9,7 +9,7 @@ man
 parts
 
 __pycache__
-.*
+.coverage
 *.bak
 *.dll
 *.pyc
