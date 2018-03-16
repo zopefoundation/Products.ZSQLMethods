@@ -2,6 +2,7 @@ bin
 build
 develop-eggs
 dist
+flake8
 lib
 include
 man
