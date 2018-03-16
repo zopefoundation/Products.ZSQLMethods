@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.0.2 (2018-03-16)
 ------------------
 
 - Add flake8 code checking
