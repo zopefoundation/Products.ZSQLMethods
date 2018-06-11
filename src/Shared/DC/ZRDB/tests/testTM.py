@@ -14,6 +14,7 @@
 from unittest import TestCase, TestSuite, makeSuite
 from Shared.DC.ZRDB.TM import TM
 
+
 class TestTM(TestCase):
 
     def test_sortKey(self):
@@ -29,6 +30,7 @@ class TestTM(TestCase):
 
         tm.setSortKey([])
         self.assertEqual(tm.sortKey(), '[]')
+
 
 def test_suite():
     return TestSuite((makeSuite(TestTM),))

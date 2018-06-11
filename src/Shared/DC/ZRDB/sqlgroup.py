@@ -65,6 +65,7 @@ from DocumentTemplate.DT_Util import parse_params
 
 _TNAME_MAPPING = {'comma': ','}
 
+
 class SQLGroup:
     blockContinuations = 'and', 'or', 'comma'
     name = 'sqlgroup'
@@ -90,7 +91,7 @@ class SQLGroup:
         if 'noparens' in args:
             self.noparens = args['noparens']
 
-    def render(self,md):
+    def render(self, md):
 
         r = []
         for tname, args, section in self.blocks:
@@ -112,9 +113,9 @@ class SQLGroup:
             else:
                 r = r[0]
             if self.set:
-                r = "set\n"+r
+                r = "set\n" + r
             if self.where:
-                r = "where\n"+r
+                r = "where\n" + r
             return r
 
         if self.required:

@@ -18,6 +18,7 @@ from six import StringIO
 import sys
 from time import time
 
+from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_methods
 from AccessControl.Permissions import use_database_methods
 from AccessControl.Permissions import view_management_screens
@@ -28,38 +29,16 @@ from App.Extensions import getObject
 from App.special_dtml import DTMLFile
 from DocumentTemplate import HTML
 from DocumentTemplate.html_quote import html_quote
+from DocumentTemplate.security import RestrictedDTML
 from DateTime.DateTime import DateTime
 from ExtensionClass import Base
 from BTrees.OOBTree import OOBucket as Bucket
 from OFS import bbb
+from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 import Products
-if bbb.HAS_ZSERVER:
-    from webdav.Resource import Resource
-    from webdav.Lockable import ResourceLockedError
-else:
-    Resource = bbb.Resource
-    from zExceptions import ResourceLockedError
 from zExceptions import BadRequest
-
-# BBB Zope 2.12
-try:
-    from AccessControl.class_init import InitializeClass
-except ImportError:
-    from App.class_init import InitializeClass
-
-# BBB Zope 2.12
-try:
-    from DocumentTemplate.security import RestrictedDTML
-except ImportError:
-    from AccessControl.DTML import RestrictedDTML
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
 
 from .Aqueduct import BaseQuery
 from .Aqueduct import custom_default_report
@@ -70,6 +49,13 @@ from .Results import Results
 from .sqlgroup import SQLGroup
 from .sqltest import SQLTest
 from .sqlvar import SQLVar
+
+if bbb.HAS_ZSERVER:
+    from webdav.Resource import Resource
+    from webdav.Lockable import ResourceLockedError
+else:
+    Resource = bbb.Resource
+    from zExceptions import ResourceLockedError
 
 
 def _getPath(home, prefix, name, suffixes):
@@ -176,7 +162,6 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
                     return fn
     except Exception:
         pass
-
 
 
 class NoBrains(Base):
@@ -424,7 +409,7 @@ class DA(BaseQuery,
         self.dav__init(REQUEST, RESPONSE)
         self.dav__simpleifhandler(REQUEST, RESPONSE, refresh=1)
         body = REQUEST.get('BODY', '')
-        m = re.match('\s*<params>(.*)</params>\s*\n', body, re.I | re.S)
+        m = re.match(r'\s*<params>(.*)</params>\s*\n', body, re.I | re.S)
         if m:
             self.arguments_src = m.group(1)
             self._arg = parse(self.arguments_src)
@@ -453,7 +438,7 @@ class DA(BaseQuery,
         # error occurs...
         try:
             src = self(REQUEST, src__=1)
-        except:
+        except Exception:
             src = "Could not render the query template!"
 
         result = ()
@@ -467,7 +452,7 @@ class DA(BaseQuery,
                     r = custom_default_report(self.id, result)
                 else:
                     r = 'This statement returned no results.'
-            except:
+            except Exception:
                 t, v, tb = sys.exc_info()
                 r = '<strong>Error, <em>%s</em>:</strong> %s' % (t, v)
 
@@ -664,7 +649,7 @@ class DA(BaseQuery,
             brain = self._v_brain = getBrain(
                 self.class_file_, self.class_name_)
 
-        if type(result) is type(''):
+        if isinstance(result, type('')):
             f = StringIO()
             f.write(result)
             f.seek(0)

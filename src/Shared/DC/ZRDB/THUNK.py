@@ -19,6 +19,7 @@ import transaction
 
 thunk_lock = allocate_lock()
 
+
 class THUNKED_TM(TM.TM):
     """A big heavy hammer for handling non-thread safe DAs
     """
@@ -29,11 +30,11 @@ class THUNKED_TM(TM.TM):
             try:
                 transaction.get().register(Surrogate(self))
                 self._begin()
-            except:
+            except Exception:
                 thunk_lock.release()
                 raise
             else:
-                self._registered=1
+                self._registered = 1
 
     def tpc_finish(self, *ignored):
         if self._registered:
@@ -41,7 +42,7 @@ class THUNKED_TM(TM.TM):
                 self._finish()
             finally:
                 thunk_lock.release()
-                self._registered=0
+                self._registered = 0
 
     def abort(self, *ignored):
         if self._registered:
@@ -49,4 +50,4 @@ class THUNKED_TM(TM.TM):
                 self._abort()
             finally:
                 thunk_lock.release()
-                self._registered=0
+                self._registered = 0

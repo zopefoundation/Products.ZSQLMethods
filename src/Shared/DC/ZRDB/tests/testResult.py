@@ -9,14 +9,15 @@ class Brain(Base):
     def __init__(self, *args):
         pass
 
+
 Parent = Base()
 
 
 class TestResults(TestCase):
 
     def test_results(self):
-        r = Results(([{'name':'foo', 'type':'integer'},
-                      {'name':'bar', 'type':'integer'}],
+        r = Results(([{'name': 'foo', 'type': 'integer'},
+                      {'name': 'bar', 'type': 'integer'}],
                      ((1, 2), (3, 4))),
                     brains=Brain,
                     parent=Parent)
@@ -63,6 +64,7 @@ class TestResults(TestCase):
         self.assertEqual(row.FOO, 3)
         self.assertEqual(row.BAR, 4)
         self.assertTrue(isinstance(row, Brain))
+
 
 def test_suite():
     return TestSuite((makeSuite(TestResults),))

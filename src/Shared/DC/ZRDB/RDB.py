@@ -23,6 +23,7 @@ import six
 from Missing import MV
 from Record import Record
 
+
 def parse_text(s):
     if s.find('\\') < 0 and s.find('\\t') < 0 and s.find('\\n') < 0:
         return s
@@ -36,12 +37,11 @@ def parse_text(s):
 if six.PY3:
     long = int
 
-Parsers={'n': float,
-         'i': int,
-         'l': long,
-         'd': DateTime,
-         't': parse_text,
-         }
+Parsers = {'n': float,
+           'i': int,
+           'l': long,
+           'd': DateTime,
+           't': parse_text}
 
 
 class SQLAlias(Base):
@@ -52,8 +52,10 @@ class SQLAlias(Base):
     def __of__(self, parent):
         return getattr(parent, self._n)
 
+
 class NoBrains(Base):
     pass
+
 
 class DatabaseResults(object):
     """Class for reading RDB files
@@ -71,7 +73,7 @@ class DatabaseResults(object):
         line = readline()
         self._parent = parent
 
-        while line and line.find('#') != -1 :
+        while line and line.find('#') != -1:
             line = readline()
 
         line = line[:-1]
@@ -130,11 +132,11 @@ class DatabaseResults(object):
 
             mo = defre.match(_def)
             if mo is None:
-                raise ValueError(
-                    'Invalid column definition for, %s, for %s'
-                    % _def, names[i])
+                err = 'Invalid column definition for, %s, for %s' % (
+                      _def, names[i])
+                raise ValueError(err)
 
-            type  = mo.group(2).lower()
+            type = mo.group(2).lower()
             width = mo.group(1)
 
             if width:
@@ -149,7 +151,7 @@ class DatabaseResults(object):
             items.append(d)
             dd[name] = d
 
-            parsers.append((i,parser))
+            parsers.append((i, parser))
             i += 1
 
         # Create a record class to hold the records.
@@ -173,14 +175,14 @@ class DatabaseResults(object):
 
         # OK, we've read meta data, now get line indexes
 
-        p = file.tell()
+        pos = file.tell()
         save = self._lines = array.array('i')
         save = save.append
-        l = readline()
-        while l:
-            save(p)
-            p += len(l)
-            l = readline()
+        line = readline()
+        while line:
+            save(pos)
+            pos += len(line)
+            line = readline()
 
     def _searchable_result_columns(self):
         return self.__items__
@@ -194,7 +196,7 @@ class DatabaseResults(object):
     def __len__(self):
         return len(self._lines)
 
-    def __getitem__(self,index):
+    def __getitem__(self, index):
         if index == self._index:
             return self._row
         file = self._file
@@ -204,11 +206,11 @@ class DatabaseResults(object):
         if line and line[-1:] in '\r\n':
             line = line[:-1]
         fields = [field.strip() for field in line.split('\t')]
-        l = len(fields)
+        fields_len = len(fields)
         nv = self._nv
-        if l != nv:
-            if l < nv:
-                fields = fields+['']*(nv-l)
+        if fields_len != nv:
+            if fields_len < nv:
+                fields = fields + [''] * (nv - fields_len)
             else:
                 raise ValueError(
                     """The number of items in record %s is invalid
@@ -218,7 +220,7 @@ class DatabaseResults(object):
         for i, parser in self._parsers:
             try:
                 v = parser(fields[i])
-            except:
+            except Exception:
                 if fields[i]:
                     raise ValueError(
                         """Invalid value, %s, for %s in record %s"""
@@ -234,5 +236,6 @@ class DatabaseResults(object):
         if parent is None:
             return record
         return record.__of__(parent)
+
 
 File = DatabaseResults

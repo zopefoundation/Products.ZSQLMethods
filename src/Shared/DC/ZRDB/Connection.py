@@ -17,6 +17,7 @@ from logging import getLogger
 from six import StringIO
 import sys
 
+from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import view_management_screens
 from AccessControl.Permissions import change_database_connections
 from AccessControl.Permissions import test_database_connections
@@ -27,22 +28,10 @@ from App.Dialogs import MessageDialog
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
+from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import BadRequest
-
-# BBB Zope 2.12
-try:
-    from AccessControl.class_init import InitializeClass
-except ImportError:
-    from App.class_init import InitializeClass
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
-
 
 from .Aqueduct import custom_default_report
 from . import RDB
@@ -50,67 +39,63 @@ from .Results import Results
 
 LOG = getLogger('ZRDB.Connection')
 
-class Connection(Persistent,
-                 RoleManager,
-                 Item,
-                 Implicit,
-                ):
+
+class Connection(Persistent, RoleManager, Item, Implicit):
 
     security = ClassSecurityInfo()
 
     # Specify definitions for tabs:
-    manage_options=(
-        (
-        {'label':'Status', 'action':'manage_main'},
-        {'label':'Properties', 'action':'manage_properties'},
-        {'label':'Test', 'action':'manage_testForm'},
-        )
-        + RoleManager.manage_options
-        + Item.manage_options
-        )
+    manage_options = (({'label': 'Status', 'action': 'manage_main'},
+                       {'label': 'Properties', 'action': 'manage_properties'},
+                       {'label': 'Test', 'action': 'manage_testForm'}) +
+                      RoleManager.manage_options +
+                      Item.manage_options)
 
-    _v_connected=''
-    connection_string=''
+    _v_connected = ''
+    connection_string = ''
     # Should the database connection be established when the object
     # is loaded from the ZODB (in __setstate__)?
-    connect_on_load=True
+    connect_on_load = True
 
     def __init__(self, id, title, connection_string, check=None):
-        self.id=str(id)
+        self.id = str(id)
         self.edit(title, connection_string, check)
 
     def __setstate__(self, state):
         Persistent.__setstate__(self, state)
         if self.connect_on_load and self.connection_string:
-            try: self.connect(self.connection_string)
-            except:
+            try:
+                self.connect(self.connection_string)
+            except Exception:
                 LOG.error('Error connecting to relational database.',
                           exc_info=True)
 
     def title_and_id(self):
-        s=Connection.inheritedAttribute('title_and_id')(self)
+        s = Connection.inheritedAttribute('title_and_id')(self)
         if hasattr(self, '_v_connected') and self._v_connected:
-            s="%s, which is connected" % s
+            s = "%s, which is connected" % s
         else:
-            s="%s, which is <font color=red> not connected</font>" % s
+            s = "%s, which is <font color=red>not connected</font>" % s
         return s
 
     def title_or_id(self):
-        s=Connection.inheritedAttribute('title_or_id')(self)
+        s = Connection.inheritedAttribute('title_or_id')(self)
         if hasattr(self, '_v_connected') and self._v_connected:
-            s="%s (connected)" % s
+            s = "%s (connected)" % s
         else:
-            s="%s (<font color=red> not connected</font>)" % s
+            s = "%s (<font color=red>not connected</font>)" % s
         return s
 
-    def connected(self): return self._v_connected
+    def connected(self):
+        return self._v_connected
 
     def edit(self, title, connection_string, check=1):
-        self.title=title
-        self.connection_string=connection_string
-        if check: self.connect(connection_string)
+        self.title = title
+        self.connection_string = connection_string
+        if check:
+            self.connect(connection_string)
 
-    manage_properties=DTMLFile('dtml/connectionEdit', globals())
+    manage_properties = DTMLFile('dtml/connectionEdit', globals())
 
     security.declareProtected(change_database_connections, 'manage_edit')
     def manage_edit(self, title, connection_string, check=None, REQUEST=None):
@@ -118,36 +103,36 @@ class Connection(Persistent,
         """
         self.edit(title, connection_string, check)
         if REQUEST is not None:
+            esc_id = escape(self.id)
             return MessageDialog(
                 title='Edited',
-                message='<strong>%s</strong> has been edited.' % escape(self.id),
-                action ='./manage_main',
-                )
+                message='<strong>%s</strong> has been edited.' % esc_id,
+                action='./manage_main')
 
     security.declareProtected(test_database_connections, 'manage_testForm')
-    manage_testForm=DTMLFile('dtml/connectionTestForm', globals())
+    manage_testForm = DTMLFile('dtml/connectionTestForm', globals())
 
     security.declareProtected(test_database_connections, 'manage_test')
     def manage_test(self, query, REQUEST=None):
         "Executes the SQL in parameter 'query' and returns results"
-        dbc=self()      #get our connection
-        res=dbc.query(query)
+        dbc = self()  # get our connection
+        res = dbc.query(query)
 
-        if type(res) is type(''):
-            f=StringIO()
+        if isinstance(res, type('')):
+            f = StringIO()
             f.write(res)
             f.seek(0)
-            result=RDB.File(f)
+            result = RDB.File(f)
         else:
-            result=Results(res)
+            result = Results(res)
 
         if REQUEST is None:
-            return result       #return unadulterated result objects
+            return result  # return unadulterated result objects
 
         if result._searchable_result_columns():
-            r=custom_default_report(self.id, result)
+            r = custom_default_report(self.id, result)
         else:
-            r='This statement returned no results.'
+            r = 'This statement returned no results.'
 
         report = HTML(
             '<html><body bgcolor="#ffffff" link="#000099" vlink="#555555">\n'
@@ -156,25 +141,24 @@ class Connection(Persistent,
             '</body></html>'
             % (r, query))
 
-        report = report(*(self,REQUEST), **{self.id:result})
+        report = report(*(self, REQUEST), **{self.id: result})
 
         return report
 
-
     security.declareProtected(view_management_screens, 'manage_main')
-    manage_main=DTMLFile('dtml/connectionStatus', globals())
+    manage_main = DTMLFile('dtml/connectionStatus', globals())
 
     security.declareProtected(open_close_database_connection,
                               'manage_close_connection')
     def manage_close_connection(self, REQUEST=None):
         " "
-        try: 
-            if hasattr(self,'_v_database_connection'):
+        try:
+            if hasattr(self, '_v_database_connection'):
                 self._v_database_connection.close()
-        except:
+        except Exception:
             LOG.error('Error closing relational database connection.',
                       exc_info=True)
-        self._v_connected=''
+        self._v_connected = ''
         if REQUEST is not None:
             return self.manage_main(self, REQUEST)
 
@@ -186,29 +170,30 @@ class Connection(Persistent,
         return self.manage_main(self, REQUEST)
 
     def __call__(self, v=None):
-        try: return self._v_database_connection
+        try:
+            return self._v_database_connection
         except AttributeError:
-            s=self.connection_string
+            s = self.connection_string
             if s:
                 self.connect(s)
                 return self._v_database_connection
             raise BadRequest(
                 '''The database connection is not connected''')
 
-    def connect(self,s):
+    def connect(self, s):
         self.manage_close_connection()
-        DB=self.factory()
+        DB = self.factory()
         try:
             try:
-                self._v_database_connection=DB(s)
-            except:
+                self._v_database_connection = DB(s)
+            except Exception:
                 t, v, tb = sys.exc_info()
                 raise BadRequest(
                     '<strong>Error connecting to DB.</strong><br>\n'
-                    '<!--\n%s\n%s\n-->\n'
-                    % (t,v)).with_traceback(tb)
-        finally: tb=None
-        self._v_connected=DateTime()
+                    '<!--\n%s\n%s\n-->\n' % (t, v)).with_traceback(tb)
+        finally:
+            tb = None
+        self._v_connected = DateTime()
 
         return self
 
@@ -218,5 +203,6 @@ class Connection(Persistent,
         if v.find("\x00") >= 0:
             v = "".join(v.split("\x00"))
         return "'%s'" % v
+
 
 InitializeClass(Connection)

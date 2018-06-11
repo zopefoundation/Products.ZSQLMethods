@@ -14,6 +14,7 @@ import ExtensionClass
 from Acquisition import Implicit
 from Record import Record
 
+
 class SQLAlias(ExtensionClass.Base):
 
     def __init__(self, name):
@@ -22,8 +23,10 @@ class SQLAlias(ExtensionClass.Base):
     def __of__(self, parent):
         return getattr(parent, self._n)
 
+
 class NoBrains(ExtensionClass.Base):
     pass
+
 
 class Results:
     """Class for providing a nice interface to DBI result data
@@ -111,7 +114,7 @@ class Results:
         if index == self._index:
             return self._row
         parent = self._parent
-        fields  =self._class(self._data[index], parent)
+        fields = self._class(self._data[index], parent)
         if parent is not None:
             fields = fields.__of__(parent)
         self._index = index
@@ -122,12 +125,9 @@ class Results:
         return list(map(tuple, self))
 
     def dictionaries(self):
-        return [
-            {name: row[name] for name in self.names()}
-            for row in self
-        ]
+        return [{name: row[name] for name in self.names()} for row in self]
 
-    def asRDB(self): # Waaaaa
+    def asRDB(self):  # Waaaaa
         r = []
         append = r.append
         strings = []
@@ -148,10 +148,9 @@ class Results:
             else:
                 r.append(t)
 
-
         r = ['\t'.join(self._names), '\t'.join(r)]
         append = r.append
-        row = ['']*len(items)
+        row = [''] * len(items)
         tostr = str
         for d in self._data:
             for i in strings:

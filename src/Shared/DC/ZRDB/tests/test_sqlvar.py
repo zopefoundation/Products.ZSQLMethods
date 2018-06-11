@@ -129,6 +129,7 @@ class SQLVarTests(unittest.TestCase):
         v = self._makeOne('expr="foo" type="string"')
         self.assertEqual(v.render(FauxMultiDict(foo=None)), 'null')
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(SQLVarTests))

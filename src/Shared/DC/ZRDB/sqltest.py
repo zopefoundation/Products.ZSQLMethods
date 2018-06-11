@@ -62,36 +62,39 @@ from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
 
 
 class SQLTest:
-    name='sqltest'
-    optional=multiple=None
+    name = 'sqltest'
+    optional = multiple = None
 
     def __init__(self, args):
         args = parse_params(args, name='', expr='', type=None, column=None,
                             multiple=1, optional=1, op=None)
-        name,expr = name_param(args,'sqlvar',1)
+        name, expr = name_param(args, 'sqlvar', 1)
 
         if expr is None:
-            expr=name
-        else: expr=expr.eval
+            expr = name
+        else:
+            expr = expr.eval
         self.__name__, self.expr = name, expr
 
-        self.args=args
-        if not 'type' in args:
+        self.args = args
+        if 'type' not in args:
             raise ParseError('the type attribute is required', 'sqltest')
 
-        self.type=t=args['type']
+        self.type = t = args['type']
         if t not in valid_types:
             raise ParseError('invalid type, %s' % t, 'sqltest')
 
-        if 'optional' in args: self.optional=args['optional']
-        if 'multiple' in args: self.multiple=args['multiple']
+        if 'optional' in args:
+            self.optional = args['optional']
+        if 'multiple' in args:
+            self.multiple = args['multiple']
         if 'column' in args:
-            self.column=args['column']
+            self.column = args['column']
         elif self.__name__ is None:
             err = ' the column attribute is required if an expression is used'
             raise ParseError(err, 'sqltest')
         else:
-            self.column=self.__name__
+            self.column = self.__name__
 
         # Deal with optional operator specification
         op = '='                        # Default
@@ -102,16 +105,16 @@ class SQLTest:
         self.op = op
 
     def render(self, md):
-        name=self.__name__
+        name = self.__name__
 
-        t=self.type
-        args=self.args
+        t = self.type
+        args = self.args
         try:
-            expr=self.expr
-            if type(expr) is type(''):
-                v=md[expr]
+            expr = self.expr
+            if isinstance(expr, type('')):
+                v = md[expr]
             else:
-                v=expr(md)
+                v = expr(md)
         except KeyError:
             if 'optional' in args and args['optional']:
                 return ''
@@ -119,69 +122,74 @@ class SQLTest:
 
         if isinstance(v, (list, tuple)):
             if len(v) > 1 and not self.multiple:
-                raise ValueError(
-                    'multiple values are not allowed for <em>%s</em>'
-                    % name)
-        else: v=[v]
+                msg = 'multiple values are not allowed for <em>%s</em>' % name
+                raise ValueError(msg)
+        else:
+            v = [v]
 
-        vs=[]
+        vs = []
         for v in v:
-            if not v and isinstance(v, str) and t != 'string': continue
-            if t=='int':
+            if not v and isinstance(v, str) and t != 'string':
+                continue
+            if t == 'int':
                 try:
                     if isinstance(v, str):
-                        if v[-1:]=='L':
-                            v=v[:-1]
+                        if v[-1:] == 'L':
+                            v = v[:-1]
                         int(v)
-                    else: v=str(int(v))
+                    else:
+                        v = str(int(v))
                 except ValueError:
-                    raise ValueError(
-                        'Invalid integer value for <em>%s</em>' % name)
-            elif t=='float':
-                if not v and isinstance(v, str): continue
+                    msg = 'Invalid integer value for <em>%s</em>' % name
+                    raise ValueError(msg)
+            elif t == 'float':
+                if not v and isinstance(v, str):
+                    continue
                 try:
-                    if isinstance(v, str): float(v)
-                    else: v=str(float(v))
+                    if isinstance(v, str):
+                        float(v)
+                    else:
+                        v = str(float(v))
                 except ValueError:
-                    raise ValueError(
-                        'Invalid floating-point value for <em>%s</em>' % name)
+                    msg = 'Invalid floating-point value for <em>%s</em>' % name
+                    raise ValueError(msg)
 
             else:
                 if not isinstance(v, (str, six.text_type)):
                     v = str(v)
-                v=md.getitem('sql_quote__',0)(v)
-                #if v.find("\'") >= 0: v="''".(v.split("\'"))
-                #v="'%s'" % v
+                v = md.getitem('sql_quote__', 0)(v)
+                # if v.find("\'") >= 0: v="''".(v.split("\'"))
+                # v="'%s'" % v
             vs.append(v)
 
-        if not vs and t=='nb':
+        if not vs and t == 'nb':
             if 'optional' in args and args['optional']:
                 return ''
             else:
                 err = 'Invalid empty string value for <em>%s</em>' % name
                 raise ValueError(err)
 
-
         if not vs:
-            if self.optional: return ''
-            raise ValueError(
-                'No input was provided for <em>%s</em>' % name)
+            if self.optional:
+                return ''
+            raise ValueError('No input was provided for <em>%s</em>' % name)
 
         if len(vs) > 1:
-            vs=', '.join(map(str,vs))
+            vs = ', '.join(map(str, vs))
             if self.op == '<>':
-                ## Do the equivalent of 'not-equal' for a list,
-                ## "a not in (b,c)"
+                # Do the equivalent of 'not-equal' for a list,
+                # "a not in (b,c)"
                 return "%s not in (%s)" % (self.column, vs)
             else:
-                ## "a in (b,c)"
+                # "a in (b,c)"
                 return "%s in (%s)" % (self.column, vs)
         return "%s %s %s" % (self.column, self.op, vs[0])
 
-    __call__=render
+    __call__ = render
 
-valid_types = {'int':1, 'float':1, 'string':1, 'nb': 1}
 
-comparison_operators = { 'eq': '=', 'ne': '<>',
-                         'lt': '<', 'le': '<=', 'lte': '<=',
-                         'gt': '>', 'ge': '>=', 'gte': '>=' }
+valid_types = {'int': 1, 'float': 1, 'string': 1, 'nb': 1}
+
+comparison_operators = {'eq': '=', 'ne': '<>',
+                        'lt': '<', 'le': '<=', 'lte': '<=',
+                        'gt': '>', 'ge': '>=', 'gte': '>='}

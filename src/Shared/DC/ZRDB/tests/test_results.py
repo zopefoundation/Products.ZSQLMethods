@@ -5,22 +5,26 @@ import unittest
 from ExtensionClass import Base
 from Acquisition import aq_parent
 
+
 class Brain:
-    def __init__(self, *args): pass
+    def __init__(self, *args):
+        pass
+
 
 Parent = Base()
+
 
 class TestResults(unittest.TestCase):
 
     # test fixtures
-    columns = [ {'name' : 'string', 'type' : 't', 'width':1},
-                {'name':'int', 'type': 'i'} ]
+    columns = [{'name': 'string', 'type': 't', 'width': 1},
+               {'name': 'int', 'type': 'i'}]
     data = [['string1', 1], ['string2', 2]]
 
     def _getTargetClass(self):
         from Shared.DC.ZRDB.Results import Results
         return Results
-    
+
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
@@ -36,9 +40,8 @@ class TestResults(unittest.TestCase):
         ob = self._makeOne((self.columns, self.data))
         self.assertEqual(
             ob.data_dictionary(),
-            { 'string':{'name' : 'string', 'type' : 't', 'width':1},
-              'int':{'name':'int', 'type': 'i'} }
-            )
+            {'string': {'name': 'string', 'type': 't', 'width': 1},
+             'int': {'name': 'int', 'type': 'i'}})
 
     def test_len(self):
         ob = self._makeOne((self.columns, self.data))
@@ -79,13 +82,13 @@ class TestResults(unittest.TestCase):
     def test_tuples(self):
         ob = self._makeOne((self.columns, self.data))
         tuples = ob.tuples()
-        self.assertEqual( tuples, [('string1', 1), ('string2', 2)] )
+        self.assertEqual(tuples, [('string1', 1), ('string2', 2)])
 
     def test_dictionaries(self):
         ob = self._makeOne((self.columns, self.data))
         dicts = ob.dictionaries()
-        self.assertEqual( dicts, [{'string':'string1', 'int':1},
-                                  {'string':'string2', 'int':2}] )
+        self.assertEqual(dicts, [{'string': 'string1', 'int': 1},
+                                 {'string': 'string2', 'int': 2}])
 
     def test_asRDB(self):
         ob = self._makeOne((self.columns, self.data))
@@ -99,7 +102,7 @@ class TestResults(unittest.TestCase):
     def test_recordschema(self):
         ob = self._makeOne((self.columns, self.data))
         row = ob[0]
-        self.assertEqual(row.__record_schema__, {'string':0, 'int':1})
+        self.assertEqual(row.__record_schema__, {'string': 0, 'int': 1})
         self.assertRaises(AttributeError, self._set_noschema, row)
 
     def test_record_as_read_mapping(self):
@@ -181,6 +184,7 @@ class TestResults(unittest.TestCase):
         ob = self._makeOne((self.columns, self.data))
         row = ob[0]
         self.assertRaises(TypeError, self._del, row)
+
 
 def test_suite():
     suite = unittest.TestSuite()

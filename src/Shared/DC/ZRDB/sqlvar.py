@@ -56,81 +56,88 @@ StringType = str
 
 
 class SQLVar:
-    name='sqlvar'
+    name = 'sqlvar'
 
     def __init__(self, args):
         args = parse_params(args, name='', expr='', type=None, optional=1)
 
-        name,expr=name_param(args,'sqlvar',1)
-        if expr is None: expr=name
-        else: expr=expr.eval
+        name, expr = name_param(args, 'sqlvar', 1)
+        if expr is None:
+            expr = name
+        else:
+            expr = expr.eval
         self.__name__, self.expr = name, expr
 
-        self.args=args
-        if not 'type' in args:
+        self.args = args
+        if 'type' not in args:
             raise ParseError('the type attribute is required', 'dtvar')
-        t=args['type']
-        if not t in valid_types:
+        t = args['type']
+        if t not in valid_types:
             raise ParseError('invalid type, %s' % t, 'dtvar')
 
     def render(self, md):
-        name=self.__name__
-        args=self.args
-        t=args['type']
+        name = self.__name__
+        args = self.args
+        t = args['type']
         try:
-            expr=self.expr
-            if type(expr) is type(''): v=md[expr]
-            else: v=expr(md)
-        except:
+            expr = self.expr
+            if isinstance(expr, type('')):
+                v = md[expr]
+            else:
+                v = expr(md)
+        except Exception:
             if 'optional' in args and args['optional']:
                 return 'null'
-            if type(expr) is not type(''):
+            if not isinstance(expr, type('')):
                 raise
             raise ValueError('Missing input variable, <em>%s</em>' % name)
 
         if v is None:
             return 'null'
 
-        if t=='int':
+        if t == 'int':
             try:
                 if isinstance(v, str):
-                    if v[-1:]=='L':
-                        v=v[:-1]
+                    if v[-1:] == 'L':
+                        v = v[:-1]
                     int(v)
-                else: v=str(int(v))
-            except:
+                else:
+                    v = str(int(v))
+            except Exception:
                 if not v and 'optional' in args and args['optional']:
                     return 'null'
-                raise ValueError(
-                    'Invalid integer value for <em>%s</em>' % name)
-        elif t=='float':
+                err = 'Invalid integer value for <em>%s</em>' % name
+                raise ValueError(err)
+        elif t == 'float':
             try:
                 if isinstance(v, str):
-                    if v[-1:]=='L':
-                        v=v[:-1]
+                    if v[-1:] == 'L':
+                        v = v[:-1]
                     float(v)
-                else: v=str(float(v))
-            except:
+                else:
+                    v = str(float(v))
+            except Exception:
                 if not v and 'optional' in args and args['optional']:
                     return 'null'
-                raise ValueError(
-                    'Invalid floating-point value for <em>%s</em>' % name)
+                err = 'Invalid floating-point value for <em>%s</em>' % name
+                raise ValueError(err)
         else:
             if not isinstance(v, (str, six.text_type)):
-                v=str(v)
-            if not v and t=='nb':
+                v = str(v)
+            if not v and t == 'nb':
                 if 'optional' in args and args['optional']:
                     return 'null'
                 else:
-                    raise ValueError(
-                        'Invalid empty string value for <em>%s</em>' % name)
+                    err = 'Invalid empty string value for <em>%s</em>' % name
+                    raise ValueError(err)
 
-            v=md.getitem('sql_quote__',0)(v)
-            #if v.find("\'") >= 0: v="''".join(v.split("\'"))
-            #v="'%s'" % v
+            v = md.getitem('sql_quote__', 0)(v)
+            # if v.find("\'") >= 0: v="''".join(v.split("\'"))
+            # v="'%s'" % v
 
         return v
 
-    __call__=render
+    __call__ = render
 
-valid_types = {'int':1, 'float':1, 'string':1, 'nb': 1}
+
+valid_types = {'int': 1, 'float': 1, 'string': 1, 'nb': 1}

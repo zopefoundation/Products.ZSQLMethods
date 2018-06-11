@@ -21,19 +21,12 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from DocumentTemplate import File
 from DocumentTemplate import HTML
+from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import Redirect
 
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
-
-
 dtml_dir = os.path.join(package_home(globals()), 'dtml')
-
 InvalidParameter = 'Invalid Parameter'
 
 
@@ -178,7 +171,8 @@ def default_input_form(id, arguments, action='query', tabs=''):
         items = arguments.items()
         return (
             "%s\n%s%s" % (
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">\n'
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"'
+                ' "http://www.w3.org/TR/REC-html40/loose.dtd">\n'
                 '<html lang="en"><head><title>%s Input Data</title></head>\n'
                 '<body bgcolor="#FFFFFF" link="#000099" vlink="#555555">\n%s\n'
                 '<form action="&dtml-URL2;/&dtml-id;/%s" '
@@ -198,12 +192,9 @@ def default_input_form(id, arguments, action='query', tabs=''):
                             (
                                 'type' in a[1] and
                                 ("%s:%s" % (a[0], a[1]['type'])) or
-                                a[0]
-                                ),
-                            'default' in a[1] and a[1]['default'] or ''
-                            ))
-                        , items
-                    )),
+                                a[0]),
+                            'default' in a[1] and a[1]['default'] or '')),
+                            items)),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '<dtml-if HTTP_REFERER>\n'
@@ -216,7 +207,8 @@ def default_input_form(id, arguments, action='query', tabs=''):
         )
     else:
         return (
-            '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">\n'
+            '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" '
+            '"http://www.w3.org/TR/REC-html40/loose.dtd">\n'
             '<html lang="en"><head><title>%s Input Data</title></head>\n'
             '<body bgcolor="#FFFFFF" link="#000099" vlink="#555555">\n%s\n'
             '<form action="&dtml-URL2;/&dtml-id;/%s" '
@@ -241,7 +233,7 @@ custom_default_zpt_report_src = File(
 
 
 def custom_default_report(id, result, action='', no_table=0,
-                          goofy=re.compile('\W').search):
+                          goofy=re.compile(r'\W').search):
 
     columns = result._searchable_result_columns()
     __traceback_info__ = columns
@@ -273,7 +265,7 @@ def custom_default_report(id, result, action='', no_table=0,
 
 
 def custom_default_zpt_report(id, result, action='', no_table=0,
-                              goofy=re.compile('\W').search):
+                              goofy=re.compile(r'\W').search):
 
     columns = result._searchable_result_columns()
     __traceback_info__ = columns
@@ -292,8 +284,8 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
     row = []
     for c in columns:
         n = c['name']
-        row.append('          %s<span tal:replace="result/%s">%s goes here</span>%s'
-                   % (td, n, n, _td))
+        tpl = '          %s<span tal:replace="result/%s">%s goes here</span>%s'
+        row.append(tpl % (td, n, n, _td))
 
     row = ('     %s\n%s\n        %s' % (
         tr, delim.join(row), _tr))
@@ -303,9 +295,9 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
 
 
 def detypify(arg):
-    l = arg.find(':')
-    if l > 0:
-        arg = arg[:l]
+    idx = arg.find(':')
+    if idx > 0:
+        arg = arg[:idx]
     return arg
 
 
@@ -380,7 +372,7 @@ def parse(text,
     if mo:
         name = mo.group(2)
         value = {'default': mo.group(3)}
-        l = len(mo.group(1))
+        group_len = len(mo.group(1))
 
     else:
         mo = qparmre.match(text)
@@ -388,7 +380,7 @@ def parse(text,
         if mo:
             name = mo.group(2)
             value = {'default': mo.group(3)}
-            l = len(mo.group(1))
+            group_len = len(mo.group(1))
 
         else:
             mo = unparmre.match(text)
@@ -396,7 +388,7 @@ def parse(text,
             if mo:
                 name = mo.group(2)
                 value = {}
-                l = len(mo.group(1))
+                group_len = len(mo.group(1))
             else:
                 if not text or not text.strip():
                     return Args(result, keys)
@@ -410,7 +402,7 @@ def parse(text,
     result[name] = value
     keys.append(name)
 
-    return parse(text[l:], result, keys)
+    return parse(text[group_len:], result, keys)
 
 
 def quotedHTML(text,

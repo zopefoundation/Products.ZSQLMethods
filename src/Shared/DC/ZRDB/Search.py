@@ -22,34 +22,38 @@ from .Aqueduct import Args
 from AccessControl import getSecurityManager
 from zExceptions import Unauthorized
 
-addForm=DTMLFile('dtml/searchAdd', globals())
+addForm = DTMLFile('dtml/searchAdd', globals())
+
+
 def manage_addZSearch(self, report_id, report_title, report_style,
-        input_id, input_title, object_type, queries=[],
-        REQUEST=None):
+                      input_id, input_title, object_type, queries=[],
+                      REQUEST=None):
     'add a report'
 
-    if not queries: raise ValueError(
-        'No <em>searchable objects</em> were selected')
+    if not queries:
+        raise ValueError('No <em>searchable objects</em> were selected')
 
-    if not report_id: raise ValueError(
-        'No <em>report id</em> were specified')
+    if not report_id:
+        raise ValueError('No <em>report id</em> were specified')
 
-    if input_title and not input_id: raise ValueError(
-        'No <em>input id</em> were specified')
+    if input_title and not input_id:
+        raise ValueError('No <em>input id</em> were specified')
 
-    qs=map(lambda q, self=self: _getquery(self, q), queries)
-    arguments={}
-    keys=[]
+    qs = map(lambda q, self=self: _getquery(self, q), queries)
+    arguments = {}
+    keys = []
 
-    checkPermission=getSecurityManager().checkPermission
+    checkPermission = getSecurityManager().checkPermission
 
     for q in qs:
-        url=q.absolute_url()
+        url = q.absolute_url()
         if input_id:
             for name, arg in q._searchable_arguments().items():
-                if len(qs) > 1: key="%s/%s" % (id,name)
-                else: key=name
-                arguments[key]=arg
+                if len(qs) > 1:
+                    key = "%s/%s" % (id, name)
+                else:
+                    key = name
+                arguments[key] = arg
                 keys.append(key)
         if q._searchable_result_columns() is None:
             raise ValueError(
@@ -64,34 +68,31 @@ def manage_addZSearch(self, report_id, report_title, report_style,
     if object_type == 'dtml_methods':
 
         if not checkPermission('Add DTML Methods', self):
-            raise Unauthorized(
-                  'You are not authorized to add DTML Methods.'
-                  )
+            raise Unauthorized('You are not authorized to add DTML Methods.')
 
         if input_id:
-            arguments=Args(arguments, keys)
+            arguments = Args(arguments, keys)
             self.manage_addDocument(
-                input_id,input_title,
+                input_id, input_title,
                 default_input_form(arguments, report_id))
 
+        def _report(obj, style):
+            return custom_default_report(obj.id, obj, no_table=style)
+
         self.manage_addDocument(
-            report_id,report_title,
+            report_id, report_title,
             ('<html><head><title><dtml-var title_or_id></title>'
              '</head><body bgcolor="#FFFFFF">\n%s\n'
              '</body></html>' %
-             '\n<hr>\n'.join(map(lambda q, report_style=report_style:
-                      custom_default_report(q.id, q, no_table=report_style), qs))
-             )
-            )
+             '\n<hr>\n'.join(map(_report(q, report_style), qs))))
 
-        if REQUEST: return self.manage_main(self,REQUEST)
+        if REQUEST:
+            return self.manage_main(self, REQUEST)
 
     elif object_type == 'page_templates':
 
         if not checkPermission('Add Page Templates', self):
-            raise Unauthorized(
-                  'You are not authorized to add Page Templates.'
-                  )
+            raise Unauthorized('You are not authorized to add Page Templates.')
 
         if input_id:
             arguments = Args(arguments, keys)
@@ -99,71 +100,82 @@ def manage_addZSearch(self, report_id, report_title, report_style,
                 input_id, input_title,
                 default_input_zpt_form(arguments, report_id))
 
+        def _report(obj, style):
+            return custom_default_zpt_report(obj.id, obj, no_table=style)
 
         self.manage_addProduct['PageTemplates'].manage_addPageTemplate(
-            report_id,report_title,
+            report_id, report_title,
             ('<html><body>\n%s\n'
              '</body></html>' %
-             '\n<hr>\n'.join(map(lambda q, report_style=report_style:
-                      custom_default_zpt_report(q.id, q, no_table=report_style), qs))
-             )
-            )
+             '\n<hr>\n'.join(map(_report(q, report_style), qs))))
 
-        if REQUEST: return self.manage_main(self,REQUEST)
+        if REQUEST:
+            return self.manage_main(self, REQUEST)
 
 
 def ZQueryIds(self):
     # Note that report server configurations will expend on this
-    t=[]
-    ids={}
-    old=ids.__contains__
-    o=self
-    n=0
+    t = []
+    ids = {}
+    old = ids.__contains__
+    o = self
+    n = 0
     while 1:
 
         # Look for queries
-        try: map=o.objectMap()
-        except AttributeError: map=()
+        try:
+            map = o.objectMap()
+        except AttributeError:
+            map = ()
 
         for i in map:
             try:
-                id=i['id']
-                if (not old(id) and
-                    hasattr(getattr(o,id),'_searchable_arguments')
-                    ):
+                id = i['id']
+                if not old(id) and \
+                   hasattr(getattr(o, id), '_searchable_arguments'):
                     t.append(i['id'])
-                    ids[id]=1
-            except: pass
+                    ids[id] = 1
+            except Exception:
+                pass
 
         # Now extend search to parent
-        try: o=o.aq_parent
-        except: return t
-
-        if n > 100: return t # Seat belt
-        n=n+1
-
-def _getquery(self,id):
-
-    o=self
-    i=0
-    while 1:
-        __traceback_info__=o
-        q=getattr(o,id)
         try:
-            if hasattr(q,'_searchable_arguments'):
-                try: q=q.__of__(self.aq_parent)
-                except: pass
+            o = o.aq_parent
+        except Exception:
+            return t
+
+        if n > 100:
+            return t  # Seat belt
+
+        n = n + 1
+
+
+def _getquery(self, id):
+
+    o = self
+    i = 0
+    while 1:
+        __traceback_info__ = o
+        q = getattr(o, id)
+        try:
+            if hasattr(q, '_searchable_arguments'):
+                try:
+                    q = q.__of__(self.aq_parent)
+                except Exception:
+                    pass
                 return q
-        except: pass
-        if i > 100: raise AttributeError(id)
-        i=i+1
-        o=o.aq_parent
+        except Exception:
+            pass
+        if i > 100:
+            raise AttributeError(id)
+        i = i + 1
+        o = o.aq_parent
 
 
-def default_input_form(arguments,action='query',
+def default_input_form(arguments, action='query',
                        tabs=''):
     if arguments:
-        items=arguments.items()
+        items = arguments.items()
         return (
             "%s\n%s%s" % (
                 '<html><head><title><dtml-var title_or_id></title>'
@@ -172,7 +184,7 @@ def default_input_form(arguments,action='query',
                 '<h2><dtml-var document_title></h2>\n'
                 'Enter query parameters:<br>'
                 '<table>\n'
-                % (tabs,action),
+                % (tabs, action),
                 '\n'.join(
                     map(
                         lambda a:
@@ -183,19 +195,14 @@ def default_input_form(arguments,action='query',
                          % (nicify(a[0]),
                             (
                                 'type' in a[1] and
-                                ("%s:%s" % (a[0],a[1]['type'])) or
-                                a[0]
-                                ),
+                                ("%s:%s" % (a[0], a[1]['type'])) or
+                                a[0]),
                             'default' in a[1] and a[1]['default'] or ''
-                            ))
-                        , items
-                        )),
+                            )), items)),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '</td></tr>\n</table>\n</form>\n'
-                '</body></html>\n'
-                )
-            )
+                '</body></html>\n'))
     else:
         return (
             '<html><head><title><dtml-var title_or_id></title>'
@@ -205,16 +212,12 @@ def default_input_form(arguments,action='query',
             'This query requires no input.<p>\n'
             '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
             '</form>\n'
-            '</body></html>\n'
-            % (tabs, action)
-            )
+            '</body></html>\n' % (tabs, action))
 
 
-
-def default_input_zpt_form(arguments,action='query',
-                       tabs=''):
+def default_input_zpt_form(arguments, action='query', tabs=''):
     if arguments:
-        items=arguments.items()
+        items = arguments.items()
         return (
             "%s\n%s%s" % (
                 '<html><body>\n%s\n'
@@ -222,7 +225,7 @@ def default_input_zpt_form(arguments,action='query',
                 '<h2 tal:content="template/title_or_id">Title</h2>\n'
                 'Enter query parameters:<br>'
                 '<table>\n'
-                % (tabs,action),
+                % (tabs, action),
                 '\n'.join(
                     map(
                         lambda a:
@@ -233,19 +236,14 @@ def default_input_zpt_form(arguments,action='query',
                          % (nicify(a[0]),
                             (
                                 'type' in a[1] and
-                                ("%s:%s" % (a[0],a[1]['type'])) or
-                                a[0]
-                                ),
+                                ("%s:%s" % (a[0], a[1]['type'])) or
+                                a[0]),
                             'default' in a[1] and a[1]['default'] or ''
-                            ))
-                        , items
-                        )),
+                            )), items)),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
                 '</td></tr>\n</table>\n</form>\n'
-                '</body></html>\n'
-                )
-            )
+                '</body></html>\n'))
     else:
         return (
             '<html><body>\n%s\n'
@@ -254,6 +252,4 @@ def default_input_zpt_form(arguments,action='query',
             '<p>This query requires no input.</p>\n'
             '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
             '</form>\n'
-            '</body></html>\n'
-            % (tabs, action)
-            )
+            '</body></html>\n' % (tabs, action))

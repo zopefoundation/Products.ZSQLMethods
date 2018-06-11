@@ -42,29 +42,20 @@ class SQLConnectionIdsTests(unittest.TestCase):
     def test_SQLConnectionIDs(self):
         from Products.ZSQLMethods.SQL import SQLConnectionIDs
 
-        self.assertEqual( SQLConnectionIDs(self.root)
-                        , [('Title1 (conn1)', 'conn1')]
-                        )
-        self.assertEqual( SQLConnectionIDs(self.root.child1)
-                        , [ ('Title1 (conn1)', 'conn1')
-                          , ('Title2 (conn2)', 'conn2')
-                          ]
-                        )
-        self.assertEqual( SQLConnectionIDs(self.root.child1.grandchild1)
-                        , [ ('Title1 (conn1)', 'conn1')
-                          , ('Title2 (conn2)', 'conn2')
-                          , ('conn4', 'conn4')
-                          ]
-                        )
-        self.assertEqual( SQLConnectionIDs(self.root.child2)
-                        , [ ('Title1 (conn1)', 'conn1')
-                          , ('conn3', 'conn3')
-                          ]
-                        )
+        self.assertEqual(SQLConnectionIDs(self.root),
+                         [('Title1 (conn1)', 'conn1')])
+        self.assertEqual(SQLConnectionIDs(self.root.child1),
+                         [('Title1 (conn1)', 'conn1'),
+                          ('Title2 (conn2)', 'conn2')])
+        self.assertEqual(SQLConnectionIDs(self.root.child1.grandchild1),
+                         [('Title1 (conn1)', 'conn1'),
+                          ('Title2 (conn2)', 'conn2'),
+                          ('conn4', 'conn4')])
+        self.assertEqual(SQLConnectionIDs(self.root.child2),
+                         [('Title1 (conn1)', 'conn1'),
+                          ('conn3', 'conn3')])
 
 
 def test_suite():
-    return unittest.TestSuite((
-        unittest.makeSuite(SQLMethodTests),
-        unittest.makeSuite(SQLConnectionIdsTests),
-        ))
+    return unittest.TestSuite((unittest.makeSuite(SQLMethodTests),
+                               unittest.makeSuite(SQLConnectionIdsTests)))

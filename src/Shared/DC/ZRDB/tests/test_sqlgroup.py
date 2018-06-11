@@ -87,23 +87,20 @@ class SQLGroupTests(unittest.TestCase):
         self.assertRaises(ValueError, group.render, md)
 
     def test_render_one_block(self):
-        group = self._makeOne([('sqlgroup', '', lambda x, y:'abc'),
-                              ])
+        group = self._makeOne([('sqlgroup', '', lambda x, y:'abc')])
         md = {}
         rendered = group.render(md)
         rendered = ''.join(rendered.split('\n'))
         self.assertEqual(rendered, 'abc')
 
     def test_render_one_block_where(self):
-        group = self._makeOne([('sqlgroup', 'where', lambda x, y:'abc'),
-                              ])
+        group = self._makeOne([('sqlgroup', 'where', lambda x, y:'abc')])
         md = {}
         rendered = group.render(md)
         self.assertEqual(rendered, 'where\nabc\n')
 
     def test_render_one_block_set(self):
-        group = self._makeOne([('sqlgroup', 'set', lambda x, y:'abc'),
-                              ])
+        group = self._makeOne([('sqlgroup', 'set', lambda x, y:'abc')])
         md = {}
         rendered = group.render(md)
         self.assertEqual(rendered, 'set\nabc\n')
@@ -111,8 +108,7 @@ class SQLGroupTests(unittest.TestCase):
     def test_render_multiple_blocks_with_tname(self):
         group = self._makeOne([('sqlgroup', '', lambda x, y:'abc'),
                                ('baz', '', lambda x, y: 'def'),
-                               ('qux', '', lambda x, y: 'ghi'),
-                              ])
+                               ('qux', '', lambda x, y: 'ghi')])
         md = {}
         rendered = group.render(md)
         rendered = ''.join(rendered.split('\n'))
@@ -121,8 +117,7 @@ class SQLGroupTests(unittest.TestCase):
     def test_render_multiple_blocks_with_tname_noparens(self):
         group = self._makeOne([('sqlgroup', 'noparens', lambda x, y:'abc'),
                                ('baz', '', lambda x, y: 'def'),
-                               ('qux', '', lambda x, y: 'ghi'),
-                              ])
+                               ('qux', '', lambda x, y: 'ghi')])
         md = {}
         rendered = group.render(md)
         rendered = ''.join(rendered.split('\n'))
@@ -131,13 +126,11 @@ class SQLGroupTests(unittest.TestCase):
     def test_render_multiple_blocks_with_tname_and_where(self):
         group = self._makeOne([('sqlgroup', 'where', lambda x, y:'abc'),
                                ('baz', '', lambda x, y: 'def'),
-                               ('qux', '', lambda x, y: 'ghi'),
-                              ])
+                               ('qux', '', lambda x, y: 'ghi')])
         md = {}
         rendered = group.render(md)
         rendered = ''.join(rendered.split('\n'))
         self.assertEqual(rendered, 'where(abc baz def qux ghi)')
-
 
     def test_parsed_rendered_complex_where(self):
         # something of a functional test, as we use nvSQL to get parsed.
@@ -154,8 +147,7 @@ class SQLGroupTests(unittest.TestCase):
                          'where\n'
                          '((nick_name = "Goofy"\n'
                          ' or first_name = "Goofy"\n)\n'
-                         ' and home_town = "Orlando"\n)\n'
-                        )
+                         ' and home_town = "Orlando"\n)\n')
 
     def test_parsed_rendered_complex_set(self):
         # something of a functional test, as we use nvSQL to get parsed.
@@ -169,8 +161,8 @@ class SQLGroupTests(unittest.TestCase):
         rendered = template(None, mapping)
         self.assertEqual(rendered,
                          'update actors\n'
-                         'set\nnick_name = "Goofy" , home_town = "Orlando"\n'
-                        )
+                         'set\nnick_name = "Goofy" , home_town = "Orlando"\n')
+
 
 WHERE_EXAMPLE = """\
 select * from actors
@@ -201,6 +193,7 @@ update actors
 <dtml-sqltest home_town type=nb optional>
 </dtml-sqlgroup>
 """
+
 
 def test_suite():
     suite = unittest.TestSuite()

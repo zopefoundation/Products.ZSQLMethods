@@ -13,6 +13,8 @@
 """SQL Method Product.
 """
 
+from AccessControl.Permissions import open_close_database_connection
+
 import Shared.DC.ZRDB.Search
 import Shared.DC.ZRDB.Aqueduct
 import Shared.DC.ZRDB.RDB
@@ -30,8 +32,7 @@ def initialize(context):
         permission='Add Database Methods',
         constructors=(SQL.manage_addZSQLMethodForm, SQL.manage_addZSQLMethod),
         icon='sqlmethod.gif',
-        # XXX: can this permission be removed?
-        permissions=('Open/Close Database Connections', ),
+        permissions=(open_close_database_connection, ),
         legacy=(SQL.SQLConnectionIDs, ))
 
     context.registerClass(

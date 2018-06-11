@@ -7,6 +7,8 @@ Changelog
 - Fix long-standing bug of setting an ``int`` as return value
   for the transaction manager's ``sortKey`` method. It must be a string.
 
+- PEP-8 compliance
+
 
 3.0.2 (2018-03-16)
 ------------------
