@@ -18,12 +18,17 @@ class TestTM(TestCase):
 
     def test_sortKey(self):
         tm = TM()
-        # the default Transaction Manager should have .sortKey() of 1 for
-        # backward compatibility
-        self.assertEqual(tm.sortKey(), 1)
+        # the default Transaction Manager should have .sortKey() of '1' for
+        # backward compatibility. It must be a string according to the
+        # ITransactionManager interface.
+        self.assertEqual(tm.sortKey(), '1')
+
         # but the sortKey() should be adjustable
-        tm.setSortKey(())
-        self.assertEqual(tm.sortKey(), ())
+        tm.setSortKey('2')
+        self.assertEqual(tm.sortKey(), '2')
+
+        tm.setSortKey([])
+        self.assertEqual(tm.sortKey(), '[]')
 
 def test_suite():
     return TestSuite((makeSuite(TestTM),))

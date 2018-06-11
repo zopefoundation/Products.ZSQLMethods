@@ -67,8 +67,8 @@ class TM:
     tpc_abort = abort
 
     # Most DA's talking to RDBMS systems do not care about commit order, so
-    # return the constant 1
-    _sort_key = 1
+    # return a constant. Must be a string according to ITransactionManager.
+    _sort_key = '1'
 
     def sortKey(self, *ignored):
         """ The sortKey method is used by the transaction subsystem to have a
@@ -77,7 +77,7 @@ class TM:
         return self._sort_key
 
     def setSortKey(self, sort_key):
-        self._sort_key = sort_key
+        self._sort_key = str(sort_key)
 
 class Surrogate:
 
