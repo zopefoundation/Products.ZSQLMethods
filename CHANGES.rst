@@ -9,6 +9,10 @@ Changelog
 
 - PEP-8 compliance
 
+- clean out all ``install_requires`` that are already required by ``Zope``
+
+- only claim to support Python versions supported by Zope itself
+
 
 3.0.2 (2018-03-16)
 ------------------
