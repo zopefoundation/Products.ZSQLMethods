@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.3 (unreleased)
+3.0.3 (2018-06-11)
 ------------------
 
 - Fix long-standing bug of setting an ``int`` as return value
