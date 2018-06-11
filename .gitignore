@@ -9,12 +9,15 @@ man
 parts
 
 __pycache__
-.coverage
+.coverage*
+coverage.xml
 *.bak
 *.dll
 *.pyc
 *.pyo
 *.so
 eggs/
+htmlcov/
 *.egg-info/
+.installed.cfg
 .tox/
