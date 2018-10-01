@@ -135,6 +135,7 @@ class SQL(DA):
 
     """
     meta_type = 'Z SQL Method'
+    zmi_icon = 'far fa-puzzle-piece'
 
     security = ClassSecurityInfo()
 
