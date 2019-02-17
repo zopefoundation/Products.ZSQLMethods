@@ -12,7 +12,10 @@
 ##############################################################################
 '''Search Interface Wizard'''
 
-from cgi import escape
+try:
+    from html import escape  # noqa
+except ImportError:
+    from cgi import escape  # noqa
 
 from App.special_dtml import DTMLFile
 from .Aqueduct import custom_default_report

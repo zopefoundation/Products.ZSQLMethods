@@ -12,7 +12,10 @@
 ##############################################################################
 '''Generic Database Connection Support'''
 
-from cgi import escape
+try:
+    from html import escape # noqa
+except ImportError:  # Python 2
+    from cgi import escape  # noqa
 from logging import getLogger
 from six import StringIO
 import sys
