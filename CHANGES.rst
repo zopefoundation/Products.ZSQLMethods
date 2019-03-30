@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.5 (unreleased)
+3.0.5 (2019-03-29)
 ------------------
 
 - Fix all ZMI forms for ZSQL Methods for Zope 4
