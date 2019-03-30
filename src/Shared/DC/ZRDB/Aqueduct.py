@@ -189,10 +189,8 @@ def default_input_form(id, arguments, action='query', tabs=''):
                          '                size="30" value="%s">'
                          '     </td></tr>'
                          % (nicify(a[0]),
-                            (
-                                'type' in a[1] and
-                                ("%s:%s" % (a[0], a[1]['type'])) or
-                                a[0]),
+                            'type' in a[1] and \
+                            ("%s:%s" % (a[0], a[1]['type'])) or a[0],
                             'default' in a[1] and a[1]['default'] or '')),
                             items)),
                 '\n<tr><td colspan=2 align=center>\n'

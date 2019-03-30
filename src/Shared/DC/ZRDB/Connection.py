@@ -50,9 +50,8 @@ class Connection(Persistent, RoleManager, Item, Implicit):
     # Specify definitions for tabs:
     manage_options = (({'label': 'Status', 'action': 'manage_main'},
                        {'label': 'Properties', 'action': 'manage_properties'},
-                       {'label': 'Test', 'action': 'manage_testForm'}) +
-                      RoleManager.manage_options +
-                      Item.manage_options)
+                       {'label': 'Test', 'action': 'manage_testForm'})
+                      + RoleManager.manage_options + Item.manage_options)
 
     _v_connected = ''
     connection_string = ''

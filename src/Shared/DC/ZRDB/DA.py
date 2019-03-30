@@ -42,7 +42,6 @@ from zExceptions import BadRequest
 
 from .Aqueduct import BaseQuery
 from .Aqueduct import custom_default_report
-from .Aqueduct import default_input_form
 from .Aqueduct import parse
 from .RDB import File
 from .Results import Results
@@ -230,17 +229,13 @@ class DA(BaseQuery,
     connection_hook = None
 
     manage_options = (
-        (
-            {'label': 'Edit', 'action': 'manage_main',
-             'help': ('ZSQLMethods', 'Z-SQL-Method_Edit.stx')},
-            {'label': 'Test', 'action': 'manage_testForm',
-             'help': ('ZSQLMethods', 'Z-SQL-Method_Test.stx')},
-            {'label': 'Advanced', 'action': 'manage_advancedForm',
-             'help': ('ZSQLMethods', 'Z-SQL-Method_Advanced.stx')},
-        ) +
-        RoleManager.manage_options +
-        Item.manage_options
-    )
+        ({'label': 'Edit', 'action': 'manage_main',
+          'help': ('ZSQLMethods', 'Z-SQL-Method_Edit.stx')},
+         {'label': 'Test', 'action': 'manage_testForm',
+          'help': ('ZSQLMethods', 'Z-SQL-Method_Test.stx')},
+         {'label': 'Advanced', 'action': 'manage_advancedForm',
+          'help': ('ZSQLMethods', 'Z-SQL-Method_Advanced.stx')})
+        + RoleManager.manage_options + Item.manage_options)
 
     def __init__(self, id, title, connection_id, arguments, template):
         self.id = str(id)
@@ -248,6 +243,9 @@ class DA(BaseQuery,
 
     security.declareProtected(view_management_screens, 'manage_advancedForm')
     manage_advancedForm = DTMLFile('dtml/advanced', globals())
+
+    security.declareProtected(change_database_methods, 'manage_testForm')
+    manage_testForm = DTMLFile('dtml/test', globals())
 
     security.declarePublic('test_url')
     def test_url_(self):
@@ -422,14 +420,6 @@ class DA(BaseQuery,
         RESPONSE.setStatus(204)
         return RESPONSE
 
-    security.declareProtected(change_database_methods, 'manage_testForm')
-    def manage_testForm(self, REQUEST):
-        " "
-        input_src = default_input_form(self.title_or_id(),
-                                       self._arg, 'manage_test',
-                                       '<dtml-var manage_tabs>')
-        return HTML(input_src)(self, REQUEST, HTTP_REFERER='')
-
     security.declareProtected(change_database_methods, 'manage_test')
     def manage_test(self, REQUEST):
         """Test an SQL method."""
@@ -479,6 +469,19 @@ class DA(BaseQuery,
     def index_html(self, REQUEST):
         """ """
         REQUEST.RESPONSE.redirect("%s/manage_testForm" % REQUEST['URL1'])
+
+    security.declareProtected(view_management_screens, 'argument_list')
+    def argument_list(self):
+        """ ZMI helper """
+        res = []
+        if not self._arg:
+            return res
+
+        for name, spec in self._arg.items():
+            res.append({'name': name,
+                        'default': spec.get('default') or '',
+                        'type': spec.get('type')})
+        return res
 
     def _searchable_arguments(self):
         return self._arg
@@ -628,7 +631,7 @@ class DA(BaseQuery,
             except TypeError as msg:
                 msg = str(msg)
                 if msg.find('client') >= 0:
-                    raise NameError("'client' may not be used as an " +
+                    raise NameError("'client' may not be used as an "
                                     "argument name in this context")
                 else:
                     raise
@@ -687,8 +690,8 @@ class DA(BaseQuery,
         return Traverse(self, {}, key)
 
     def connectionIsValid(self):
-        return (hasattr(self, self.connection_id) and
-                hasattr(getattr(self, self.connection_id), 'connected'))
+        return hasattr(self, self.connection_id) and \
+            hasattr(getattr(self, self.connection_id), 'connected')
 
     def connected(self):
         return getattr(getattr(self, self.connection_id), 'connected')()

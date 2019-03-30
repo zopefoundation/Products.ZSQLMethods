@@ -37,8 +37,8 @@ def SQLConnectionIDs(container):
     while container is not None:
         if getattr(container, 'objectValues', None) is not None:
             for ob in container.objectValues():
-                if (getattr(ob, '_isAnSQLConnection', None) and
-                        getattr(ob, 'id', None)):
+                if getattr(ob, '_isAnSQLConnection', None) and \
+                   getattr(ob, 'id', None):
                     ob_id = ob.id
 
                     if callable(ob_id):
@@ -135,7 +135,7 @@ class SQL(DA):
 
     """
     meta_type = 'Z SQL Method'
-    zmi_icon = 'far fa-puzzle-piece'
+    zmi_icon = 'fas fa-puzzle-piece'
 
     security = ClassSecurityInfo()
 
