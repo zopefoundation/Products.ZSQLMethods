@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-'''Class for reading RDB files'''
+"""Class for reading RDB files"""
 
 import array
 import re
@@ -158,7 +158,7 @@ class DatabaseResults(object):
         names = tuple(names)
 
         class r(Record, Implicit, brains, zbrains):
-            'Result record class'
+            """Result record class"""
 
         for k, v in Record.__dict__.items():
             if k[:2] == '__':

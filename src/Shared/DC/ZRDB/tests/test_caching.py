@@ -70,36 +70,36 @@ class TestCaching(TestCase):
         result = []
         if different:
             different.sort()
-            result.append("Mismatching, key: (expected != actual):")
+            result.append('Mismatching, key: (expected != actual):')
             for r in different:
                 result.append(r)
         if missing:
             missing.sort()
-            result.append("The following keys were missing from actual:")
+            result.append('The following keys were missing from actual:')
             for r in missing:
                 result.append(repr(r))
         if extra:
             extra.sort()
-            result.append("The following extra keys were found in actual:")
+            result.append('The following extra keys were found in actual:')
             for r in extra:
                 result.append(repr(r))
         return result
 
     def _check_cache(self, cache, tcache):
         if self.echo:
-            print("cache:")
+            print('cache:')
             pprint(self.da._v_cache[0])
-            print("tcache:")
+            print('tcache:')
             pprint(self.da._v_cache[1])
             print()
         result = []
         r = self._check_mapping(cache, self.da._v_cache[0])
         if r:
-            result.append("cache didn't match expected:")
+            result.append('cache did not match expected:')
             result.extend(r)
         r = self._check_mapping(tcache, self.da._v_cache[1])
         if r:
-            result.append("tcache didn't match expected:")
+            result.append('tcache did not match expected:')
             result.extend(r)
         if result:
             self.fail('\n\n' + '\n'.join(result))
@@ -277,7 +277,7 @@ class DummyDA:
         conn.result = ((), ())
         return conn
 
-    sql_quote__ = "I don't know what this is."
+    sql_quote__ = 'I do not know what this is.'
 
 
 class Hook:

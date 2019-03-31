@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-'''Generic Database adapter'''
+"""Generic Database adapter"""
 
 import os
 import re
@@ -73,7 +73,7 @@ def _getPath(home, prefix, name, suffixes):
 
     for suffix in suffixes:
         if suffix:
-            fqn = "%s.%s" % (fn, suffix)
+            fqn = '%s.%s' % (fn, suffix)
         else:
             fqn = fn
         if os.path.exists(fqn):
@@ -127,7 +127,7 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
         import App.config
         cfg = App.config.getConfiguration()
 
-    if prefix == "Extensions" and getattr(cfg, 'extensions', None) is not None:
+    if prefix == 'Extensions' and getattr(cfg, 'extensions', None) is not None:
         found = _getPath(cfg.extensions, '', name, suffixes)
         if found is not None:
             return found
@@ -156,7 +156,7 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
 
             for suffix in suffixes:
                 if suffix:
-                    fn = "%s.%s" % (prefix, suffix)
+                    fn = '%s.%s' % (prefix, suffix)
                 else:
                     fn = prefix
                 if os.path.exists(fn):
@@ -187,7 +187,7 @@ def getBrain(module, class_name, reload=0, modules=None):
 
 
 class DatabaseError(BadRequest):
-    " base class for external relational data base connection problems "
+    """Base class for external relational data base connection problems"""
     pass
 
 
@@ -214,7 +214,7 @@ class DA(BaseQuery,
          RoleManager,
          Item,
          Resource):
-    'Database Adapter'
+    """Database Adapter base class"""
 
     security = ClassSecurityInfo()
     security.declareObjectProtected(use_database_methods)
@@ -243,15 +243,17 @@ class DA(BaseQuery,
         self.id = str(id)
         self.manage_edit(title, connection_id, arguments, template)
 
-    security.declareProtected(view_management_screens, 'manage_advancedForm')
+    security.declareProtected(view_management_screens,  # NOQA: flake8: D001
+                              'manage_advancedForm')
     manage_advancedForm = DTMLFile('dtml/advanced', globals())
 
-    security.declareProtected(change_database_methods, 'manage_testForm')
+    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+                              'manage_testForm')
     manage_testForm = DTMLFile('dtml/test', globals())
 
-    security.declarePublic('test_url')
+    @security.public
     def test_url_(self):
-        'Method for testing server connection information'
+        """Method for testing server connection information"""
         return 'PING'
 
     _size_changes = {
@@ -272,16 +274,16 @@ class DA(BaseQuery,
             cols = str(min(100, max(25, int(cols[:-1]) + dc))) + '%'
         else:
             cols = str(max(35, int(cols) + dc))
-        e = (DateTime("GMT") + 365).rfc822()
-        setCookie = REQUEST["RESPONSE"].setCookie
-        setCookie("dtpref_rows", rows, path='/', expires=e)
-        setCookie("dtpref_cols", cols, path='/', expires=e)
-        REQUEST.other.update({"dtpref_cols": cols, "dtpref_rows": rows})
+        e = (DateTime('GMT') + 365).rfc822()
+        setCookie = REQUEST['RESPONSE'].setCookie
+        setCookie('dtpref_rows', rows, path='/', expires=e)
+        setCookie('dtpref_cols', cols, path='/', expires=e)
+        REQUEST.other.update({'dtpref_cols': cols, 'dtpref_rows': rows})
         return self.manage_main(self, REQUEST, title=title,
                                 arguments_src=arguments,
                                 connection_id=connection_id, src=template)
 
-    security.declareProtected(change_database_methods, 'manage_edit')
+    @security.protected(change_database_methods)
     def manage_edit(self, title, connection_id, arguments, template,
                     SUBMIT='Change', dtpref_cols='100%', dtpref_rows='20',
                     REQUEST=None):
@@ -322,7 +324,7 @@ class DA(BaseQuery,
             return self.manage_main(self, REQUEST, manage_tabs_message=message)
         return ''
 
-    security.declareProtected(change_database_methods, 'manage_advanced')
+    @security.protected(change_database_methods)
     def manage_advanced(self, max_rows, max_cache, cache_time,
                         class_name, class_file, direct=None,
                         REQUEST=None, connection_hook=None):
@@ -375,11 +377,11 @@ class DA(BaseQuery,
         self.connection_hook = connection_hook
 
         if REQUEST is not None:
-            m = "ZSQL Method advanced settings have been set"
+            m = 'ZSQL Method advanced settings have been set'
             return self.manage_advancedForm(
                 self, REQUEST, manage_tabs_message=m)
 
-    security.declareProtected(view_management_screens, 'PrincipiaSearchSource')
+    @security.protected(view_management_screens)
     def PrincipiaSearchSource(self):
         """Return content for use by the Find machinery."""
         return '%s\n%s' % (self.arguments_src, self.src)
@@ -388,7 +390,7 @@ class DA(BaseQuery,
 
     default_content_type = 'text/plain'
 
-    security.declareProtected(view_management_screens, 'document_src')
+    @security.protected(view_management_screens)
     def document_src(self, REQUEST=None, RESPONSE=None):
         """Return unprocessed document source."""
         if RESPONSE is not None:
@@ -403,7 +405,7 @@ class DA(BaseQuery,
     def get_size(self):
         return len(self.document_src())
 
-    security.declareProtected(change_database_methods, 'PUT')
+    @security.protected(change_database_methods)
     def PUT(self, REQUEST, RESPONSE):
         """Handle put requests"""
         self.dav__init(REQUEST, RESPONSE)
@@ -422,7 +424,7 @@ class DA(BaseQuery,
         RESPONSE.setStatus(204)
         return RESPONSE
 
-    security.declareProtected(change_database_methods, 'manage_test')
+    @security.protected(change_database_methods)
     def manage_test(self, REQUEST):
         """Test an SQL method."""
         # Try to render the query template first so that the rendered
@@ -431,7 +433,7 @@ class DA(BaseQuery,
         try:
             src = self(REQUEST, src__=1)
         except Exception:
-            src = "Could not render the query template!"
+            src = 'Could not render the query template!'
 
         result = ()
         t = v = tb = None
@@ -467,12 +469,12 @@ class DA(BaseQuery,
         finally:
             tb = None
 
-    security.declareProtected(view_management_screens, 'index_html')
+    @security.protected(view_management_screens)
     def index_html(self, REQUEST):
         """ """
-        REQUEST.RESPONSE.redirect("%s/manage_testForm" % REQUEST['URL1'])
+        REQUEST.RESPONSE.redirect('%s/manage_testForm' % REQUEST['URL1'])
 
-    security.declareProtected(view_management_screens, 'argument_list')
+    @security.protected(view_management_screens)
     def argument_list(self):
         """ ZMI helper """
         res = []
@@ -573,7 +575,7 @@ class DA(BaseQuery,
 
         return result
 
-    security.declareProtected(use_database_methods, '__call__')
+    @security.protected(use_database_methods)
     def __call__(self, REQUEST=None, __ick__=None, src__=0, test__=0, **kw):
         """Call the database method
 
@@ -609,7 +611,7 @@ class DA(BaseQuery,
             dbc = getattr(self, c)
         except AttributeError:
             raise AttributeError(
-                "The database connection <em>%s</em> cannot be found." % c)
+                'The database connection <em>%s</em> cannot be found.' % c)
 
         try:
             DB__ = dbc()
@@ -633,8 +635,8 @@ class DA(BaseQuery,
             except TypeError as msg:
                 msg = str(msg)
                 if msg.find('client') >= 0:
-                    raise NameError("'client' may not be used as an "
-                                    "argument name in this context")
+                    raise NameError('"client" may not be used as an '
+                                    'argument name in this context')
                 else:
                     raise
         finally:

@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-'''Inserting values with the 'sqlvar' tag
+"""Inserting values with the 'sqlvar' tag
 
     The 'sqlvar' tag is used to type-safely insert values into SQL
     text.  The 'sqlvar' tag is similar to the 'var' tag, except that
@@ -46,7 +46,7 @@
 
     however, if x is ommitted or an empty string, then the value
     inserted is 'null'.
-'''
+"""
 
 import six
 

@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-'''Inserting optional tests with 'sqlgroup'
+"""Inserting optional tests with 'sqlgroup'
 
     It is sometimes useful to make inputs to an SQL statement
     optinal.  Doing so can be difficult, because not only must the
@@ -54,7 +54,7 @@
     with the appropriate boolean operator, as indicated by use of an
     'and' or 'or' tag, otherwise, no text is inserted.
 
-'''
+"""
 
 import six
 
@@ -181,11 +181,11 @@ class SQLTest:
             if self.op == '<>':
                 # Do the equivalent of 'not-equal' for a list,
                 # "a not in (b,c)"
-                return "%s not in (%s)" % (self.column, vs)
+                return '%s not in (%s)' % (self.column, vs)
             else:
                 # "a in (b,c)"
-                return "%s in (%s)" % (self.column, vs)
-        return "%s %s %s" % (self.column, self.op, vs[0])
+                return '%s in (%s)' % (self.column, vs)
+        return '%s %s %s' % (self.column, self.op, vs[0])
 
     __call__ = render
 

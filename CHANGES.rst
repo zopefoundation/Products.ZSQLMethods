@@ -4,6 +4,8 @@ Changelog
 3.0.6 (unreleased)
 ------------------
 
+- sanitize ``tox`` and ``flake8`` configurations, reach ``flake8`` compliance
+
 
 3.0.5 (2019-03-29)
 ------------------

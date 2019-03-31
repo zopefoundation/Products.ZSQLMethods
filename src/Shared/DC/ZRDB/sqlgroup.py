@@ -79,7 +79,7 @@ class SQLGroup:
 
         self.blocks = blocks
         tname, args, section = blocks[0]
-        self.__name__ = "%s %s" % (tname, args)
+        self.__name__ = '%s %s' % (tname, args)
         args = parse_params(args, required=1, where=1, set=1, noparens=1)
         if '' in args:
             args[args['']] = 1
@@ -104,19 +104,19 @@ class SQLGroup:
                 if self.noparens:
                     r.append(s)
                 else:
-                    r.append("%s\n" % s)
+                    r.append('%s\n' % s)
         if r:
             if len(r) > 1:
                 if self.noparens:
-                    r = "%s\n" % ' '.join(r)
+                    r = '%s\n' % ' '.join(r)
                 else:
-                    r = "(%s)\n" % ' '.join(r)
+                    r = '(%s)\n' % ' '.join(r)
             else:
                 r = r[0]
             if self.set:
-                r = "set\n" + r
+                r = 'set\n' + r
             if self.where:
-                r = "where\n" + r
+                r = 'where\n' + r
             return r
 
         if self.required:

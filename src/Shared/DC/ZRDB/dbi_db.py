@@ -127,8 +127,8 @@ class DB:
             result = ''
 
         return (
-            "%s\n%s\n%s" % (
+            '%s\n%s\n%s' % (
                 '\t'.join(map(lambda d: d[0], desc)),
                 '\t'.join(
-                    map(lambda d, defs=self.defs: "%d%s" % (d[2], defs[d[1]]),
+                    map(lambda d, defs=self.defs: '%d%s' % (d[2], defs[d[1]]),
                         desc)), result))

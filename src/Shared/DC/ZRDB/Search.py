@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-'''Search Interface Wizard'''
+"""Search Interface Wizard"""
 
 try:
     from html import escape  # noqa
@@ -33,7 +33,7 @@ addForm = DTMLFile('dtml/searchAdd', globals())
 def manage_addZSearch(self, report_id, report_title, report_style,
                       input_id, input_title, object_type, queries=[],
                       REQUEST=None):
-    'add a report'
+    """add a report"""
 
     if not queries:
         raise ValueError('No <em>searchable objects</em> were selected')
@@ -55,7 +55,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
         if input_id:
             for name, arg in q._searchable_arguments().items():
                 if len(qs) > 1:
-                    key = "%s/%s" % (id, name)
+                    key = '%s/%s' % (id, name)
                 else:
                     key = name
                 arguments[key] = arg
@@ -182,7 +182,7 @@ def default_input_form(arguments, action='query',
     if arguments:
         items = arguments.items()
         return (
-            "%s\n%s%s" % (
+            '%s\n%s%s' % (
                 '<html><head><title><dtml-var title_or_id></title>'
                 '</head><body bgcolor="#FFFFFF">\n%s\n'
                 '<form action="%s" method="get">\n'
@@ -198,9 +198,9 @@ def default_input_form(arguments, action='query',
                          '               size="30" value="%s">'
                          '</td></tr>'
                          % (nicify(a[0]),
-                            'type' in a[1] and \
-                            ("%s:%s" % (a[0], a[1]['type'])) or a[0],
-                            'default' in a[1] and a[1]['default'] or ''
+                            'type' in a[1]
+                            and ('%s:%s' % (a[0], a[1]['type'])) or a[0],
+                            'default' in a[1] and a[1]['default'] or '',
                             )), items)),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'
@@ -222,7 +222,7 @@ def default_input_zpt_form(arguments, action='query', tabs=''):
     if arguments:
         items = arguments.items()
         return (
-            "%s\n%s%s" % (
+            '%s\n%s%s' % (
                 '<html><body>\n%s\n'
                 '<form action="%s" method="get">\n'
                 '<h2 tal:content="template/title_or_id">Title</h2>\n'
@@ -237,9 +237,9 @@ def default_input_zpt_form(arguments, action='query', tabs=''):
                          '               size="30" value="%s">'
                          '</td></tr>'
                          % (nicify(a[0]),
-                            'type' in a[1] and \
-                             ("%s:%s" % (a[0], a[1]['type'])) or a[0],
-                            'default' in a[1] and a[1]['default'] or ''
+                            'type' in a[1]
+                            and ('%s:%s' % (a[0], a[1]['type'])) or a[0],
+                            'default' in a[1] and a[1]['default'] or '',
                             )), items)),
                 '\n<tr><td colspan=2 align=center>\n'
                 '<input type="SUBMIT" name="SUBMIT" value="Submit Query">\n'

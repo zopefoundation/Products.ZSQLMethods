@@ -86,10 +86,10 @@ def manage_addZSQLMethod(self, id, title,
             u = self.DestinationURL()
         except Exception:
             u = REQUEST['URL1']
-        if submit == " Add and Edit ":
-            u = "%s/%s/manage_main" % (u, id)
-        elif submit == " Add and Test ":
-            u = "%s/%s/manage_testForm" % (u, id)
+        if submit == ' Add and Edit ':
+            u = '%s/%s/manage_main' % (u, id)
+        elif submit == ' Add and Test ':
+            u = '%s/%s/manage_testForm' % (u, id)
         else:
             u = u + '/manage_main'
 
@@ -140,8 +140,10 @@ class SQL(DA):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(change_database_methods, 'manage')
-    security.declareProtected(change_database_methods, 'manage_main')
+    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+                              'manage')
+    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+                              'manage_main')
     manage = manage_main = DTMLFile('dtml/edit', globals())
     manage_main._setName('manage_main')
 

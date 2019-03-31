@@ -71,7 +71,7 @@ class BaseQuery(Persistent, Item, Implicit, RoleManager):
         missing = []
 
         for name in args.keys():
-            idname = "%s/%s" % (id, name)
+            idname = '%s/%s' % (id, name)
             try:
                 r[name] = REQUEST[idname]
             except Exception:
@@ -127,15 +127,15 @@ class Searchable(BaseQuery):
         return HTML(input_src)(self, REQUEST)
 
     def manage_test(self, REQUEST):
-        'Perform an actual query'
+        """Perform an actual query"""
 
         result = self(REQUEST)
         report = HTML(custom_default_report(self.id, result))
         return report(*(self, REQUEST), **{self.id: result})
 
     def index_html(self, URL1):
-        " "
-        raise Redirect("%s/manage_testForm" % URL1)
+        """ """
+        raise Redirect('%s/manage_testForm' % URL1)
 
 
 class Composite(object):
@@ -172,7 +172,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
     if arguments:
         items = arguments.items()
         return (
-            "%s\n%s%s" % (
+            '%s\n%s%s' % (
                 '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"'
                 ' "http://www.w3.org/TR/REC-html40/loose.dtd">\n'
                 '<html lang="en"><head><title>%s Input Data</title></head>\n'
@@ -191,8 +191,9 @@ def default_input_form(id, arguments, action='query', tabs=''):
                          '                size="30" value="%s">'
                          '     </td></tr>'
                          % (nicify(a[0]),
-                            'type' in a[1] and \
-                            ("%s:%s" % (a[0], a[1]['type'])) or a[0],
+                            'type' in a[1]
+                             and ('%s:%s' % (a[0], a[1]['type']))
+                             or a[0],
                             'default' in a[1] and a[1]['default'] or '')),
                             items)),
                 '\n<tr><td colspan=2 align=center>\n'
@@ -202,9 +203,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
                 '  <INPUT NAME="CANCEL_ACTION" TYPE="HIDDEN"\n'
                 '         VALUE="&dtml-HTTP_REFERER;">\n'
                 '</dtml-if>\n'
-                '</td></tr>\n</table>\n</form>\n</body>\n</html>\n'
-            )
-        )
+                '</td></tr>\n</table>\n</form>\n</body>\n</html>\n'))
     else:
         return (
             '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" '
@@ -222,8 +221,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
             '         VALUE="&dtml-HTTP_REFERER;">\n'
             '</dtml-if>\n'
             '</td></tr>\n</table>\n</form>\n</body>\n</html>\n'
-            % (id, tabs, action, id)
-        )
+            % (id, tabs, action, id))
 
 
 custom_default_report_src = File(
@@ -241,8 +239,7 @@ def custom_default_report(id, result, action='', no_table=0,
                ''.join(
                    map(lambda c:
                        '          <th>%s</th>\n' % nicify(c['name']),
-                       columns)
-               ))
+                       columns)))
 
     if no_table:
         tr, _tr, td, _td, delim = '<p>', '</p>', '', '', ',\n'
@@ -273,8 +270,7 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
                ''.join(
                    map(lambda c:
                        '          <th>%s</th>\n' % nicify(c['name']),
-                       columns)
-               ))
+                       columns)))
 
     if no_table:
         tr, _tr, td, _td, delim = '<p>', '</p>', '', '', ',\n'
@@ -408,8 +404,8 @@ def parse(text,
 def quotedHTML(text,
                character_entities=(
                    ('&', '&amp;'),
-                   ("<", '&lt;'),
-                   (">", '&gt;'),
+                   ('<', '&lt;'),
+                   ('>', '&gt;'),
                    ('"', '&quot;'))):
 
     for char, name in character_entities:
@@ -429,8 +425,7 @@ def decapitate(html, RESPONSE=None,
                    r'[^\000- <>:]+:[^\n]*\n'
                    r'|'
                    r'[ \011]+[^\000- ][^\n]*\n'
-                   r')+)[ \t]*\n([\000-\377]+)'
-               ),  # please kill me now
+                   r')+)[ \t]*\n([\000-\377]+)'),  # please kill me now
                space_re=re.compile(r'([ \t]+)'),
                name_re=re.compile(r'([^\000- <>:]+):([^\n]*)'),
                ):
@@ -450,7 +445,7 @@ def decapitate(html, RESPONSE=None,
         else:
             mo = space_re.match(headers[i])
             if mo:
-                headers[i - 1] = "%s %s" % (
+                headers[i - 1] = '%s %s' % (
                     headers[i - 1], headers[i][len(mo.group(1)):])
                 del headers[i]
             else:
@@ -476,7 +471,7 @@ def delimited_output(results, REQUEST, RESPONSE):
         output_type = 'text/plain'
 
     RESPONSE.setHeader('content-type', output_type)
-    return "%s\n%s\n" % (
+    return '%s\n%s\n' % (
         delim.join(results.names()),
         '\n'.join(map(lambda row, delim=delim:
                   delim.join(map(str, row)),

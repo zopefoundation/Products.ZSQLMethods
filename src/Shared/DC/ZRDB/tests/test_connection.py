@@ -39,7 +39,7 @@ class ConnectionTests(unittest.TestCase):
         self.assertFalse(hasattr(conn2, '_connected_to'))
 
     def test_sql_quote___miss(self):
-        TO_QUOTE = "no quoting required"
+        TO_QUOTE = 'no quoting required'
         conn = self._makeOne('conn', '', 'conn string')
         self.assertEqual(conn.sql_quote__(TO_QUOTE), "'%s'" % TO_QUOTE)
 
