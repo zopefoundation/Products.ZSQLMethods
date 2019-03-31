@@ -157,21 +157,30 @@ class Connection(Persistent, RoleManager, Item, Implicit):
     @security.protected(open_close_database_connection)
     def manage_close_connection(self, REQUEST=None):
         """Close the connection from the ZMI"""
+        msg = ''
         try:
             if hasattr(self, '_v_database_connection'):
                 self._v_database_connection.close()
-        except Exception:
+        except Exception as exc:
             LOG.error('Error closing relational database connection.',
                       exc_info=True)
+            msg = str(exc)
         self._v_connected = ''
         if REQUEST is not None:
-            return self.manage_main(self, REQUEST)
+            return self.manage_main(self, REQUEST, manage_tabs_message=msg)
 
     @security.protected(open_close_database_connection)
     def manage_open_connection(self, REQUEST=None):
         """Open the connection from the ZMI"""
-        self.connect(self.connection_string)
-        return self.manage_main(self, REQUEST)
+        msg = ''
+        try:
+            self.connect(self.connection_string)
+        except Exception as exc:
+            LOG.error('Error opening relational database connection.',
+                      exc_info=True)
+            msg = str(exc)
+        if REQUEST is not None:
+            return self.manage_main(self, REQUEST, manage_tabs_message=msg)
 
     def __call__(self, v=None):
         try:
