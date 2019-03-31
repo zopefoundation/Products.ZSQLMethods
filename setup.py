@@ -28,6 +28,10 @@ setup(
     name='Products.ZSQLMethods',
     version=version,
     url='https://github.com/zopefoundation/Products.ZSQLMethods',
+    project_urls={
+        'Issue Tracker': 'https://github.com/zopefoundation/Products.ZSQLMethods/issues',
+        'Sources': 'https://github.com/zopefoundation/Products.ZSQLMethods',
+    },
     license='ZPL 2.1',
     description='SQL method support for Zope.',
     author='Zope Foundation and Contributors',
