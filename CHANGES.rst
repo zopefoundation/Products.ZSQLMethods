@@ -4,6 +4,8 @@ Changelog
 3.0.6 (unreleased)
 ------------------
 
+- improve usability and add Zope 4 compatibility for connection forms
+
 - improve general usability of the ZSQL Method edit and test forms
 
 - enable the fancy editor for the ZSQL Method edit form
