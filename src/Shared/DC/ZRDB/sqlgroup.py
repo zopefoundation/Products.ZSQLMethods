@@ -63,6 +63,7 @@
 
 from DocumentTemplate.DT_Util import parse_params
 
+
 _TNAME_MAPPING = {'comma': ','}
 
 

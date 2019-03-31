@@ -11,7 +11,10 @@
 #
 ##############################################################################
 
-from unittest import TestCase, TestSuite, makeSuite
+from unittest import TestCase
+from unittest import TestSuite
+from unittest import makeSuite
+
 from Shared.DC.ZRDB.TM import TM
 
 

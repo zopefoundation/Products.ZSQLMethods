@@ -16,15 +16,16 @@ try:
     from html import escape # noqa
 except ImportError:  # Python 2
     from cgi import escape  # noqa
-from logging import getLogger
-from six import StringIO
 import sys
+from logging import getLogger
+
+from six import StringIO
 
 from AccessControl.class_init import InitializeClass
-from AccessControl.Permissions import view_management_screens
 from AccessControl.Permissions import change_database_connections
-from AccessControl.Permissions import test_database_connections
 from AccessControl.Permissions import open_close_database_connection
+from AccessControl.Permissions import test_database_connections
+from AccessControl.Permissions import view_management_screens
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import Implicit
 from App.Dialogs import MessageDialog
@@ -36,9 +37,10 @@ from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import BadRequest
 
-from .Aqueduct import custom_default_report
 from . import RDB
+from .Aqueduct import custom_default_report
 from .Results import Results
+
 
 LOG = getLogger('ZRDB.Connection')
 

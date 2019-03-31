@@ -14,17 +14,19 @@
 import binascii
 import os
 import re
+
 from six import StringIO
 
 from Acquisition import Implicit
 from App.Common import package_home
 from DateTime.DateTime import DateTime
-from DocumentTemplate import File
 from DocumentTemplate import HTML
+from DocumentTemplate import File
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import Redirect
+
 
 dtml_dir = os.path.join(package_home(globals()), 'dtml')
 InvalidParameter = 'Invalid Parameter'

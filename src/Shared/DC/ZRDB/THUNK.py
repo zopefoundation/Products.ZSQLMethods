@@ -13,9 +13,11 @@
 
 from six.moves._thread import allocate_lock
 
+import transaction
+
 from . import TM
 from .TM import Surrogate
-import transaction
+
 
 thunk_lock = allocate_lock()
 

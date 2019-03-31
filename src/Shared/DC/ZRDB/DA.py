@@ -14,10 +14,12 @@
 
 import os
 import re
-from six import StringIO
 import sys
 from time import time
 
+from six import StringIO
+
+import Products
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_methods
 from AccessControl.Permissions import use_database_methods
@@ -27,17 +29,16 @@ from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import Implicit
 from App.Extensions import getObject
 from App.special_dtml import DTMLFile
+from BTrees.OOBTree import OOBucket as Bucket
+from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
 from DocumentTemplate.html_quote import html_quote
 from DocumentTemplate.security import RestrictedDTML
-from DateTime.DateTime import DateTime
 from ExtensionClass import Base
-from BTrees.OOBTree import OOBucket as Bucket
 from OFS import bbb
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
-import Products
 from zExceptions import BadRequest
 
 from .Aqueduct import BaseQuery
@@ -48,6 +49,7 @@ from .Results import Results
 from .sqlgroup import SQLGroup
 from .sqltest import SQLTest
 from .sqlvar import SQLVar
+
 
 if bbb.HAS_ZSERVER:
     from webdav.Resource import Resource

@@ -15,11 +15,11 @@
 import array
 import re
 
+import six
+
 from Acquisition import Implicit
 from DateTime import DateTime
 from ExtensionClass import Base
-import six
-
 from Missing import MV
 from Record import Record
 

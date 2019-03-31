@@ -2,8 +2,8 @@
 """
 import unittest
 
-from ExtensionClass import Base
 from Acquisition import aq_parent
+from ExtensionClass import Base
 
 
 class Brain:

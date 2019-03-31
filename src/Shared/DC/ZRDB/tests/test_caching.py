@@ -1,8 +1,8 @@
 from pprint import pprint
 from time import time
-from unittest import makeSuite
 from unittest import TestCase
 from unittest import TestSuite
+from unittest import makeSuite
 
 
 class DummyDB:

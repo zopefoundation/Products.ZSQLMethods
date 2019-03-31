@@ -50,7 +50,10 @@
 
 import six
 
-from DocumentTemplate.DT_Util import ParseError, parse_params, name_param
+from DocumentTemplate.DT_Util import ParseError
+from DocumentTemplate.DT_Util import name_param
+from DocumentTemplate.DT_Util import parse_params
+
 
 StringType = str
 

@@ -1,8 +1,12 @@
+from unittest import TestCase
+from unittest import TestSuite
+from unittest import makeSuite
+
 from six import StringIO
-from unittest import TestCase, TestSuite, makeSuite
+
 from ExtensionClass import Base
-from Shared.DC.ZRDB.Results import Results
 from Shared.DC.ZRDB import RDB
+from Shared.DC.ZRDB.Results import Results
 
 
 class Brain(Base):
