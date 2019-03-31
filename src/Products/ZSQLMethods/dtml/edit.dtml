@@ -55,7 +55,7 @@
       </div>
 
       <div class="form-group">
-        <textarea id="template:text" data-contenttype="sql"
+        <textarea id="content" data-contenttype="sql"
                   class="form-control zmi-code col-sm-12"
                   name="template:text" wrap="off"
                   rows="20">&dtml-src;</textarea>
