@@ -4,6 +4,8 @@ Changelog
 3.0.6 (unreleased)
 ------------------
 
+- improve general usability of the ZSQL Method edit and test forms
+
 - enable the fancy editor for the ZSQL Method edit form
 
 - sanitize ``tox`` and ``flake8`` configurations, reach ``flake8`` compliance

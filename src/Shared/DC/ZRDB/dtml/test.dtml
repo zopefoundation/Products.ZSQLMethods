@@ -1,102 +1,130 @@
 <dtml-var manage_page_header>
-<dtml-var manage_tabs>
+
+<dtml-with "_(management_view='Test')">
+  <dtml-var manage_tabs>
+</dtml-with>
 
 <main class="container-fluid">
 
   <h2 class="zmi-form-title">Test &dtml-title_or_id;</h2>
 
-  <form action="manage_testForm" method="get">
+  <dtml-if connectionIsValid>
+    <form action="manage_testForm" method="get">
 
-    <dtml-let args="argument_list">
+      <dtml-let args="argument_list">
 
-      <dtml-if args>
-        <p class="form-help">Enter the query parameters:</p>
-        <dtml-in args mapping>
-          <div class="form-group row">
-            <label for="&dtml-name;"
-                   class="form-label col-sm-3 col-md-2">&dtml-name;</label>
-            <div class="col-sm-9 col-md-10">
-              <input type="text" class="form-control" size="40"
-                     name="&dtml-name;<dtml-if type>:&dtml-type;</dtml-if>"
-                     id="&dtml-name;"
-                     value="&dtml-default;"/>
+        <dtml-if args>
+          <p class="form-help">Enter the query parameters:</p>
+          <dtml-in args mapping>
+            <div class="form-group row">
+              <label for="&dtml-name;"
+                     class="form-label col-sm-3 col-md-2">&dtml-name;</label>
+              <div class="col-sm-9 col-md-10">
+                <input type="text" class="form-control" size="40"
+                       name="&dtml-name;<dtml-if type>:&dtml-type;</dtml-if>"
+                       id="&dtml-name;"
+                       value="&dtml-default;"/>
+              </div>
             </div>
-          </div>
-        </dtml-in>
-      <dtml-else>
-        <p class="form-help">This query requires no input.</p>
-      </dtml-if>
+          </dtml-in>
+        <dtml-else>
+          <p class="form-help">This query requires no input.</p>
+        </dtml-if>
 
-    </dtml-let>
+      </dtml-let>
 
-    <div class="zmi-controls">
-      <input class="btn btn-primary" type="submit" name="QUERY_SUBMIT"
-             value="Submit Query" />
-    </div>
+      <div class="zmi-controls">
+        <input class="btn btn-primary" type="submit" name="QUERY_SUBMIT"
+               value="Submit Query" />
+      </div>
 
-  </form>
+    </form>
 
-  <dtml-if QUERY_SUBMIT>
-    <hr/>
-    <h2 class="zmi-form-title">Rendered SQL query code</h2>
-    <pre>
-      <dtml-var "this()(REQUEST, src__=1)" html_quote>
-    </pre>
-    <hr/>
-    <h2 class="zmi-form-title">Query results</h2>
+    <dtml-if QUERY_SUBMIT>
+      <hr/>
 
-    <dtml-let res="this()(REQUEST)">
+      <dtml-try>
 
-      <dtml-in "res" size=20 start=query_start>
-        <dtml-if sequence-start>
-          <dtml-if previous-sequence>
-            <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-            &lt;&lt; Previous <dtml-var previous-sequence-size> results
-            </a>
-          </dtml-if previous-sequence>
-          <dtml-if next-sequence>
-            <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-            Next <dtml-var next-sequence-size> results &gt;&gt;
-            </a>
-          </dtml-if next-sequence>
+        <h2 class="zmi-form-title">Rendered SQL query code</h2>
+        <pre>
+          <dtml-var "this()(REQUEST, src__=1)" html_quote>
+        </pre>
+        <hr/>
+        <h2 class="zmi-form-title">Query results</h2>
 
-          <table border="1">
+        <dtml-let res="this()(REQUEST)">
+
+          <dtml-in "res" size=20 start=query_start>
+            <dtml-if sequence-start>
+              <dtml-if previous-sequence>
+                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
+                &lt;&lt; Previous <dtml-var previous-sequence-size> results
+                </a>
+              </dtml-if previous-sequence>
+              <dtml-if next-sequence>
+                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
+                Next <dtml-var next-sequence-size> results &gt;&gt;
+                </a>
+              </dtml-if next-sequence>
+
+              <table border="1">
+                <tr>
+                  <dtml-in "res.names()">
+                    <th>&dtml-sequence-item;</th>
+                  </dtml-in>
+                </tr>
+            </dtml-if sequence-start>
+
+            
             <tr>
-              <dtml-in "res.names()">
-                <th>&dtml-sequence-item;</th>
-              </dtml-in>
+              <dtml-let rec=sequence-item>
+                <dtml-in "res.names()">
+                  <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
+                </dtml-in>
+              </dtml-let>
             </tr>
-        </dtml-if sequence-start>
 
+            <dtml-if sequence-end>
+               </table>
+
+              <dtml-if previous-sequence>
+                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
+                &lt;&lt; Previous <dtml-var previous-sequence-size> results
+                </a>
+              </dtml-if previous-sequence>
+              <dtml-if next-sequence>
+                 <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
+                 Next <dtml-var next-sequence-size> results &gt;&gt;
+                 </a>
+              </dtml-if next-sequence>
+            </dtml-if sequence-end>
+
+          <dtml-else>
+            There was no data matching this query.
+          </dtml-in>
+        </dtml-let>
+
+      <dtml-except>
+
+        <h2 class="zmi-form-title">Query results</h2>
         
-        <tr>
-          <dtml-let rec=sequence-item>
-            <dtml-in "res.names()">
-              <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
-            </dtml-in>
-          </dtml-let>
-        </tr>
+        <p class="form-help">The query failed with an error.</p>
+        <p class="form-help">
+          <ul>
+            <li><strong>Error type:</strong>
+                <dtml-var error_type html_quote></li>
+            <li><strong>Message:</strong>
+                <dtml-var error_value></li>
+          </ul>
+        </p>
+      </dtml-try>
 
-        <dtml-if sequence-end>
-           </table>
-
-          <dtml-if previous-sequence>
-            <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-            &lt;&lt; Previous <dtml-var previous-sequence-size> results
-            </a>
-          </dtml-if previous-sequence>
-          <dtml-if next-sequence>
-             <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-             Next <dtml-var next-sequence-size> results &gt;&gt;
-             </a>
-          </dtml-if next-sequence>
-        </dtml-if sequence-end>
-
-      <dtml-else>
-        There was no data matching this &dtml-title_or_id; query.
-      </dtml-in>
-    </dtml-let>
-
+    </dtml-if>
+  <dtml-else>
+    <p class="form-help">
+      To run the query, please select a valid database connector on the
+      <a href="&dtml-absolute_url;/manage_main">Edit tab</a> first.
+    </p>
   </dtml-if>
 
 </main>

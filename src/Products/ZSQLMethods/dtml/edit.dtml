@@ -21,6 +21,7 @@
         <div class="col-sm-9 col-md-10">
           <select class="form-control" name="connection_id">
             <dtml-in SQLConnectionIDs>
+               <option value=""> -- No database adapter selected -- </option>
                <option value="&dtml-sequence-item;"<dtml-if 
                 expr="connection_id==_vars['sequence-item']">
                 selected</dtml-if>>&dtml-sequence-key;</option>
@@ -36,9 +37,11 @@
              </dtml-if>
           <dtml-else>
              <p style="{color:red;}">
-               <strong>Warning:</strong>
-               The selected database connection (&dtml-connection_id;)
-               cannot be found!
+               <dtml-if dtml-connection_id>
+                 <strong>Warning:</strong>
+                 The selected database connection (&dtml-connection_id;)
+                 cannot be found!
+               </dtml-if>
              </p>
           </dtml-if>
 
