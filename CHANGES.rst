@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.6 (unreleased)
+3.0.6 (2019-04-03)
 ------------------
 
 - fix failing unpickling of older Z SQL Methods instances
