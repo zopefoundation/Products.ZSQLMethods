@@ -314,9 +314,10 @@ def decodestring(s):
 
 
 class Args(object):
-    def __init__(self, data, keys):
-        self._data = data
-        self._keys = keys
+
+    def __init__(self, data=None, keys=None):
+        self._data = data or {}
+        self._keys = keys or []
 
     def items(self):
         return map(lambda k, d=self._data: (k, d[k]), self._keys)
