@@ -4,7 +4,7 @@ Changelog
 3.0.6 (unreleased)
 ------------------
 
-- fix failing unpickling of older Z SQ Methods instances
+- fix failing unpickling of older Z SQL Methods instances
   (`#12 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/12>`_)
 
 - improve usability and add Zope 4 compatibility for connection forms
