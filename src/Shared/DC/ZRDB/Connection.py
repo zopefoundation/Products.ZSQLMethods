@@ -210,8 +210,8 @@ class Connection(Persistent, RoleManager, Item, Implicit):
         return self
 
     def sql_quote__(self, v):
-        if v.find('\'') >= 0:
-            v = "''".join(v.split("\'"))
+        if v.find("'") >= 0:
+            v = "''".join(v.split("'"))
         if v.find('\x00') >= 0:
             v = ''.join(v.split('\x00'))
         return "'%s'" % v
