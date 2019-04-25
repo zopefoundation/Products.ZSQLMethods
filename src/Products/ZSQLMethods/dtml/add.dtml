@@ -6,100 +6,95 @@
            help_topic='Z-SQL-Method_Add.stx'
 	   )">
 
-<dtml-if SQLConnectionIDs>
-<p class="form-help">
-A SQL Method allows you to access a SQL database. For more information see 
-the <a href="http://www.zope.org/Documentation/Guides/ZSQL">Z SQL Methods 
-User's Guide</a>.
-</p>
+<main class="container-fluid">
 
-<p class="form-help">
-In the form below <EM>connection id</EM> is the name of the SQL Database 
-Connection to use. <EM>Arguments</EM> is a list of variables which the
-SQL Method accepts. <EM>Query template</EM> is a template of the SQL 
-statement which the SQL Method will execute.
-</p>
+  <dtml-if SQLConnectionIDs>
+    <p class="form-help">
+      A SQL Method allows you to access a SQL database. For more information
+      see the
+      <a href="https://zope.readthedocs.io/en/latest/zopebook/RelationalDatabases.html">
+        Relational database connectivity chapter in the Zope Book
+      </a>.
+    </p>
+  
+    <p class="form-help">
+      In the form below <em>connection id</em> is the name of the SQL Database 
+      Connection to use. <em>Arguments</em> is a list of variables which the
+      SQL Method accepts. <em>Query template</em> is a template of the SQL 
+      statement which the SQL Method will execute.
+    </p>
+    
+    <form action="manage_addZSQLMethod" method="post">
 
-<form action="manage_addZSQLMethod" method="post">
-<table cellspacing="0" cellpadding="2" border="0">
-  <tr>
-    <td align="left" valign="top">
-    <div class="form-label">
-    Id
-    </div>
-    </td>
-    <td align="left" valign="top">
-    <input type="text" name="id" size="40" value="" />
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-    <div class="form-optional">
-    Title
-    </div>
-    </td>
-    <td align="left" valign="top">
-    <input type="text" name="title" size="40" />
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-    <div class="form-label">
-    Connection Id
-    </div>
-    </td>
-    <td align="left" valign="top">
-    <div class="form-element">
-    <select name="connection_id">
-              <dtml-in SQLConnectionIDs>
-                <option value="&dtml-sequence-item;">
-                &dtml-sequence-key;</option>
-              </dtml-in>
-    </select>
-    </div>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-    <div class="form-optional">
-    Arguments
-    </div>
-    </td>
-    <td align="left" valign="top">
-    <textarea name="arguments" cols="40" rows="4"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top" colspan="2">
-    <span class="form-label">Query Template</span>
-    <br />
-    <div style="width: 100%;">
-    <textarea style="width: 100%;" name="template:text" rows="9" cols="60"
-     wrap="off">select * from data</textarea></div>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top" colspan="2">
-    <div class="form-element">
-    <input class="form-element" type="submit" name="submit" 
-     value=" Add " /> 
-    <input class="form-element" type="submit" name="submit" 
-     value=" Add and Edit " /> 
-    <input class="form-element" type="submit" name="submit" 
-     value=" Add and Test " /> 
-    </div>
-    </td>
-  </tr>
-</table>
-</form>
+      <div class="form-group row">
+        <label for="id" class="form-label col-sm-3 col-md-2">Id</label>
+        <div class="col-sm-9 col-md-10">
+          <input id="id" class="form-control" type="text" name="id"/>
+        </div>
+      </div>
 
+      <div class="form-group row">
+        <label for="title" class="form-label col-sm-3 col-md-2">Title</label>
+        <div class="col-sm-9 col-md-10">
+          <input id="title" class="form-control" type="text" name="title"/>
+        </div>
+      </div>
 
-<dtml-else>
-<p class="form-text">
-There are no SQL database connections.  You need to add a Zope 
-SQL database connection before you can create a Zope SQL Method.
-</p>
+      <div class="form-group row">
+        <label for="connection_id" class="form-label col-sm-3 col-md-2">
+          Connection Id
+        </label>
+        <div class="col-sm-9 col-md-10">
+          <select id="connection_id" name="connection_id" class="form-control">
+            <dtml-in SQLConnectionIDs>
+              <option value="&dtml-sequence-item;">&dtml-sequence-key;</option>
+            </dtml-in>
+          </select>
+        </div>
+      </div>
 
-</dtml-if>
+      <div class="form-group row">
+        <label for="arguments" class="form-label col-sm-3 col-md-2">
+          Arguments
+        </label>
+        <div class="col-sm-9 col-md-10">
+          <textarea id="arguments"
+                    class="form-control col-sm-12"
+                    name="arguments" wrap="off"
+                    rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="template" class="form-label col-sm-3 col-md-2">
+          Query Template
+        </label>
+        <div class="col-sm-9 col-md-10">
+          <textarea id="content" data-contenttype="sql"
+                    class="form-control zmi-code col-sm-12"
+                    name="template:text" wrap="off"
+                    rows="10">select * from data</textarea>
+        </div>
+      </div>
+
+      <div class="zmi-controls">
+        <input class="btn btn-primary" type="submit" name="submit"
+               value=" Add " />
+        <input class="btn btn-primary" type="submit" name="submit"
+               value=" Add and Edit "/>
+        <input class="btn btn-primary" type="submit" name="submit"
+               value=" Add and Test "/>
+      </div>
+
+    </form>
+  
+  <dtml-else>
+    <p class="form-text">
+      There are no SQL database connections.  You need to add a Zope 
+      SQL database connection before you can create a Zope SQL Method.
+    </p>
+  </dtml-if>
+
+</main>
 
 <dtml-var manage_page_footer>
