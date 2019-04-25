@@ -63,11 +63,15 @@ from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
+StringTypes = six.string_types + (six.binary_type,)
+
+
 class SQLTest:
     name = 'sqltest'
     optional = multiple = None
 
-    def __init__(self, args):
+    def __init__(self, args, encoding=None):
+        self.encoding = encoding
         args = parse_params(args, name='', expr='', type=None, column=None,
                             multiple=1, optional=1, op=None)
         name, expr = name_param(args, 'sqlvar', 1)
@@ -113,7 +117,7 @@ class SQLTest:
         args = self.args
         try:
             expr = self.expr
-            if isinstance(expr, type('')):
+            if isinstance(expr, StringTypes):
                 v = md[expr]
             else:
                 v = expr(md)
@@ -131,11 +135,11 @@ class SQLTest:
 
         vs = []
         for v in v:
-            if not v and isinstance(v, str) and t != 'string':
+            if not v and isinstance(v, StringTypes) and t != 'string':
                 continue
             if t == 'int':
                 try:
-                    if isinstance(v, str):
+                    if isinstance(v, StringTypes):
                         if v[-1:] == 'L':
                             v = v[:-1]
                         int(v)
@@ -145,10 +149,10 @@ class SQLTest:
                     msg = 'Invalid integer value for <em>%s</em>' % name
                     raise ValueError(msg)
             elif t == 'float':
-                if not v and isinstance(v, str):
+                if not v and isinstance(v, StringTypes):
                     continue
                 try:
-                    if isinstance(v, str):
+                    if isinstance(v, StringTypes):
                         float(v)
                     else:
                         v = str(float(v))
@@ -157,7 +161,7 @@ class SQLTest:
                     raise ValueError(msg)
 
             else:
-                if not isinstance(v, (str, six.text_type)):
+                if not isinstance(v, StringTypes):
                     v = str(v)
                 v = md.getitem('sql_quote__', 0)(v)
                 # if v.find("\'") >= 0: v="''".(v.split("\'"))

@@ -4,6 +4,8 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- compatibility fixes for better unicode support in DocumentTemplate
+
 
 3.0.6 (2019-04-03)
 ------------------

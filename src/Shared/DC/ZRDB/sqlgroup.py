@@ -75,8 +75,8 @@ class SQLGroup:
     set = None
     noparens = None
 
-    def __init__(self, blocks):
-
+    def __init__(self, blocks, encoding=None):
+        self.encoding = encoding
         self.blocks = blocks
         tname, args, section = blocks[0]
         self.__name__ = '%s %s' % (tname, args)

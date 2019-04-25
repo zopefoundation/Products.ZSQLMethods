@@ -55,13 +55,14 @@ from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
-StringType = str
+StringTypes = six.string_types + (six.binary_type,)
 
 
 class SQLVar:
     name = 'sqlvar'
 
-    def __init__(self, args):
+    def __init__(self, args, encoding=None):
+        self.encoding = encoding
         args = parse_params(args, name='', expr='', type=None, optional=1)
 
         name, expr = name_param(args, 'sqlvar', 1)
@@ -84,14 +85,14 @@ class SQLVar:
         t = args['type']
         try:
             expr = self.expr
-            if isinstance(expr, type('')):
+            if isinstance(expr, StringTypes):
                 v = md[expr]
             else:
                 v = expr(md)
         except Exception:
             if 'optional' in args and args['optional']:
                 return 'null'
-            if not isinstance(expr, type('')):
+            if not isinstance(expr, StringTypes):
                 raise
             raise ValueError('Missing input variable, <em>%s</em>' % name)
 
@@ -100,7 +101,7 @@ class SQLVar:
 
         if t == 'int':
             try:
-                if isinstance(v, str):
+                if isinstance(v, StringTypes):
                     if v[-1:] == 'L':
                         v = v[:-1]
                     int(v)
@@ -113,7 +114,7 @@ class SQLVar:
                 raise ValueError(err)
         elif t == 'float':
             try:
-                if isinstance(v, str):
+                if isinstance(v, StringTypes):
                     if v[-1:] == 'L':
                         v = v[:-1]
                     float(v)
@@ -125,7 +126,7 @@ class SQLVar:
                 err = 'Invalid floating-point value for <em>%s</em>' % name
                 raise ValueError(err)
         else:
-            if not isinstance(v, (str, six.text_type)):
+            if not isinstance(v, (str, StringTypes)):
                 v = str(v)
             if not v and t == 'nb':
                 if 'optional' in args and args['optional']:
