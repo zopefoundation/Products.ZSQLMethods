@@ -201,6 +201,7 @@ class nvSQL(HTML):
     commands['sqlgroup'] = SQLGroup
 
     _proxy_roles = ()
+    encoding = None
 
 
 class SQL(RestrictedDTML, Base, nvSQL):
@@ -229,7 +230,6 @@ class DA(BaseQuery,
     allow_simple_one_argument_traversal = None
     template_class = SQL
     connection_hook = None
-    encoding = None
 
     manage_options = (
         ({'label': 'Edit', 'action': 'manage_main',
