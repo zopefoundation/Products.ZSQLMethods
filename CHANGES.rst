@@ -4,8 +4,6 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- set a safe default encoding value at class level for Z SQL Methods
-
 
 3.0.7 (2019-04-26)
 ------------------

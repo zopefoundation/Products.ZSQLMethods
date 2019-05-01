@@ -201,7 +201,6 @@ class nvSQL(HTML):
     commands['sqlgroup'] = SQLGroup
 
     _proxy_roles = ()
-    encoding = None
 
 
 class SQL(RestrictedDTML, Base, nvSQL):
