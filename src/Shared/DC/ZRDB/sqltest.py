@@ -164,6 +164,9 @@ class SQLTest:
                 if not isinstance(v, StringTypes):
                     v = str(v)
                 v = md.getitem('sql_quote__', 0)(v)
+                # fix https://github.com/zopefoundation/Products.ZSQLMethods/issues/14
+                if isinstance(v, six.binary_type):
+                    v = v.decode('utf-8')
                 # if v.find("\'") >= 0: v="''".(v.split("\'"))
                 # v="'%s'" % v
             vs.append(v)
