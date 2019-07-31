@@ -106,6 +106,12 @@
 
       <dtml-except>
 
+        <h2 class="zmi-form-title">Rendered SQL query code</h2>
+        <pre>
+          <dtml-var "this()(REQUEST, src__=1)" html_quote>
+        </pre>
+        <hr/>
+
         <h2 class="zmi-form-title">Query results</h2>
         
         <p class="form-help">The query failed with an error.</p>
