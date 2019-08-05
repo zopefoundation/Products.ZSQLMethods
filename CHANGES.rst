@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.8 (unreleased)
+3.0.8 (2019-08-05)
 ------------------
 
 - show rendered SQL output even if an exception occurred
