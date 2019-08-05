@@ -43,13 +43,14 @@
     <dtml-if QUERY_SUBMIT>
       <hr/>
 
+      <h2 class="zmi-form-title">Rendered SQL query code</h2>
+      <pre>
+        <dtml-var "this()(REQUEST, src__=1)" html_quote>
+      </pre>
+      <hr/>
+
       <dtml-try>
 
-        <h2 class="zmi-form-title">Rendered SQL query code</h2>
-        <pre>
-          <dtml-var "this()(REQUEST, src__=1)" html_quote>
-        </pre>
-        <hr/>
         <h2 class="zmi-form-title">Query results</h2>
 
         <dtml-let res="this()(REQUEST)">

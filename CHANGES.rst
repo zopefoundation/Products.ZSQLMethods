@@ -4,6 +4,9 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- show rendered SQL output even if an exception occurred
+  (`#15 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/15>`_)
+
 
 3.0.7 (2019-04-26)
 ------------------
