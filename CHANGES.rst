@@ -7,6 +7,9 @@ Changelog
 - show rendered SQL output even if an exception occurred
   (`#15 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/15>`_)
 
+- fix sqltest behavior with bytes inputs
+  (`#14 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/14>`_)
+
 
 3.0.7 (2019-04-26)
 ------------------

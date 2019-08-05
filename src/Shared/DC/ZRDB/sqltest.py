@@ -163,6 +163,8 @@ class SQLTest:
             else:
                 if not isinstance(v, StringTypes):
                     v = str(v)
+                if isinstance(v, six.binary_type):
+                    v = v.decode('utf-8')
                 v = md.getitem('sql_quote__', 0)(v)
                 # if v.find("\'") >= 0: v="''".(v.split("\'"))
                 # v="'%s'" % v
