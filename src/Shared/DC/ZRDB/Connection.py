@@ -113,7 +113,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
                 message='<strong>%s</strong> has been edited.' % esc_id,
                 action='./manage_main')
 
-    security.declareProtected(test_database_connections,  # NOQA: flake8: D001
+    security.declareProtected(test_database_connections,  # NOQA: D001
                               'manage_testForm')
     manage_testForm = DTMLFile('dtml/connectionTestForm', globals())
 
@@ -150,7 +150,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
 
         return report
 
-    security.declareProtected(view_management_screens,  # NOQA: flake8: D001
+    security.declareProtected(view_management_screens,  # NOQA: D001
                               'manage_main')
     manage_main = DTMLFile('dtml/connectionStatus', globals())
 

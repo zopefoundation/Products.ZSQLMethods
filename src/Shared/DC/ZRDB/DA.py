@@ -243,11 +243,11 @@ class DA(BaseQuery,
         self.id = str(id)
         self.manage_edit(title, connection_id, arguments, template)
 
-    security.declareProtected(view_management_screens,  # NOQA: flake8: D001
+    security.declareProtected(view_management_screens,  # NOQA: D001
                               'manage_advancedForm')
     manage_advancedForm = DTMLFile('dtml/advanced', globals())
 
-    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+    security.declareProtected(change_database_methods,  # NOQA: D001
                               'manage_testForm')
     manage_testForm = DTMLFile('dtml/test', globals())
 

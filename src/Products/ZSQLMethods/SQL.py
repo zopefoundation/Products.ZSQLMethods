@@ -140,9 +140,9 @@ class SQL(DA):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+    security.declareProtected(change_database_methods,  # NOQA: D001
                               'manage')
-    security.declareProtected(change_database_methods,  # NOQA: flake8: D001
+    security.declareProtected(change_database_methods,  # NOQA: D001
                               'manage_main')
     manage = manage_main = DTMLFile('dtml/edit', globals())
     manage_main._setName('manage_main')
