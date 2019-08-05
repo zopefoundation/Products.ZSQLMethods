@@ -11,6 +11,7 @@ parts
 __pycache__
 .coverage*
 coverage.xml
+default.profraw
 *.bak
 *.dll
 *.pyc
