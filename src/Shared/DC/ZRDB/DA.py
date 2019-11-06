@@ -35,7 +35,6 @@ from DocumentTemplate import HTML
 from DocumentTemplate.html_quote import html_quote
 from DocumentTemplate.security import RestrictedDTML
 from ExtensionClass import Base
-from OFS import bbb
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
@@ -49,14 +48,6 @@ from .Results import Results
 from .sqlgroup import SQLGroup
 from .sqltest import SQLTest
 from .sqlvar import SQLVar
-
-
-if bbb.HAS_ZSERVER:
-    from webdav.Resource import Resource
-    from webdav.Lockable import ResourceLockedError
-else:
-    Resource = bbb.Resource
-    from zExceptions import ResourceLockedError
 
 
 def _getPath(home, prefix, name, suffixes):
@@ -212,8 +203,7 @@ class DA(BaseQuery,
          Implicit,
          Persistent,
          RoleManager,
-         Item,
-         Resource):
+         Item):
     """Database Adapter base class"""
 
     security = ClassSecurityInfo()
@@ -303,9 +293,6 @@ class DA(BaseQuery,
         if SUBMIT in self._size_changes:
             return self._er(title, connection_id, arguments, template,
                             SUBMIT, dtpref_cols, dtpref_rows, REQUEST)
-
-        if self.wl_isLocked():
-            raise ResourceLockedError('SQL Method is locked via WebDAV')
 
         self.title = str(title)
         self.connection_id = str(connection_id)
