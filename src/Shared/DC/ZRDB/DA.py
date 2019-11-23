@@ -50,6 +50,30 @@ from .sqltest import SQLTest
 from .sqlvar import SQLVar
 
 
+try:
+    from OFS import bbb
+except ImportError:
+    bbb = None
+
+
+if bbb is not None and bbb.HAS_ZSERVER:
+    from webdav.Resource import Resource
+    from webdav.Lockable import ResourceLockedError
+else:
+    from zExceptions import ResourceLockedError
+
+    class Resource:
+        def dav__init(self, request, response):
+            pass
+
+        def dav__validate(self, object, methodname, REQUEST):
+            pass
+
+        def dav__simpleifhandler(self, request, response, method='PUT',
+                                 col=0, url=None, refresh=0):
+            pass
+
+
 def _getPath(home, prefix, name, suffixes):
 
     dir = os.path.join(home, prefix)
@@ -293,6 +317,9 @@ class DA(BaseQuery,
         if SUBMIT in self._size_changes:
             return self._er(title, connection_id, arguments, template,
                             SUBMIT, dtpref_cols, dtpref_rows, REQUEST)
+
+        if self.wl_isLocked():
+            raise ResourceLockedError('SQL Method is locked via WebDAV')
 
         self.title = str(title)
         self.connection_id = str(connection_id)
