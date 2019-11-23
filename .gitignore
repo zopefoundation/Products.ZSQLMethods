@@ -12,6 +12,7 @@ __pycache__
 .coverage*
 coverage.xml
 default.profraw
+pyvenv.cfg
 *.bak
 *.dll
 *.pyc

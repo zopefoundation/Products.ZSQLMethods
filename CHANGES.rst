@@ -4,6 +4,9 @@ Changelog
 3.0.9 (unreleased)
 ------------------
 
+- fix ImportError under Zope 5 due to moved dependencies
+  (`#19 <https://github.com/zopefoundation/Products.ZSQLMethods/pull/19>`_)
+
 
 3.0.8 (2019-08-05)
 ------------------

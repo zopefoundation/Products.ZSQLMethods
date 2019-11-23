@@ -35,7 +35,6 @@ from DocumentTemplate import HTML
 from DocumentTemplate.html_quote import html_quote
 from DocumentTemplate.security import RestrictedDTML
 from ExtensionClass import Base
-from OFS import bbb
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
@@ -51,12 +50,28 @@ from .sqltest import SQLTest
 from .sqlvar import SQLVar
 
 
-if bbb.HAS_ZSERVER:
+try:
+    from OFS import bbb
+except ImportError:
+    bbb = None
+
+
+if bbb is not None and bbb.HAS_ZSERVER:
     from webdav.Resource import Resource
     from webdav.Lockable import ResourceLockedError
 else:
-    Resource = bbb.Resource
     from zExceptions import ResourceLockedError
+
+    class Resource:
+        def dav__init(self, request, response):
+            pass
+
+        def dav__validate(self, object, methodname, REQUEST):
+            pass
+
+        def dav__simpleifhandler(self, request, response, method='PUT',
+                                 col=0, url=None, refresh=0):
+            pass
 
 
 def _getPath(home, prefix, name, suffixes):
