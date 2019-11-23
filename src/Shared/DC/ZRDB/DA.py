@@ -227,7 +227,8 @@ class DA(BaseQuery,
          Implicit,
          Persistent,
          RoleManager,
-         Item):
+         Item,
+         Resource):
     """Database Adapter base class"""
 
     security = ClassSecurityInfo()
