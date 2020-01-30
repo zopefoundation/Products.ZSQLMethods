@@ -4,6 +4,8 @@ Changelog
 3.0.10 (unreleased)
 -------------------
 
+- remove Zope Help System fossils so the product works with Zope 5
+
 
 3.0.9 (2019-11-22)
 ------------------

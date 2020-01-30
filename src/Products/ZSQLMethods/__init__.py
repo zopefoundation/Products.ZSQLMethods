@@ -40,9 +40,6 @@ def initialize(context):
                       Shared.DC.ZRDB.Search.manage_addZSearch),
         legacy=(Shared.DC.ZRDB.Search.ZQueryIds, ))
 
-    context.registerHelp()
-    context.registerHelpTitle('Zope Help')
-
 
 __module_aliases__ = (
     ('Products.AqueductSQLMethods', 'Products.ZSQLMethods'),
