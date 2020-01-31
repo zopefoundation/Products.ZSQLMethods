@@ -49,11 +49,39 @@ class ConnectionTests(unittest.TestCase):
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
                          "'w''embedded apostrophe'")
 
+    def test_sql_quote___embedded_backslash(self):
+        TO_QUOTE = "embedded \\backslash"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'embedded \\\\backslash'")
+        # Show for good measure that the seeming four backslashes
+        # are really two, when you look at the raw string.
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         r"'embedded \\backslash'")
+
+    def test_sql_quote___embedded_double_quote(self):
+        TO_QUOTE = 'embedded "double quote'
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'embedded \"double quote'")
+
     def test_sql_quote___embedded_null(self):
         TO_QUOTE = "w'embedded apostrophe and \x00null"
         conn = self._makeOne('conn', '', 'conn string')
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
                          "'w''embedded apostrophe and null'")
+
+        # This is another version of a nul character.
+        TO_QUOTE = "embedded other \x1anull"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'embedded other null'")
+
+    def test_sql_quote___embedded_carriage_return(self):
+        TO_QUOTE = "w'embedded carriage\rreturn"
+        conn = self._makeOne('conn', '', 'conn string')
+        self.assertEqual(conn.sql_quote__(TO_QUOTE),
+                         "'embedded carriagereturn'")
 
 
 def test_suite():

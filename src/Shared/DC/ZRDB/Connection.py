@@ -32,6 +32,7 @@ from App.Dialogs import MessageDialog
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
+from DocumentTemplate.DT_Var import sql_quote
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
@@ -210,10 +211,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
         return self
 
     def sql_quote__(self, v):
-        if v.find("'") >= 0:
-            v = "''".join(v.split("'"))
-        if v.find('\x00') >= 0:
-            v = ''.join(v.split('\x00'))
+        v = sql_quote(v)
         return "'%s'" % v
 
 
