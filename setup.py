@@ -43,7 +43,7 @@ setup(
         'Zope2 > 2.12.8',
         # These are only available with Zope >= 2.13.0a1
         # 'AccessControl',
-        # 'DocumentTemplate',
+        'DocumentTemplate >= 2.13.5',
         # 'zExceptions',
     ],
     include_package_data=True,

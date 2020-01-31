@@ -4,7 +4,9 @@ Changelog
 2.13.6 (unreleased)
 -------------------
 
-- TBD
+- Depend on ``DocumentTemplate`` 2.13.5+ to do SQL quoting.
+  Note: because of that dependency it might be better to use Zope 2.13,
+  although technically we only require 2.12 minimum.
 
 2.13.5 (2016-11-10)
 -------------------
