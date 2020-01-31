@@ -28,6 +28,7 @@ from App.Dialogs import MessageDialog
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
+from DocumentTemplate.DT_Var import sql_quote
 from OFS.SimpleItem import Item
 from Persistence import Persistent
 from zExceptions import BadRequest
@@ -169,7 +170,7 @@ class Connection(Persistent,
                               'manage_close_connection')
     def manage_close_connection(self, REQUEST=None):
         " "
-        try: 
+        try:
             if hasattr(self,'_v_database_connection'):
                 self._v_database_connection.close()
         except:
@@ -214,10 +215,7 @@ class Connection(Persistent,
         return self
 
     def sql_quote__(self, v):
-        if string.find(v,"\'") >= 0:
-            v = string.join(string.split(v,"\'"),"''")
-        if string.find(v,"\x00") >= 0:
-            v = string.join(string.split(v,"\x00"), "")
+        v = sql_quote(v)
         return "'%s'" % v
 
 InitializeClass(Connection)
