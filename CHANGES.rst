@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.11 (unreleased)
+3.0.11 (2020-01-31)
 -------------------
 
 - Depend on ``DocumentTemplate`` 3.1+ to do SQL quoting.
