@@ -14,7 +14,7 @@
 
 from setuptools import setup, find_packages
 
-__version__ = '2.13.6'
+__version__ = '2.13.7.dev0'
 
 setup(
     name='Products.ZSQLMethods',
