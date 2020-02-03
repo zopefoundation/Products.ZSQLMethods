@@ -60,10 +60,12 @@ class ConnectionTests(unittest.TestCase):
                          r"'embedded \\backslash'")
 
     def test_sql_quote___embedded_double_quote(self):
+        # As it turns out, escaping double quotes will break
+        # some servers, notably PostgreSQL, so we no longer do that.
         TO_QUOTE = 'embedded "double quote'
         conn = self._makeOne('conn', '', 'conn string')
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
-                         r"'embedded \"double quote'")
+                         "'embedded \"double quote'")
 
     def test_sql_quote___embedded_null(self):
         TO_QUOTE = "w'embedded apostrophe and \x00null"
