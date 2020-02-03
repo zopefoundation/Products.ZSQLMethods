@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.12 (unreleased)
+3.0.12 (2020-02-03)
 -------------------
 
 - Depend on ``DocumentTemplate`` 3.2.1+ to no longer escape ``"``
