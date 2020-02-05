@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.13 (unreleased)
+3.0.13 (2020-02-04)
 -------------------
 
 - Pin ``DocumentTemplate`` 3.2.2 for less quoting, it is to database-specific
