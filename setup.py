@@ -65,7 +65,7 @@ setup(
         'Zope >= 4.0b5',
         'Missing',
         'Record',
-        'DocumentTemplate >= 3.2.1',
+        'DocumentTemplate >= 3.2.2',
     ],
     include_package_data=True,
     zip_safe=False,

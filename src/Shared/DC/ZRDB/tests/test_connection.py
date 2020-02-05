@@ -53,11 +53,11 @@ class ConnectionTests(unittest.TestCase):
         TO_QUOTE = 'embedded \\backslash'
         conn = self._makeOne('conn', '', 'conn string')
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
-                         "'embedded \\\\backslash'")
-        # Show for good measure that the seeming four backslashes
-        # are really two, when you look at the raw string.
+                         "'embedded \\backslash'")
+        # Show for good measure that the seeming two backslashes
+        # are really one, when you look at the raw string.
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
-                         r"'embedded \\backslash'")
+                         r"'embedded \backslash'")
 
     def test_sql_quote___embedded_double_quote(self):
         # As it turns out, escaping double quotes will break
