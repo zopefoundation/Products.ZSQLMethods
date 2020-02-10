@@ -16,7 +16,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '3.0.14.dev0'
+version = '3.1.dev0'
 
 with open('README.rst') as f:
     README = f.read()
@@ -62,7 +62,7 @@ setup(
     install_requires=[
         'setuptools',
         'six',
-        'Zope >= 4.0b5',
+        'Zope >= 4.2.1',
         'Missing',
         'Record',
         'DocumentTemplate >= 3.2.2',

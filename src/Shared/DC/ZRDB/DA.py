@@ -38,7 +38,9 @@ from ExtensionClass import Base
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
+from webdav.Resource import Resource
 from zExceptions import BadRequest
+from zExceptions import ResourceLockedError
 
 from .Aqueduct import BaseQuery
 from .Aqueduct import custom_default_report
@@ -48,30 +50,6 @@ from .Results import Results
 from .sqlgroup import SQLGroup
 from .sqltest import SQLTest
 from .sqlvar import SQLVar
-
-
-try:
-    from OFS import bbb
-except ImportError:
-    bbb = None
-
-
-if bbb is not None and bbb.HAS_ZSERVER:
-    from webdav.Resource import Resource
-    from webdav.Lockable import ResourceLockedError
-else:
-    from zExceptions import ResourceLockedError
-
-    class Resource:
-        def dav__init(self, request, response):
-            pass
-
-        def dav__validate(self, object, methodname, REQUEST):
-            pass
-
-        def dav__simpleifhandler(self, request, response, method='PUT',
-                                 col=0, url=None, refresh=0):
-            pass
 
 
 def _getPath(home, prefix, name, suffixes):
