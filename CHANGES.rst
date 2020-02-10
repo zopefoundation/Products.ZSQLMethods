@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1 (unreleased)
+3.1 (2020-02-09)
 ----------------
 
 - Pull in WebDAV support from Zope and pin Zope to 4.2.1 or higher
