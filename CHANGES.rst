@@ -4,6 +4,9 @@ Changelog
 3.2 (unreleased)
 ----------------
 
+- Fix support for editing ZSQL Methods via WebDAV
+  (`#22 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/22>`_)
+
 
 3.1 (2020-02-09)
 ----------------

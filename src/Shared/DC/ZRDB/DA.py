@@ -17,6 +17,7 @@ import re
 import sys
 from time import time
 
+import six
 from six import StringIO
 
 import Products
@@ -387,13 +388,16 @@ class DA(BaseQuery,
     def document_src(self, REQUEST=None, RESPONSE=None):
         """Return unprocessed document source."""
         if RESPONSE is not None:
-            RESPONSE.setHeader('Content-Type', 'text/plain')
+            RESPONSE.setHeader('Content-Type', self.default_content_type)
         return '<params>%s</params>\n%s' % (self.arguments_src, self.src)
 
-    def manage_FTPget(self):
-        """Get source for FTP download"""
-        self.REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain')
+    def manage_DAVget(self):
+        """Get source for WebDAV"""
+        self.REQUEST.RESPONSE.setHeader('Content-Type',
+                                        self.default_content_type)
         return '<params>%s</params>\n%s' % (self.arguments_src, self.src)
+
+    manage_FTPget = manage_DAVget
 
     def get_size(self):
         return len(self.document_src())
@@ -404,6 +408,10 @@ class DA(BaseQuery,
         self.dav__init(REQUEST, RESPONSE)
         self.dav__simpleifhandler(REQUEST, RESPONSE, refresh=1)
         body = REQUEST.get('BODY', '')
+        if six.PY3 and isinstance(body, bytes):
+            body = body.decode('UTF-8')
+        elif six.PY2 and not isinstance(body, bytes):
+            body = body.encode('UTF-8')
         m = re.match(r'\s*<params>(.*)</params>\s*\n', body, re.I | re.S)
         if m:
             self.arguments_src = m.group(1)
