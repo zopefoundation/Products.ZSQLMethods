@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.2 (unreleased)
+3.2 (2020-02-11)
 ----------------
 
 - Fix support for editing ZSQL Methods via WebDAV
