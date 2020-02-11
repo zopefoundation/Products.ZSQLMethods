@@ -4,6 +4,7 @@ develop-eggs
 dist
 flake8
 lib
+lib64
 include
 man
 parts
