@@ -4,6 +4,10 @@ Changelog
 3.3 (unreleased)
 ----------------
 
+- Enable editing all properties via WebDAV
+  This is done by copying the full-featured format used by the
+  ``FSZSQLMethod`` class from ``Products.CMFCore``.
+
 
 3.2 (2020-02-11)
 ----------------

@@ -395,7 +395,16 @@ class DA(BaseQuery,
         """Get source for WebDAV"""
         self.REQUEST.RESPONSE.setHeader('Content-Type',
                                         self.default_content_type)
-        return '<params>%s</params>\n%s' % (self.arguments_src, self.src)
+        values = {}
+        for attr in ('title', 'connection_id', 'arguments_src', 'max_rows_',
+                     'max_cache_', 'cache_time_', 'class_name_', 'class_file_',
+                     'allow_simple_one_argument_traversal', 'src'):
+            values[attr] = getattr(self, attr)
+            values['connection_hook'] = self.connection_hook or ''
+            asoat = self.allow_simple_one_argument_traversal or ''
+            values['allow_simple_one_argument_traversal'] = asoat
+
+        return DA_DAV_TEMPLATE % values
 
     manage_FTPget = manage_DAVget
 
@@ -408,20 +417,53 @@ class DA(BaseQuery,
         self.dav__init(REQUEST, RESPONSE)
         self.dav__simpleifhandler(REQUEST, RESPONSE, refresh=1)
         body = REQUEST.get('BODY', '')
+        parameters = {}
+        connection_id = self.connection_id
         if six.PY3 and isinstance(body, bytes):
             body = body.decode('UTF-8')
         elif six.PY2 and not isinstance(body, bytes):
             body = body.encode('UTF-8')
-        m = re.match(r'\s*<params>(.*)</params>\s*\n', body, re.I | re.S)
+
+        re_expr = r'\s*<dtml-comment>(.*)</dtml-comment>\s*\n'
+        m = re.match(re_expr, body, re.I | re.S)
         if m:
-            self.arguments_src = m.group(1)
-            self._arg = parse(self.arguments_src)
+            lines = [x for x in m.group(1).split('\n') if x]
+            for line in lines:
+                pair = line.split(':', 1)
+                if len(pair) != 2:
+                    continue
+                parameters[pair[0].strip().lower()] = pair[1].strip()
             body = body[m.end():]
-        template = body
-        self.src = template
-        self.template = t = self.template_class(template)
-        t.cook()
-        self._v_cache = ({}, Bucket())
+
+            # check for required parameters
+            try:
+                connection_id = (parameters.get('connection id', '') or
+                                 parameters['connection_id'])
+            except KeyError as e:
+                raise ValueError('The "%s" parameter is required '
+                                 'but was not supplied' % e)
+
+        self.manage_edit(parameters.get('title', ''),
+                         connection_id,
+                         parameters.get('arguments', ''),
+                         template=body)
+
+        connection_hook = parameters.get('connection_hook', None)
+        direct = (parameters.get('allow_simple_one_argument_traversal',
+                                 '') or '')
+        if direct:
+            if direct.lower() in ('0', 'false'):
+                direct = ''
+            else:
+                direct = True
+        self.manage_advanced(parameters.get('max_rows', 1000),
+                             parameters.get('max_cache', 100),
+                             parameters.get('cache_time', 0),
+                             parameters.get('class_name', ''),
+                             parameters.get('class_file', ''),
+                             connection_hook=connection_hook,
+                             direct=direct)
+
         RESPONSE.setStatus(204)
         return RESPONSE
 
@@ -781,3 +823,20 @@ class Traverse(Base):
 class SQLMethodTracebackSupplement:
     def __init__(self, sql):
         self.object = sql
+
+
+DA_DAV_TEMPLATE = """\
+<dtml-comment>
+title : %(title)s
+connection id : %(connection_id)s
+arguments : %(arguments_src)s
+max_rows : %(max_rows_)s
+max_cache : %(max_cache_)s
+cache_time : %(cache_time_)s
+class_name : %(class_name_)s
+class_file : %(class_file_)s
+connection_hook : %(connection_hook)s
+allow_simple_one_argument_traversal : %(allow_simple_one_argument_traversal)s
+</dtml-comment>
+%(src)s
+"""
