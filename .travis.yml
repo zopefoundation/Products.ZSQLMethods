@@ -4,11 +4,6 @@ matrix:
     include:
         - python: "3.6"
           env: TOXENV=lint
-        - python: "3.6"
-          env: TOXENV=coverage
-          after_success:
-              - coverage combine
-              - coveralls
         - python: "2.7"
           env: TOXENV=py27
         - python: "3.5"
@@ -26,6 +21,10 @@ install:
 
 script:
     - travis_retry tox
+
+after_success:
+    - coverage combine
+    - coveralls
 
 notifications:
     email: false
