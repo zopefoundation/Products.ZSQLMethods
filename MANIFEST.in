@@ -1,6 +1,4 @@
 include *.rst
-include *.txt
-include .coveragerc
 include *.cfg
 exclude .*.cfg
 
