@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.3 (unreleased)
+3.3 (2020-02-12)
 ----------------
 
 - Enable editing all properties via WebDAV
