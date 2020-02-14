@@ -105,6 +105,7 @@ class TestTM(unittest.TestCase):
 
 DEFAULT_DAV_SOURCE = """\
 <dtml-comment>
+# vi:syntax=sql
 title : Test Title
 connection id : conn_id
 arguments : foo bar
@@ -121,6 +122,7 @@ allow_simple_one_argument_traversal :
 
 CHANGED_DAV_SOURCE = """\
 <dtml-comment>
+# vi:syntax=sql
 title : New Title
 connection id : conn_2
 arguments : bar baz

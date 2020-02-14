@@ -429,6 +429,8 @@ class DA(BaseQuery,
         if m:
             lines = [x for x in m.group(1).split('\n') if x]
             for line in lines:
+                if line.strip().startswith('#'):
+                    continue
                 pair = line.split(':', 1)
                 if len(pair) != 2:
                     continue
@@ -833,6 +835,7 @@ class SQLMethodTracebackSupplement:
 
 DA_DAV_TEMPLATE = """\
 <dtml-comment>
+# vi:syntax=sql
 title : %(title)s
 connection id : %(connection_id)s
 arguments : %(arguments_src)s

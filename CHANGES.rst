@@ -6,6 +6,8 @@ Changelog
 
 - Fixed ``PUT`` issue that failed due to a WebDAV lock test in ``manage_edit``
 
+- ``manage_DAVget`` now inserts a vi syntax highlighting hint
+
 
 3.3 (2020-02-12)
 ----------------
