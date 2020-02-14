@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.4 (unreleased)
+3.4 (2020-02-13)
 ----------------
 
 - Fixed ``PUT`` issue that failed due to a WebDAV lock test in ``manage_edit``
