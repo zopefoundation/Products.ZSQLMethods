@@ -443,10 +443,16 @@ class DA(BaseQuery,
                 raise ValueError('The "%s" parameter is required '
                                  'but was not supplied' % e)
 
-        self.manage_edit(parameters.get('title', ''),
-                         connection_id,
-                         parameters.get('arguments', ''),
-                         template=body)
+        self.title = parameters.get('title', '')
+        self.connection_id = connection_id
+        arguments = parameters.get('arguments', '')
+        self.arguments_src = arguments
+        self._arg = parse(arguments)
+        template = body
+        self.src = template
+        self.template = t = self.template_class(template)
+        t.cook()
+        self._v_cache = ({}, Bucket())
 
         connection_hook = parameters.get('connection_hook', None)
         direct = (parameters.get('allow_simple_one_argument_traversal',

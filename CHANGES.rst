@@ -4,6 +4,8 @@ Changelog
 3.4 (unreleased)
 ----------------
 
+- Fixed ``PUT`` issue that failed due to a WebDAV lock test in ``manage_edit``
+
 
 3.3 (2020-02-12)
 ----------------
