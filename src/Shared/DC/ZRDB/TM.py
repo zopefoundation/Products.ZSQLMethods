@@ -38,7 +38,7 @@ class TM:
     def _register(self):
         if not self._registered:
             try:
-                transaction.get().register(Surrogate(self))
+                transaction.get().join(self)
                 self._begin()
                 self._registered = 1
                 self._finalize = 0
