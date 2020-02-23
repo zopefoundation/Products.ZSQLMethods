@@ -12,10 +12,18 @@
 ##############################################################################
 """Provide support for linking an external transaction manager with Zope's
 """
+import logging
 
 import transaction
+from transaction.interfaces import IDataManager
+from transaction.interfaces import TransactionFailedError
+from zope.interface import implementer
 
 
+LOG = logging.getLogger('Products.ZSQLMethods')
+
+
+@implementer(IDataManager)
 class TM:
     """Mix-in class that provides transaction management support
 
@@ -32,18 +40,29 @@ class TM:
 
     _registered = None
 
+    def __init__(self):
+        # Use the default thread transaction manager.
+        self.transaction_manager = transaction.manager
+
     def _begin(self):
         pass
 
     def _register(self):
         if not self._registered:
             try:
-                transaction.get().register(Surrogate(self))
+                self.transaction_manager.get().join(Surrogate(self))
+            except TransactionFailedError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # No need to raise here, the transaction is already
+                # broken as a whole
+            except ValueError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # Raising here, the transaction is in an invalid state
+                raise
+            else:
                 self._begin()
                 self._registered = 1
                 self._finalize = 0
-            except Exception:
-                pass
 
     def tpc_begin(self, *ignored):
         pass
