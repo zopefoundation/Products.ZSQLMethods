@@ -4,6 +4,9 @@ Changelog
 3.5 (unreleased)
 ----------------
 
+- Fixed incompatibility with ``transaction`` version 3.
+  (`#23 <https://github.com/zopefoundation/Products.ZSQLMethods/pull/23>`_)
+
 
 3.4 (2020-02-13)
 ----------------

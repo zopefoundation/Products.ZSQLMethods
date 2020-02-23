@@ -19,8 +19,8 @@ from unittest import makeSuite
 class TestTM(TestCase):
 
     def _getTargetClass(self):
-        from ..TM import TM
-        return TM
+        from ..THUNK import THUNKED_TM
+        return THUNKED_TM
 
     def _makeOne(self):
         return self._getTargetClass()()
