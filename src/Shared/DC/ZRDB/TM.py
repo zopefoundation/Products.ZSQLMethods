@@ -39,10 +39,7 @@ class TM:
     """
 
     _registered = None
-
-    def __init__(self):
-        # Use the default thread transaction manager.
-        self.transaction_manager = transaction.manager
+    transaction_manager = transaction.manager
 
     def _begin(self):
         pass
