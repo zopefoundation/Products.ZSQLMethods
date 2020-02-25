@@ -20,7 +20,6 @@ from transaction.interfaces import TransactionFailedError
 from zope.interface import implementer
 
 from .TM import TM
-from .TM import Surrogate
 
 
 LOG = logging.getLogger('Products.ZSQLMethods')
@@ -37,7 +36,7 @@ class THUNKED_TM(TM):
             thunk_lock.acquire()
 
             try:
-                self.transaction_manager.get().join(Surrogate(self))
+                self.transaction_manager.get().join(self)
             except TransactionFailedError:
                 LOG.error('Failed to join transaction: ', exc_info=True)
                 # No need to raise here, the transaction is already

@@ -47,7 +47,7 @@ class TM:
     def _register(self):
         if not self._registered:
             try:
-                self.transaction_manager.get().join(Surrogate(self))
+                self.transaction_manager.get().join(self)
             except TransactionFailedError:
                 LOG.error('Failed to join transaction: ', exc_info=True)
                 # No need to raise here, the transaction is already
@@ -83,6 +83,8 @@ class TM:
             finally:
                 self._registered = 0
 
+    __inform_commit__ = tpc_finish
+
     def abort(self, *ignored):
         try:
             self._abort()
@@ -90,6 +92,7 @@ class TM:
             self._registered = 0
 
     tpc_abort = abort
+    __inform_abort__ = abort
 
     # Most DA's talking to RDBMS systems do not care about commit order, so
     # return a constant. Must be a string according to ITransactionManager.
