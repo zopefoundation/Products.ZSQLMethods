@@ -11,32 +11,45 @@
 #
 ##############################################################################
 
+import logging
+
 from six.moves._thread import allocate_lock
 
-import transaction
+from transaction.interfaces import IDataManager
+from transaction.interfaces import TransactionFailedError
+from zope.interface import implementer
 
-from . import TM
-from .TM import Surrogate
+from .TM import TM
 
 
+LOG = logging.getLogger('Products.ZSQLMethods')
 thunk_lock = allocate_lock()
 
 
-class THUNKED_TM(TM.TM):
+@implementer(IDataManager)
+class THUNKED_TM(TM):
     """A big heavy hammer for handling non-thread safe DAs
     """
 
     def _register(self):
         if not self._registered:
             thunk_lock.acquire()
+
             try:
-                transaction.get().register(Surrogate(self))
-                self._begin()
-            except Exception:
-                thunk_lock.release()
+                self.transaction_manager.get().join(self)
+            except TransactionFailedError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # No need to raise here, the transaction is already
+                # broken as a whole
+            except ValueError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # Raising here, the transaction is in an invalid state
                 raise
             else:
+                self._begin()
                 self._registered = 1
+            finally:
+                thunk_lock.release()
 
     def tpc_finish(self, *ignored):
         if self._registered:

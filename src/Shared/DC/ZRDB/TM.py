@@ -12,10 +12,18 @@
 ##############################################################################
 """Provide support for linking an external transaction manager with Zope's
 """
+import logging
 
 import transaction
+from transaction.interfaces import IDataManager
+from transaction.interfaces import TransactionFailedError
+from zope.interface import implementer
 
 
+LOG = logging.getLogger('Products.ZSQLMethods')
+
+
+@implementer(IDataManager)
 class TM:
     """Mix-in class that provides transaction management support
 
@@ -31,6 +39,7 @@ class TM:
     """
 
     _registered = None
+    transaction_manager = transaction.manager
 
     def _begin(self):
         pass
@@ -38,12 +47,19 @@ class TM:
     def _register(self):
         if not self._registered:
             try:
-                transaction.get().register(Surrogate(self))
+                self.transaction_manager.get().join(self)
+            except TransactionFailedError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # No need to raise here, the transaction is already
+                # broken as a whole
+            except ValueError:
+                LOG.error('Failed to join transaction: ', exc_info=True)
+                # Raising here, the transaction is in an invalid state
+                raise
+            else:
                 self._begin()
                 self._registered = 1
                 self._finalize = 0
-            except Exception:
-                pass
 
     def tpc_begin(self, *ignored):
         pass
@@ -67,6 +83,8 @@ class TM:
             finally:
                 self._registered = 0
 
+    __inform_commit__ = tpc_finish
+
     def abort(self, *ignored):
         try:
             self._abort()
@@ -74,6 +92,7 @@ class TM:
             self._registered = 0
 
     tpc_abort = abort
+    __inform_abort__ = abort
 
     # Most DA's talking to RDBMS systems do not care about commit order, so
     # return a constant. Must be a string according to ITransactionManager.
