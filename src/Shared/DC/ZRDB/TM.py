@@ -13,6 +13,7 @@
 """Provide support for linking an external transaction manager with Zope's
 """
 import logging
+from warnings import warn
 
 import transaction
 from transaction.interfaces import IDataManager
@@ -108,9 +109,12 @@ class TM:
         self._sort_key = str(sort_key)
 
 
+# BBB version 4
 class Surrogate:
 
     def __init__(self, db):
+        warn(u'The Surrogate class is deprecated and will be removed in '
+             u'Products.ZSQLMethods version 4.')
         self._p_jar = db
         self.__inform_commit__ = db.tpc_finish
         self.__inform_abort__ = db.tpc_abort
