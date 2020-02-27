@@ -4,6 +4,16 @@ Changelog
 3.5 (unreleased)
 ----------------
 
+- Fixed up the ZMI `Test` tab
+
+  - Fixed broken batch link display
+
+  - Make number of rows shown configurable
+
+  - Show total result set size
+
+  - Shown warning if the result set size hits the configured limit
+
 - Fixed incompatibility with ``transaction`` version 3.
   (`#23 <https://github.com/zopefoundation/Products.ZSQLMethods/pull/23>`_)
 
