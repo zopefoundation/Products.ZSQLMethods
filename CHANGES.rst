@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.5 (unreleased)
+3.5 (2020-02-26)
 ----------------
 
 - Fixed up the ZMI `Test` tab
