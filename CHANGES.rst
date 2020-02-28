@@ -4,6 +4,9 @@ Changelog
 3.6 (unreleased)
 ----------------
 
+- Fix batch links and warning for maximum numbr of rows
+  (`#24 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/24>`_)
+
 
 3.5 (2020-02-26)
 ----------------

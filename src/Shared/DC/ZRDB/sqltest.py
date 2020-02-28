@@ -165,7 +165,11 @@ class SQLTest:
                     v = str(v)
                 if isinstance(v, six.binary_type):
                     v = v.decode('utf-8')
+                # The call to sql_quote__ can return something that is not
+                # a native string anymore!
                 v = md.getitem('sql_quote__', 0)(v)
+                if isinstance(v, six.binary_type):
+                    v = v.decode('utf-8')
                 # if v.find("\'") >= 0: v="''".(v.split("\'"))
                 # v="'%s'" % v
             vs.append(v)

@@ -25,7 +25,7 @@
                   <input type="text" class="form-control" size="40"
                          name="&dtml-name;<dtml-if type>:&dtml-type;</dtml-if>"
                          id="&dtml-name;"
-                         value="&dtml-default;"/>
+                         value="<dtml-var "REQUEST.get(name, default)">"/>
                 </div>
               </div>
             </dtml-in>
@@ -59,13 +59,13 @@
       <dtml-if QUERY_SUBMIT>
         <hr/>
 
-        <h2 class="zmi-form-title">Rendered SQL query code</h2>
-        <pre>
-          <dtml-var "this()(REQUEST, src__=1)" html_quote>
-        </pre>
-        <hr/>
-
         <dtml-try>
+
+          <h2 class="zmi-form-title">Rendered SQL query code</h2>
+          <pre>
+            <dtml-var "this()(REQUEST, src__=1)" html_quote>
+          </pre>
+          <hr/>
 
           <dtml-let res="this()(REQUEST)"
                     res_size="_.len(res)">
@@ -73,7 +73,7 @@
             <h2 class="zmi-form-title">
               &dtml-res_size; results matched this query
             </h2>
-            <dtml-if "res_size >= max_rows_">
+            <dtml-if "max_rows_ and res_size >= max_rows_">
               <div class="alert alert-warning mt-4">
                 The query returned the maximum number of rows configured for
                 this ZSQL method, there may be more matches.
@@ -83,13 +83,13 @@
             <dtml-in "res" size=num_rows start=query_start orphan=3>
               <dtml-if sequence-start>
                 <dtml-if previous-sequence-size>
-                  <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&num_rows=&dtml-num_rows;&query=<dtml-var query url_quote missing=''>">
+                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
                   &lt;&lt; Previous <dtml-var previous-sequence-size> results
                   </a>
                   <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
                 </dtml-if previous-sequence-size>
                 <dtml-if next-sequence-size>
-                  <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&num_rows=&dtml-num_rows;&query=<dtml-var query url_quote missing=''>">
+                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
                   Next <dtml-var next-sequence-size> results &gt;&gt;
                   </a>
                 </dtml-if next-sequence-size>
@@ -115,13 +115,13 @@
                 </table>
 
                 <dtml-if previous-sequence-size>
-                  <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&num_rows=&dtml-num_rows;&query=<dtml-var query url_quote missing=''>">
+                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
                   &lt;&lt; Previous <dtml-var previous-sequence-size> results
                   </a>
                   <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
                 </dtml-if previous-sequence-size>
                 <dtml-if next-sequence-size>
-                   <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&num_rows=&dtml-num_rows;&query=<dtml-var query url_quote missing=''>">
+                   <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
                    Next <dtml-var next-sequence-size> results &gt;&gt;
                    </a>
                 </dtml-if next-sequence-size>
