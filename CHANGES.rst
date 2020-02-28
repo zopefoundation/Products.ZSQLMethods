@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.6 (unreleased)
+3.6 (2020-02-28)
 ----------------
 
 - Fix batch links and warning for maximum numbr of rows
