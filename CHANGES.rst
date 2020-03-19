@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.7 (unreleased)
+3.7 (2020-03-19)
 ----------------
 
 - Improved error handling and feedback for ``dtml-sqltest``
