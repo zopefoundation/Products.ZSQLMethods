@@ -89,7 +89,10 @@ class SQLVarTests(unittest.TestCase):
 
     def test_render_int_required_invalid_raises_ValueError(self):
         v = self._makeOne('expr="foo" type="int"')
-        self.assertRaises(ValueError, v.render, FauxMultiDict(foo=''))
+
+        for invalid in ('', b''):
+            self.assertRaises(ValueError, v.render,
+                              FauxMultiDict(foo=invalid))
 
     def test_render_int_optional_invalid_returns_null(self):
         v = self._makeOne('expr="foo" type="int" optional')
@@ -105,7 +108,9 @@ class SQLVarTests(unittest.TestCase):
 
     def test_render_float_required_invalid_raises_ValueError(self):
         v = self._makeOne('expr="foo" type="float"')
-        self.assertRaises(ValueError, v.render, FauxMultiDict(foo=''))
+        for invalid in ('', b''):
+            self.assertRaises(ValueError, v.render,
+                              FauxMultiDict(foo=invalid))
 
     def test_render_float_optional_invalid_returns_null(self):
         v = self._makeOne('expr="foo" type="float" optional')

@@ -4,6 +4,8 @@ Changelog
 3.7 (unreleased)
 ----------------
 
+- Improved error handling and feedback for ``dtml-sqltest``
+
 
 3.6 (2020-02-28)
 ----------------

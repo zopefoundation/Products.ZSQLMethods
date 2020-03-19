@@ -140,23 +140,27 @@ class SQLTest:
             if t == 'int':
                 try:
                     if isinstance(v, StringTypes):
+                        if six.PY3 and isinstance(v, bytes):
+                            v = v.decode(self.encoding or 'UTF-8')
                         if v[-1:] == 'L':
                             v = v[:-1]
                         int(v)
                     else:
                         v = str(int(v))
-                except ValueError:
+                except (TypeError, ValueError):
                     msg = 'Invalid integer value for <em>%s</em>' % name
                     raise ValueError(msg)
             elif t == 'float':
                 if not v and isinstance(v, StringTypes):
                     continue
                 try:
+                    if six.PY3 and isinstance(v, bytes):
+                        v = v.decode(self.encoding or 'UTF-8')
                     if isinstance(v, StringTypes):
                         float(v)
                     else:
                         v = str(float(v))
-                except ValueError:
+                except (TypeError, ValueError):
                     msg = 'Invalid floating-point value for <em>%s</em>' % name
                     raise ValueError(msg)
 
