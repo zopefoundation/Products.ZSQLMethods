@@ -4,6 +4,8 @@ Changelog
 3.8 (unreleased)
 ----------------
 
+- Improved usability for the ZMI `Test` tab
+
 
 3.7 (2020-03-19)
 ----------------

@@ -8,7 +8,7 @@
 
   <dtml-let num_rows="REQUEST.get('num_rows') or 20">
 
-    <h2 class="zmi-form-title">Test &dtml-title_or_id;</h2>
+    <h2 class="zmi-form-title">Test query &dtml-title_or_id;</h2>
 
     <dtml-if connectionIsValid>
       <form action="manage_testForm" method="get">
@@ -59,90 +59,121 @@
       <dtml-if QUERY_SUBMIT>
         <hr/>
 
+        <h2 class="zmi-form-title">Rendered SQL query template</h2>
+
         <dtml-try>
+          <p class="form-help">
+            This code represents the rendered ZSQL template only.
+            The final query sent to the database may contain additional
+            elements inserted automatically, such as a <em>LIMIT</em> clause.
+          </p>
+          <textarea id="content" data-contenttype="sql"
+                    class="form-control zmi-code col-sm-12"
+                    name="template:text" wrap="off"
+                    rows="20"><dtml-var "this()(REQUEST, src__=1)"></textarea>
 
-          <h2 class="zmi-form-title">Rendered SQL query code</h2>
-          <pre>
-            <dtml-var "this()(REQUEST, src__=1)" html_quote>
-          </pre>
-          <hr/>
+          <br clear="all"/><hr/>
 
-          <dtml-let res="this()(REQUEST)"
-                    res_size="_.len(res)">
+          <dtml-try>
 
-            <h2 class="zmi-form-title">
-              &dtml-res_size; results matched this query
-            </h2>
-            <dtml-if "max_rows_ and res_size >= max_rows_">
-              <div class="alert alert-warning mt-4">
-                The query returned the maximum number of rows configured for
-                this ZSQL method, there may be more matches.
-              </div>
-            </dtml-if>
+            <dtml-let res="this()(REQUEST)"
+                      res_size="_.len(res)">
 
-            <dtml-in "res" size=num_rows start=query_start orphan=3>
-              <dtml-if sequence-start>
-                <dtml-if previous-sequence-size>
-                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
-                  &lt;&lt; Previous <dtml-var previous-sequence-size> results
-                  </a>
-                  <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
-                </dtml-if previous-sequence-size>
-                <dtml-if next-sequence-size>
-                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
-                  Next <dtml-var next-sequence-size> results &gt;&gt;
-                  </a>
-                </dtml-if next-sequence-size>
+              <h2 class="zmi-form-title">
+                &dtml-res_size; results matched this query
+              </h2>
+              <dtml-if "max_rows_ and res_size >= max_rows_">
+                <div class="alert alert-warning mt-4">
+                  The query returned the maximum number of rows configured for
+                  this ZSQL method, there may be more matches.
+                </div>
+              </dtml-if>
 
-                <table border="1">
-                  <tr>
+              <dtml-in "res" size=num_rows start=query_start orphan=3>
+                <dtml-if sequence-start>
+                  <dtml-if previous-sequence-size>
+                    <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                    &lt;&lt; Previous <dtml-var previous-sequence-size> results
+                    </a>
+                    <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
+                  </dtml-if previous-sequence-size>
+                  <dtml-if next-sequence-size>
+                    <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                    Next <dtml-var next-sequence-size> results &gt;&gt;
+                    </a>
+                  </dtml-if next-sequence-size>
+
+                  <table border="1">
+                    <tr>
+                      <dtml-in "res.names()">
+                        <th>&dtml-sequence-item;</th>
+                      </dtml-in>
+                    </tr>
+                </dtml-if sequence-start>
+
+                <tr>
+                  <dtml-let rec=sequence-item>
                     <dtml-in "res.names()">
-                      <th>&dtml-sequence-item;</th>
+                      <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
                     </dtml-in>
-                  </tr>
-              </dtml-if sequence-start>
+                  </dtml-let>
+                </tr>
 
-              
-              <tr>
-                <dtml-let rec=sequence-item>
-                  <dtml-in "res.names()">
-                    <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
-                  </dtml-in>
-                </dtml-let>
-              </tr>
+                <dtml-if sequence-end>
+                  </table>
 
-              <dtml-if sequence-end>
-                </table>
+                  <dtml-if previous-sequence-size>
+                    <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                    &lt;&lt; Previous <dtml-var previous-sequence-size> results
+                    </a>
+                    <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
+                  </dtml-if previous-sequence-size>
+                  <dtml-if next-sequence-size>
+                     <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                     Next <dtml-var next-sequence-size> results &gt;&gt;
+                     </a>
+                  </dtml-if next-sequence-size>
+                </dtml-if sequence-end>
 
-                <dtml-if previous-sequence-size>
-                  <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
-                  &lt;&lt; Previous <dtml-var previous-sequence-size> results
-                  </a>
-                  <dtml-if next-sequence-size>&nbsp;|&nbsp;</dtml-if>
-                </dtml-if previous-sequence-size>
-                <dtml-if next-sequence-size>
-                   <a href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
-                   Next <dtml-var next-sequence-size> results &gt;&gt;
-                   </a>
-                </dtml-if next-sequence-size>
-              </dtml-if sequence-end>
+              </dtml-in>
+            </dtml-let>
 
-            <dtml-else>
-              There was no data matching this query.
-            </dtml-in>
-          </dtml-let>
+          <dtml-except>
+
+            <h2 class="zmi-form-title">Query results</h2>
+            
+            <p class="form-help">The query failed with an error.</p>
+            <p class="form-help">
+              <ul>
+                <li><strong>Error type:</strong>
+                    <dtml-var error_type html_quote></li>
+                <li>
+                  <strong>Message:</strong><br/>
+                  <pre><dtml-var "format_exception(error_value)"></pre>
+                </li>
+              </ul>
+            </p>
+          </dtml-try>
+
+		  <script>
+            $(function() {
+              editor.setOptions({
+                  'readOnly': true,
+              });
+            });
+          </script>
 
         <dtml-except>
-
-          <h2 class="zmi-form-title">Query results</h2>
-          
-          <p class="form-help">The query failed with an error.</p>
+          <p class="form-help">The query template does not render.</p>
           <p class="form-help">
             <ul>
               <li><strong>Error type:</strong>
                   <dtml-var error_type html_quote></li>
-              <li><strong>Message:</strong>
-                  <dtml-var error_value></li>
+              <li>
+                <strong>Message:</strong><br/>
+                <pre><dtml-var error_value></pre>
+              </li>
+          </pre>
             </ul>
           </p>
         </dtml-try>

@@ -751,6 +751,19 @@ class DA(BaseQuery,
     def connected(self):
         return getattr(getattr(self, self.connection_id), 'connected')()
 
+    @security.public
+    def format_exception(self, exception):
+        """ Helper to format traceback data nicer for the ZMI """
+        err_msg = ''
+
+        if isinstance(exception.args, (list, tuple)):
+            for part in exception.args:
+                err_msg = '%s\n%s' % (err_msg, part)
+        else:
+            err_msg = str(exception)
+
+        return err_msg
+
 
 InitializeClass(DA)
 
