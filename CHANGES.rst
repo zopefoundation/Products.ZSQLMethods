@@ -4,6 +4,8 @@ Changelog
 3.9 (unreleased)
 ----------------
 
+- Added explicit type selection for ZSQL parameters on the ZMI `Test` tab
+
 
 3.8 (2020-04-15)
 ----------------

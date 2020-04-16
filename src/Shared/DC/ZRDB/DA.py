@@ -12,6 +12,7 @@
 ##############################################################################
 """Generic Database adapter"""
 
+import copy
 import os
 import re
 import sys
@@ -474,6 +475,29 @@ class DA(BaseQuery,
 
         RESPONSE.setStatus(204)
         return RESPONSE
+
+    def _convert_zmi_values(self, value, v_type):
+        """ Try to convert ``value`` to type ``v_type`` """
+        if v_type == 'int':
+            return int(value)
+        elif v_type == 'float':
+            return float(value)
+        elif v_type == 'tokens':
+            return value.split()
+        return value
+
+    @security.protected(view_management_screens)
+    def manage_zmi_test(self, REQUEST, src__=0):
+        """ Shim to add special processing for the ZMI Test tab """
+        kws = copy.copy(REQUEST.form)
+        for (key, val) in kws.items():
+            if key.endswith('_type'):
+                mod_key = key[:-5]
+                mod_value = kws.get(mod_key, None)
+                if mod_value is not None:
+                    kws[mod_key] = self._convert_zmi_values(mod_value, val)
+
+        return self(src__=src__, **kws)
 
     @security.protected(change_database_methods)
     def manage_test(self, REQUEST):

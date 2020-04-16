@@ -16,14 +16,38 @@
         <dtml-let args="argument_list">
 
           <dtml-if args>
-            <p class="form-help">Enter the query parameters:</p>
+            <p class="form-help">
+              Enter the query parameters. You can modify the data type if
+              needed. <em>tokens</em> will convert space-separated input to a
+              list of values.
+            </p>
             <dtml-in args mapping>
               <div class="form-group row">
                 <label for="&dtml-name;"
                        class="form-label col-sm-3 col-md-2">&dtml-name;</label>
-                <div class="col-sm-9 col-md-10">
+
+                <dtml-let typ="type or REQUEST.get('%s_type' % name, 'string')">
+                  <div class="col-sm-3 col-md-2">
+                    <select name="&dtml-name;_type">
+                      <option <dtml-if "typ == 'float'">selected</dtml-if>>
+                        float
+                      </option>
+                      <option <dtml-if "typ == 'int'">selected</dtml-if>>
+                        int
+                      </option>
+                      <option <dtml-if "typ == 'string'">selected</dtml-if>>
+                        string
+                      </option>
+                      <option <dtml-if "typ == 'tokens'">selected</dtml-if>>
+                        tokens
+                      </option>
+                    </select>
+                  </div>
+                </dtml-let>
+
+                <div class="col-sm-7 col-md-7">
                   <input type="text" class="form-control" size="40"
-                         name="&dtml-name;<dtml-if type>:&dtml-type;</dtml-if>"
+                         name="&dtml-name;"
                          id="&dtml-name;"
                          value="<dtml-var "REQUEST.get(name, default)">"/>
                 </div>
@@ -70,13 +94,13 @@
           <textarea id="content" data-contenttype="sql"
                     class="form-control zmi-code col-sm-12"
                     name="template:text" wrap="off"
-                    rows="20"><dtml-var "this()(REQUEST, src__=1)"></textarea>
+                    rows="20"><dtml-var "this().manage_zmi_test(REQUEST, src__=1)"></textarea>
 
           <br clear="all"/><hr/>
 
           <dtml-try>
 
-            <dtml-let res="this()(REQUEST)"
+            <dtml-let res="this().manage_zmi_test(REQUEST)"
                       res_size="_.len(res)">
 
               <h2 class="zmi-form-title">
@@ -155,7 +179,7 @@
             </p>
           </dtml-try>
 
-		  <script>
+          <script>
             $(function() {
               editor.setOptions({
                   'readOnly': true,
