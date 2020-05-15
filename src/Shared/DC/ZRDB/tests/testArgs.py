@@ -56,7 +56,7 @@ class TestArgs(TestCase):
         args = self._makeOne({'arg1': {'type': 'string', 'default': 'n/a'}},
                              ['arg1'])
         self.assertIn('arg1', args)
-        self.assertTrue(args.has_key('arg1'))  # NOQA: flake8: W601
+        self.assertTrue('arg1' in args)
         self.assertDictEqual(args['arg1'],
                              {'default': 'n/a', 'type': 'string'})
         self.assertEqual(args.keys(), ['arg1'])
