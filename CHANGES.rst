@@ -4,6 +4,8 @@ Changelog
 3.10 (unreleased)
 -----------------
 
+- Package and ``tox`` configuration cleanup to allow runing tests in parallel
+
 
 3.9 (2020-04-16)
 ----------------
