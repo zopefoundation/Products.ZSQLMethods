@@ -80,7 +80,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
         if hasattr(self, '_v_connected') and self._v_connected:
             s = '%s, which is connected' % s
         else:
-            s = '%s, which is <font color=red>not connected</font>' % s
+            s = '%s, which is not connected' % s
         return s
 
     def title_or_id(self):
@@ -88,7 +88,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
         if hasattr(self, '_v_connected') and self._v_connected:
             s = '%s (connected)' % s
         else:
-            s = '%s (<font color=red>not connected</font>)' % s
+            s = '%s (not connected)' % s
         return s
 
     def connected(self):

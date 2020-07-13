@@ -6,14 +6,14 @@
 
 <main class="container-fluid">
 
-  <h2 class="zmi-form-title">Advanced settings</h2>
+  <p class="zmi-form-title font-weight-bold">Advanced settings for <a href="manage_main" title="Edit Z SQLMethod">&dtml-title_or_id;</a></p>
 
   <form action="manage_advanced" method="post">
 
     <div class="form-group row">
       <label for="connection_hook"
-             class="form-label col-sm-3 col-md-2">Connection Hook</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Connection Hook</label>
+      <div class=" col-sm-9 col-xl-10">
           <input type="text" class="form-control" name="connection_hook"
                  id="connection_hook" size="40"
 				 value="<dtml-var connection_hook null="" missing="" html_quote>"/>
@@ -22,37 +22,37 @@
 
     <div class="form-group row">
       <label for="max_rows"
-             class="form-label col-sm-3 col-md-2">Maximum rows to retrieve</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Maximum rows to retrieve</label>
+      <div class=" col-sm-9 col-xl-10">
           <input type="text" class="form-control" name="max_rows:int"
-                 id="max_rows" size="40" value="&dtml-max_rows_;"/>
+                 id="max_rows" value="&dtml-max_rows_;"/>
       </div>
     </div> 
 
     <div class="form-group row">
       <label for="max_cache"
-             class="form-label col-sm-3 col-md-2">Maximum results to cache</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Maximum results to cache</label>
+      <div class=" col-sm-9 col-xl-10">
           <input type="text" class="form-control" name="max_cache:int"
-                 id="max_cache" size="40" value="&dtml-max_cache_;"/>
+                 id="max_cache" value="&dtml-max_cache_;"/>
       </div>
     </div> 
 
     <div class="form-group row">
       <label for="cache_time"
-             class="form-label col-sm-3 col-md-2">Maximum time (sec) to cache</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Maximum time (sec) to cache</label>
+      <div class=" col-sm-9 col-xl-10  col-xl-10">
           <input type="text" class="form-control" name="cache_time:int"
-                 id="cache_time" size="40" value="&dtml-cache_time_;"/>
+                 id="cache_time" value="&dtml-cache_time_;"/>
       </div>
     </div> 
 
 	<dtml-if da_has_single_argument>
       <div class="form-group row">
         <label for="direct"
-               class="form-label col-sm-3 col-md-2">Allow "simple" direct traversal</label>
-        <div class="col-sm-9 col-md-10">
-            <input type="checkbox" class="form-control" name="direct" id="direct" 
+               class="form-label col-sm-3 col-xl-2">Allow "simple" direct traversal</label>
+        <div class=" col-sm-9 col-xl-10">
+            <input type="checkbox" name="direct" id="direct"
               <dtml-if allow_simple_one_argument_traversal>checked</dtml-if>/>
         </div>
       </div> 
@@ -66,19 +66,19 @@
 
     <div class="form-group row">
       <label for="class_name"
-             class="form-label col-sm-3 col-md-2">Class Name</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Class Name</label>
+      <div class=" col-sm-9 col-xl-10">
           <input type="text" class="form-control" name="class_name"
-                 id="class_name" size="40" value="&dtml-class_name_;"/>
+                 id="class_name" value="&dtml-class_name_;"/>
       </div>
     </div> 
 
     <div class="form-group row">
       <label for="class_file"
-             class="form-label col-sm-3 col-md-2">Class File</label>
-      <div class="col-sm-9 col-md-10">
+             class="form-label col-sm-3 col-xl-2">Class File</label>
+      <div class=" col-sm-9 col-xl-10">
           <input type="text" class="form-control" name="class_file"
-                 id="class_file" size="40" value="&dtml-class_file_;"/>
+                 id="class_file" value="&dtml-class_file_;"/>
       </div>
     </div> 
 
