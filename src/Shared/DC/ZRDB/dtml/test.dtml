@@ -92,10 +92,9 @@
             The final query sent to the database may contain additional
             elements inserted automatically, such as a <em>LIMIT</em> clause.
           </p>
-          <textarea data-contenttype="sql"
-                    class="form-control code zmi-code col-sm-12"
-                    name="template:text" wrap="off" disabled="disabled"
-                    rows="4"><dtml-var "this().manage_zmi_test(REQUEST, src__=1)"></textarea>
+          <pre class="form-control code col-sm-12 bg-dark text-white small border-0"
+            name="template:text" data-contenttype="sql"
+            ><dtml-var "this().manage_zmi_test(REQUEST, src__=1)"></pre>
 
           <br clear="all"/><hr/>
 
