@@ -6,113 +6,159 @@
 
 <main class="container-fluid">
 
-  <dtml-if connected>
-    <p class="form-help">
-      You can write a test query and run it with this database connection 
-      using the form below. Click <em>submit query</em> to run the query.
+  <dtml-let num_rows="REQUEST.get('num_rows') or 20">
+
+    <p class="zmi-form-title m-0 font-weight-bold">
+      Test database connection
+      <a href="manage_main" title="Edit database connection">&dtml-title_or_id;</a>
     </p>
 
-    <form action="manage_testForm" method="get">
+    <dtml-if connected>
 
-      <div class="form-group row">
-        <textarea style="width: 100%;" rows="10" cols="60" name="query:text"
-                  wrap="off" accesskey="e"
-                  tabindex="1"><dtml-if query>&dtml-query;</dtml-if></textarea>
-      </div>
+      <p class="form-help">
+        You can write a test query and run it with this database connection 
+        using the form below. Click <em>submit query</em> to run the query.
+      </p>
 
-      <div class="zmi-controls">
-        <input class="btn btn-primary" type="submit" name="QUERY_SUBMIT"
-               tabindex="2" value="Submit Query" />
-      </div>
+      <form action="manage_testForm" method="get">
 
-    </form>
+        <div class="form-group row">
+          <textarea data-contenttype="sql"
+                    class="form-control code zmi-code col-sm-12"
+                    name="query:text" wrap="off" accesskey="e"
+                    tabindex="1" rows="10"
+                    ><dtml-if query>&dtml-query;</dtml-if></textarea>
+        </div>
 
-    <dtml-if query>
-      <hr/>
+        <div class="form-group row">
+          <label for="num_rows"
+                 class="form-label col-sm-3 col-md-2">Rows per page</label>
+          <div class="col-sm-3 col-md-2">
+            <select name="num_rows" class="form-control">
+              <dtml-in "[10, 20, 50, 100, 500, 1000]">
+                <option <dtml-if "_.int(num_rows)==_['sequence-item']">selected</dtml-if>>
+                  <dtml-var sequence-item>
+                </option>
+              </dtml-in>
+            </select>
+          </div>
+        </div>
 
-      <h2 class="zmi-form-title">Rendered SQL query code</h2>
-      <pre><dtml-var query></pre>
-      <hr/>
+        <div class="zmi-controls">
+          <input class="btn btn-primary" type="submit" name="QUERY_SUBMIT"
+                 tabindex="2" value="Submit Query" />
+        </div>
 
-      <dtml-try>
+      </form>
 
-        <h2 class="zmi-form-title">Query results</h2>
+      <dtml-if query>
+        <hr/>
 
-        <dtml-let res="manage_test(query)">
+        <dtml-try>
 
-          <dtml-in "res" size=20 start=query_start>
-            <dtml-if sequence-start>
-              <dtml-if previous-sequence>
-                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-                &lt;&lt; Previous <dtml-var previous-sequence-size> results
-                </a>
-              </dtml-if previous-sequence>
-              <dtml-if next-sequence>
-                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-                Next <dtml-var next-sequence-size> results &gt;&gt;
-                </a>
-              </dtml-if next-sequence>
+          <h2 class="zmi-form-title">Query results</h2>
 
-              <table border="1">
-                <tr>
+          <dtml-let res="manage_test(query)"
+                    res_size="_.len(res)">
+
+            <p class="zmi-form-title font-weight-bold">
+                <dtml-if "res_size == 0">
+                  <span class="badge badge-danger">0</span>
+                <dtml-else>
+                  <span class="badge badge-success">&dtml-res_size;</span>
+                </dtml-if>
+                Results matched this query
+            </p>
+
+            <dtml-in "res" size=num_rows start=query_start orphan=3>
+              <dtml-if sequence-start>
+                <ul class="pagination">
+                  <dtml-if previous-sequence-size>
+                    <li class="page-item">
+                      <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                        <i class="fas fa-angle-double-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
+                      </a>
+                    </li>
+                  </dtml-if previous-sequence-size>
+                  <dtml-if next-sequence-size>
+                    <li class="page-item">
+                      <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                        Next <dtml-var next-sequence-size> results <i class="fas fa-angle-double-right ml-2"></i>
+                      </a>
+                    </li>
+                  </dtml-if next-sequence-size>
+                </ul>
+
+                <table class="table table-sm table-responsive table-striped table-hover table-bordered mb-5">
+                  <thead>
+                    <tr>
+                      <dtml-in "res.names()">
+                        <th>&dtml-sequence-item;</th>
+                      </dtml-in>
+                    </tr>
+                  </thead>
+              </dtml-if sequence-start>
+
+
+              <tr>
+                <dtml-let rec=sequence-item>
                   <dtml-in "res.names()">
-                    <th>&dtml-sequence-item;</th>
+                    <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
                   </dtml-in>
-                </tr>
-            </dtml-if sequence-start>
+                </dtml-let>
+              </tr>
 
+              <dtml-if sequence-end>
+                 </table>
 
-            <tr>
-              <dtml-let rec=sequence-item>
-                <dtml-in "res.names()">
-                  <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
-                </dtml-in>
-              </dtml-let>
-            </tr>
+                <ul class="pagination">
+                  <dtml-if previous-sequence-size>
+                    <li class="page-item">
+                      <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                        <i class="fas fa-angle-double-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
+                      </a>
+                    </li>
+                  </dtml-if previous-sequence>
+                  <dtml-if next-sequence>
+                    <li class="page-item">
+                      <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                        Next <dtml-var next-sequence-size> results <i class="fas fa-angle-double-right ml-2"></i>
+                      </a>
+                    </li>
+                  </dtml-if next-sequence>
+                </ul>
+              </dtml-if sequence-end>
 
-            <dtml-if sequence-end>
-               </table>
+            <dtml-else>
+              There was no data matching this query.
+            </dtml-in>
+          </dtml-let>
 
-              <dtml-if previous-sequence>
-                <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-previous-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-                &lt;&lt; Previous <dtml-var previous-sequence-size> results
-                </a>
-              </dtml-if previous-sequence>
-              <dtml-if next-sequence>
-                 <a href="&dtml-URL;?QUERY_SUBMIT=1&query_start=&dtml-next-sequence-start-number;&query=<dtml-var query url_quote missing=''>">
-                 Next <dtml-var next-sequence-size> results &gt;&gt;
-                 </a>
-              </dtml-if next-sequence>
-            </dtml-if sequence-end>
+        <dtml-except>
 
-          <dtml-else>
-            There was no data matching this query.
-          </dtml-in>
-        </dtml-let>
+          <h2 class="zmi-form-title">Query results</h2>
 
-      <dtml-except>
+          <p class="form-help">The query failed with an error.</p>
+          <p class="form-help">
+            <ul>
+              <li><strong>Error type:</strong>
+                  <dtml-var error_type html_quote></li>
+              <li><strong>Message:</strong>
+                  <dtml-var error_value></li>
+            </ul>
+          </p>
+        </dtml-try>
 
-        <h2 class="zmi-form-title">Query results</h2>
-
-        <p class="form-help">The query failed with an error.</p>
-        <p class="form-help">
-          <ul>
-            <li><strong>Error type:</strong>
-                <dtml-var error_type html_quote></li>
-            <li><strong>Message:</strong>
-                <dtml-var error_value></li>
-          </ul>
-        </p>
-      </dtml-try>
-
-    </dtml-if>
+      </dtml-if>
  
-  <dtml-else>
-    <p class="form-help">
-      This database connection is currently closed. You must click on the 
-      <em>status</em> tab and open the connection before you can test it.
-    </p>
-  </dtml-if>
+    <dtml-else>
+      <p class="form-help">
+        This database connection is currently closed. You must click on the 
+        <em>status</em> tab and open the connection before you can test it.
+      </p>
+    </dtml-if>
+
+  </dtml-let>
 
 </main>
 

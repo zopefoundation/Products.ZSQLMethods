@@ -4,6 +4,10 @@ Changelog
 3.10 (unreleased)
 -----------------
 
+- Zope 4 ZMI improvements for ZSQL Method objects
+
+- Zope 4 ZMI improvements for database connection objects
+
 - Package and ``tox`` configuration cleanup to allow runing tests in parallel
 
 
