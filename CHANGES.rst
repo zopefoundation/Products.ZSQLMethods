@@ -4,6 +4,8 @@ Changelog
 3.10 (unreleased)
 -----------------
 
+- Removed last remnants of the Zope 2 Help System
+
 - Zope 4 ZMI improvements for ZSQL Method objects
 
 - Zope 4 ZMI improvements for database connection objects

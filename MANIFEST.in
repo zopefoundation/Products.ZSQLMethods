@@ -16,4 +16,3 @@ exclude MANIFEST.in
 recursive-include src *.dtml
 recursive-include src *.gif
 recursive-include src *.py
-recursive-include src *.stx

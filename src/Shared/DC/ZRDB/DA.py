@@ -226,12 +226,9 @@ class DA(BaseQuery,
     connection_hook = None
 
     manage_options = (
-        ({'label': 'Edit', 'action': 'manage_main',
-          'help': ('ZSQLMethods', 'Z-SQL-Method_Edit.stx')},
-         {'label': 'Test', 'action': 'manage_testForm',
-          'help': ('ZSQLMethods', 'Z-SQL-Method_Test.stx')},
-         {'label': 'Advanced', 'action': 'manage_advancedForm',
-          'help': ('ZSQLMethods', 'Z-SQL-Method_Advanced.stx')})
+        ({'label': 'Edit', 'action': 'manage_main'},
+         {'label': 'Test', 'action': 'manage_testForm'},
+         {'label': 'Advanced', 'action': 'manage_advancedForm'})
         + RoleManager.manage_options + Item.manage_options)
 
     def __init__(self, id, title, connection_id, arguments, template):
