@@ -104,7 +104,7 @@
             <dtml-let res="this().manage_zmi_test(REQUEST)"
                       res_size="_.len(res)">
 
-              <p class="zmi-form-title font-weight-bold">
+              <p id="query_results" class="zmi-form-title font-weight-bold">
                   <dtml-if "res_size == 0">
                     <span class="badge badge-danger">0</span>
                   <dtml-else>
@@ -121,24 +121,21 @@
 
               <dtml-in "res" size=num_rows start=query_start orphan=3>
                 <dtml-if sequence-start>
-                  <ul class="pagination">
+                  <nav class="zmi-find-results nav row mb-3"><div class="col-6">
                     <dtml-if previous-sequence-size>
-                      <li class="page-item">
-                        <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
-                          <i class="fas fa-angle-double-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
+                        <a class="btn btn-primary" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                          <i class="fas fa-chevron-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
                         </a>
-                      </li>
                     </dtml-if previous-sequence-size>
                     <dtml-if next-sequence-size>
-                      <li class="page-item">
-                        <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
-                          Next <dtml-var next-sequence-size> results <i class="fas fa-angle-double-right ml-2"></i>
+                        </div><div class="col-6 text-right">
+                        <a class="btn btn-primary" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                          Next <dtml-var next-sequence-size> results <i class="fas fa-chevron-right ml-2"></i>
                         </a>
-                      </li>
                     </dtml-if next-sequence-size>
-                  </ul>
+                  </div></nav>
 
-                  <table class="table table-sm table-responsive table-striped table-hover table-bordered mb-5">
+                  <table class="table table-sm table-responsive table-striped table-hover table-bordered mb-3">
                     <thead>
                     <tr>
                       <dtml-in "res.names()">
@@ -146,6 +143,7 @@
                       </dtml-in>
                     </tr>
                     </thead>
+
                 </dtml-if sequence-start>
 
                 <tr>
@@ -159,22 +157,19 @@
                 <dtml-if sequence-end>
                   </table>
 
-                  <ul class="pagination">
+                  <nav class="zmi-find-results nav row mb-5"><div class="col-6">
                     <dtml-if previous-sequence-size>
-                      <li class="page-item">
-                        <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
-                          <i class="fas fa-angle-double-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
+                        <a class="btn btn-primary" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-previous-sequence-start-number;">
+                          <i class="fas fa-chevron-left mr-2"></i> Previous <dtml-var previous-sequence-size> results
                         </a>
-                      </li>
                     </dtml-if previous-sequence-size>
                     <dtml-if next-sequence-size>
-                      <li class="page-item">
-                        <a class="page-link" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
-                          Next <dtml-var next-sequence-size> results <i class="fas fa-angle-double-right ml-2"></i>
+                      </div><div class="col-6 text-right">
+                        <a class="btn btn-primary" href="&dtml-URL;&dtml-sequence-query;query_start=&dtml-next-sequence-start-number;">
+                          Next <dtml-var next-sequence-size> results <i class="fas fa-chevron-right ml-2"></i>
                         </a>
-                      </li>
                     </dtml-if next-sequence-size>
-                  </ul>
+                  </div></nav>
                 </dtml-if sequence-end>
 
               </dtml-in>
@@ -231,5 +226,15 @@
   </dtml-let>
 
 </main>
+
+<dtml-if "REQUEST.get('query_start',None)">
+  <script>
+    //<!--
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      document.location.href="#query_results";
+    });
+    //-->
+  </script>
+</dtml-if>
 
 <dtml-var manage_page_footer>

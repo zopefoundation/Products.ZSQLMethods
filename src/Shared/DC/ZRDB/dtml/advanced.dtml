@@ -14,9 +14,8 @@
       <label for="connection_hook"
              class="form-label col-sm-3 col-xl-2">Connection Hook</label>
       <div class=" col-sm-9 col-xl-10">
-          <input type="text" class="form-control" name="connection_hook"
-                 id="connection_hook" size="40"
-				 value="<dtml-var connection_hook null="" missing="" html_quote>"/>
+          <input type="text" class="form-control" name="connection_hook" id="connection_hook" 
+            value="<dtml-var connection_hook null="" missing="" html_quote>" />
       </div>
     </div> 
 
