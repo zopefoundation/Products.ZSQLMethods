@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.10 (unreleased)
+3.10 (2020-07-14)
 -----------------
 
 - Removed last remnants of the Zope 2 Help System
