@@ -5,6 +5,7 @@ from unittest import makeSuite
 from six import StringIO
 
 from ExtensionClass import Base
+
 from Shared.DC.ZRDB import RDB
 from Shared.DC.ZRDB.Results import Results
 

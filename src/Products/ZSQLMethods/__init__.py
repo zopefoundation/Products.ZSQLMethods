@@ -13,13 +13,14 @@
 """SQL Method Product.
 """
 
+from AccessControl.Permissions import open_close_database_connection
+
 import Shared.DC.ZRDB.Aqueduct
 import Shared.DC.ZRDB.RDB
 import Shared.DC.ZRDB.Search
 import Shared.DC.ZRDB.sqlgroup
 import Shared.DC.ZRDB.sqltest
 import Shared.DC.ZRDB.sqlvar
-from AccessControl.Permissions import open_close_database_connection
 from Products.ZSQLMethods import SQL
 
 

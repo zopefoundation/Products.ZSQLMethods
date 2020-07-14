@@ -13,9 +13,10 @@
 """Generic Database Connection Support"""
 
 try:
-    from html import escape # noqa
+    from html import escape
 except ImportError:  # Python 2
-    from cgi import escape  # noqa
+    from cgi import escape
+
 import sys
 from logging import getLogger
 
