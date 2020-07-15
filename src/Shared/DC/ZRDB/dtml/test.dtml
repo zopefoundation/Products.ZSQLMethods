@@ -226,7 +226,7 @@
 
 </main>
 
-<dtml-if "REQUEST.get('query_start',None)">
+<dtml-if "REQUEST.get('query_start', None)">
   <script>
     //<!--
     document.addEventListener("DOMContentLoaded", function(event) { 

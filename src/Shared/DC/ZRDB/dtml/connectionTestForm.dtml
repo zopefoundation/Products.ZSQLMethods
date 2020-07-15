@@ -160,7 +160,8 @@
   <script>
     //<!--
     document.addEventListener("DOMContentLoaded", function(event) {
-      document.location.href="#query_results";
+      el = document.getElementById("query_results");
+      el.scrollIntoView();
     });
     //-->
   </script>
