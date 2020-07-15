@@ -148,7 +148,8 @@
     <dtml-else>
       <p class="form-help">
         This database connection is currently closed. You must click on the 
-        <em>status</em> tab and open the connection before you can test it.
+        <em>status</em> or <em>Properties</em> tab and open the connection
+        before you can test it.
       </p>
     </dtml-if>
 
