@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.11 (unreleaased)
+3.11 (2020-07-15)
 ------------------
 
 - Improve pagination and search result display on the ZMI `Test` tab
