@@ -4,6 +4,9 @@ Changelog
 3.11 (unreleaased)
 ------------------
 
+- Improve pagination and search result display on the ZMI `Test` tab
+  (`#28 <https://github.com/zopefoundation/Products.ZSQLMethods/pull/28>`_)
+
 
 3.10 (2020-07-14)
 -----------------
