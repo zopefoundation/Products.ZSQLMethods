@@ -226,11 +226,12 @@
 
 </main>
 
-<dtml-if "REQUEST.get('query_start', None)">
+<dtml-if "REQUEST.get('query_start',None)">
   <script>
     //<!--
     document.addEventListener("DOMContentLoaded", function(event) { 
-      document.location.href="#query_results";
+      el = document.getElementById("query_results");
+      el.scrollIntoView();
     });
     //-->
   </script>
