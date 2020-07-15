@@ -3,15 +3,7 @@
 
 <form action="manage_edit" method="POST">
 <table cellspacing="2">
-        <tr>
-    <td align="left" valign="top">
-    <div class="form-label">
-    Id
-    </div>
-    </td>
-	  <td align="LEFT" valign="TOP">&dtml-id;</td>
-	</tr>
-
+  <tr>
 	<tr>
     <td align="left" valign="top">
     <div class="form-optional">
