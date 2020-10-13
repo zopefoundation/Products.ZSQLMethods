@@ -15,7 +15,7 @@ The Search Interface will create a
 </p>
 
 <p class="form-help">
-In the form below, <em>seachable objects</em> are the objects
+In the form below, <em>searchable objects</em> are the objects
 (usually SQL Methods) to be searched. <em>report id</em> and 
 <em>search input id</em> are the ids of the 
 report and search form objects that will be created.
