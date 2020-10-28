@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/zopefoundation/Products.ZSQLMethods.svg?branch=master
-        :target: https://travis-ci.org/zopefoundation/Products.ZSQLMethods
+.. image:: https://travis-ci.com/zopefoundation/Products.ZSQLMethods.svg?branch=master
+        :target: https://travis-ci.com/zopefoundation/Products.ZSQLMethods
 
 .. image:: https://coveralls.io/repos/github/zopefoundation/Products.ZSQLMethods/badge.svg?branch=master
         :target: https://coveralls.io/github/zopefoundation/Products.ZSQLMethods?branch=master
