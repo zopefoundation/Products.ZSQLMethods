@@ -4,6 +4,8 @@ Changelog
 3.12 (unreleased)
 -----------------
 
+- Zope 4 ZMI improvements for database connection test form
+
 
 3.11 (2020-07-15)
 ------------------
