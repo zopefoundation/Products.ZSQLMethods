@@ -10,7 +10,10 @@
 
     <p class="zmi-form-title m-0 font-weight-bold">
       Test database connection
-      <a href="manage_main" title="Edit database connection">&dtml-title_or_id;</a>
+      <a href="manage_main" title="Edit database connection" 
+        class="text-<dtml-if connected>success<dtml-else>warning</dtml-if>">
+        &dtml-title_or_id;
+      </a>
     </p>
 
     <dtml-if connected>
@@ -20,20 +23,21 @@
         using the form below. Click <em>submit query</em> to run the query.
       </p>
 
-      <form action="manage_testForm" method="get">
+      <form action="manage_testForm" method="get" class="zmi-edit zmi-sql zmi-ace-brief">
 
-        <div class="form-group row">
-          <textarea data-contenttype="sql"
-                    class="form-control code zmi-code col-sm-12"
+        <div class="form-group">
+          <textarea id="content" data-contenttype="sql"
+                    class="form-control zmi-zpt zmi-code col-sm-12"
                     name="query:text" wrap="off" accesskey="e"
                     tabindex="1" rows="10"
                     ><dtml-if query>&dtml-query;</dtml-if></textarea>
         </div>
 
-        <div class="form-group row">
-          <label for="num_rows"
-                 class="form-label col-sm-3 col-md-2">Rows per page</label>
-          <div class="col-sm-3 col-md-2">
+        <div class="form-group">
+          <div class="input-group mt-4">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Rows per page</div>
+            </div>
             <select name="num_rows" class="form-control">
               <dtml-in "[10, 20, 50, 100, 500, 1000]">
                 <option <dtml-if "_.int(num_rows)==_['sequence-item']">selected</dtml-if>>
