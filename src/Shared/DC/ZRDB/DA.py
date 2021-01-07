@@ -39,6 +39,7 @@ from DocumentTemplate.security import RestrictedDTML
 from ExtensionClass import Base
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
+from OFS.SimpleItem import PathReprProvider
 from Persistence import Persistent
 from webdav.Resource import Resource
 from zExceptions import BadRequest
@@ -203,7 +204,8 @@ class SQL(RestrictedDTML, Base, nvSQL):
     pass
 
 
-class DA(BaseQuery,
+class DA(PathReprProvider,
+         BaseQuery,
          Implicit,
          Persistent,
          RoleManager,
