@@ -6,6 +6,8 @@ Changelog
 
 - Zope 4 ZMI improvements for database connection test form
 
+- Fix the ``repr`` of SQL Methods
+
 
 3.11 (2020-07-15)
 ------------------

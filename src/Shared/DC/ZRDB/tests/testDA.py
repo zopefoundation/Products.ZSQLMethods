@@ -102,6 +102,11 @@ class TestTM(unittest.TestCase):
         self.assertEqual(da.template_class, klass.template_class)
         self.assertEqual(da.connection_hook, 'foo')
 
+    def test_repr(self):
+        da = self._makeOne('test_id', 'Test Title', 'conn_id',
+                           'foo bar', '<dtml-var bar>')
+        self.assertEqual(da.__repr__(), '<DA at test_id>')
+
 
 DEFAULT_DAV_SOURCE = """\
 <dtml-comment>
