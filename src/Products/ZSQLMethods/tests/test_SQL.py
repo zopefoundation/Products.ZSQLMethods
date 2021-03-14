@@ -24,7 +24,7 @@ class SQLConnectionIdsTests(unittest.TestCase):
     def setUp(self):
         from OFS.Folder import Folder
 
-        from Products.ZSQLMethods.tests.dummy import DummySQLConnection
+        from .dummy import DummySQLConnection
         super(SQLConnectionIdsTests, self).setUp()
 
         self.root = Folder('root')
