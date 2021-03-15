@@ -44,7 +44,9 @@ setup(
     classifiers=[
         'Development Status :: 6 - Mature',
         'Environment :: Web Environment',
+        'Framework :: Zope',
         'Framework :: Zope :: 4',
+        'Framework :: Zope :: 5',
         'License :: OSI Approved :: Zope Public License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
@@ -54,6 +56,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Database',
         'Topic :: Database :: Front-Ends',

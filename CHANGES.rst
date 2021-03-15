@@ -4,6 +4,8 @@ Changelog
 3.13 (unreleased)
 -----------------
 
+- add support for Python 3.9
+
 
 3.12 (2020-01-09)
 -----------------

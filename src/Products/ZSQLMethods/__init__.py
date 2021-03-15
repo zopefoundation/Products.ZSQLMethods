@@ -21,7 +21,7 @@ import Shared.DC.ZRDB.Search
 import Shared.DC.ZRDB.sqlgroup
 import Shared.DC.ZRDB.sqltest
 import Shared.DC.ZRDB.sqlvar
-from Products.ZSQLMethods import SQL
+from . import SQL
 
 
 def initialize(context):
