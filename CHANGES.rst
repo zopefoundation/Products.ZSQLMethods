@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.14 (unreleased)
+3.14 (2021-06-29)
 -----------------
 
 - Fix `Z Search Interface Interface` creation under Python 3
