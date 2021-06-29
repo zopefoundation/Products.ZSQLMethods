@@ -19,6 +19,8 @@ except ImportError:
 
 from AccessControl import getSecurityManager
 from App.special_dtml import DTMLFile
+from OFS.DTMLMethod import addDTMLMethod
+from Products.PageTemplates.ZopePageTemplate import manage_addPageTemplate
 from zExceptions import Unauthorized
 
 from .Aqueduct import Args
@@ -44,7 +46,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
     if input_title and not input_id:
         raise ValueError('No <em>input id</em> were specified')
 
-    qs = map(lambda q, self=self: _getquery(self, q), queries)
+    qs = list(map(lambda q, self=self: _getquery(self, q), queries))
     arguments = {}
     keys = []
 
@@ -77,19 +79,17 @@ def manage_addZSearch(self, report_id, report_title, report_style,
 
         if input_id:
             arguments = Args(arguments, keys)
-            self.manage_addDocument(
-                input_id, input_title,
-                default_input_form(arguments, report_id))
+            addDTMLMethod(self, input_id, input_title,
+                          default_input_form(arguments, report_id))
 
-        def _report(obj, style):
-            return custom_default_report(obj.id, obj, no_table=style)
-
-        self.manage_addDocument(
-            report_id, report_title,
+        reports = [custom_default_report(x.id, x, no_table=report_style)
+                   for x in qs]
+        addDTMLMethod(
+            self, report_id, report_title,
             ('<html><head><title><dtml-var title_or_id></title>'
              '</head><body bgcolor="#FFFFFF">\n%s\n'
              '</body></html>' %
-             '\n<hr>\n'.join(map(_report(q, report_style), qs))))
+             '\n<hr>\n'.join(reports)))
 
         if REQUEST:
             return self.manage_main(self, REQUEST)
@@ -101,18 +101,17 @@ def manage_addZSearch(self, report_id, report_title, report_style,
 
         if input_id:
             arguments = Args(arguments, keys)
-            self.manage_addProduct['PageTemplates'].manage_addPageTemplate(
-                input_id, input_title,
+            manage_addPageTemplate(
+                self, input_id, input_title,
                 default_input_zpt_form(arguments, report_id))
 
-        def _report(obj, style):
-            return custom_default_zpt_report(obj.id, obj, no_table=style)
-
-        self.manage_addProduct['PageTemplates'].manage_addPageTemplate(
-            report_id, report_title,
+        reports = [custom_default_zpt_report(x.id, x, no_table=report_style)
+                   for x in qs]
+        manage_addPageTemplate(
+            self, report_id, report_title,
             ('<html><body>\n%s\n'
              '</body></html>' %
-             '\n<hr>\n'.join(map(_report(q, report_style), qs))))
+             '\n<hr>\n'.join(reports)))
 
         if REQUEST:
             return self.manage_main(self, REQUEST)
@@ -147,10 +146,10 @@ def ZQueryIds(self):
         try:
             o = o.aq_parent
         except Exception:
-            return t
+            return sorted(t)
 
         if n > 100:
-            return t  # Seat belt
+            return sorted(t)  # Seat belt
 
         n = n + 1
 
