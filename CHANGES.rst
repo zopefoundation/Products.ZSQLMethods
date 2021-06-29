@@ -4,6 +4,9 @@ Changelog
 3.14 (unreleased)
 -----------------
 
+- Fix `Z Search Interface Interface` creation under Python 3
+  (`#30 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/30>`_)
+
 
 3.13 (2021-03-15)
 -----------------
