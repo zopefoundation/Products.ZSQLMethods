@@ -19,6 +19,8 @@ except ImportError:
 
 from AccessControl import getSecurityManager
 from App.special_dtml import DTMLFile
+from OFS.DTMLMethod import addDTMLMethod
+from Products.PageTemplates.ZopePageTemplate import manage_addPageTemplate
 from zExceptions import Unauthorized
 
 from .Aqueduct import Args
@@ -77,14 +79,13 @@ def manage_addZSearch(self, report_id, report_title, report_style,
 
         if input_id:
             arguments = Args(arguments, keys)
-            self.manage_addDocument(
-                input_id, input_title,
-                default_input_form(arguments, report_id))
+            addDTMLMethod(self, input_id, input_title,
+                          default_input_form(arguments, report_id))
 
         reports = [custom_default_report(x.id, x, no_table=report_style)
                    for x in qs]
-        self.manage_addDocument(
-            report_id, report_title,
+        addDTMLMethod(
+            self, report_id, report_title,
             ('<html><head><title><dtml-var title_or_id></title>'
              '</head><body bgcolor="#FFFFFF">\n%s\n'
              '</body></html>' %
@@ -100,14 +101,14 @@ def manage_addZSearch(self, report_id, report_title, report_style,
 
         if input_id:
             arguments = Args(arguments, keys)
-            self.manage_addProduct['PageTemplates'].manage_addPageTemplate(
-                input_id, input_title,
+            manage_addPageTemplate(
+                self, input_id, input_title,
                 default_input_zpt_form(arguments, report_id))
 
         reports = [custom_default_zpt_report(x.id, x, no_table=report_style)
                    for x in qs]
-        self.manage_addProduct['PageTemplates'].manage_addPageTemplate(
-            report_id, report_title,
+        manage_addPageTemplate(
+            self, report_id, report_title,
             ('<html><body>\n%s\n'
              '</body></html>' %
              '\n<hr>\n'.join(reports)))
