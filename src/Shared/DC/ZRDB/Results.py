@@ -108,7 +108,10 @@ class Results:
         return self._data_dictionary
 
     def __len__(self):
-        return len(self._data)
+        if self._data == None:
+            return 0
+        else:
+            return len(self._data)
 
     def __getitem__(self, index):
         if index == self._index:
