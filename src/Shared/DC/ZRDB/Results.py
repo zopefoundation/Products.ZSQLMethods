@@ -108,7 +108,7 @@ class Results:
         return self._data_dictionary
 
     def __len__(self):
-        if self._data == None:
+        if self._data is None:
             return 0
         else:
             return len(self._data)
