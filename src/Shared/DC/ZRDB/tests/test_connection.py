@@ -12,6 +12,8 @@
 ##############################################################################
 import unittest
 
+from zExceptions import BadRequest
+
 
 class ConnectionTests(unittest.TestCase):
 
@@ -37,6 +39,22 @@ class ConnectionTests(unittest.TestCase):
         conn2.connect_on_load = False
         conn2.__setstate__(None)
         self.assertFalse(hasattr(conn2, '_connected_to'))
+
+    def test_connect_error(self):
+        # It raises a BadRequest exception. This is a regression test for
+        # https://github.com/zopefoundation/Products.ZSQLMethods/issues/41
+
+        class FakeFactory(object):
+
+            def __call__(self, s):
+                raise RuntimeError
+
+        conn = self._makeOne('conn1', '', 'conn string 1')
+        conn.factory = FakeFactory
+        with self.assertRaises(BadRequest) as err:
+            conn.connect('conn1')
+        self.assertTrue(str(err.exception).startswith(
+            '<strong>Error connecting to DB.'))
 
     def test_sql_quote___miss(self):
         TO_QUOTE = 'no quoting required'

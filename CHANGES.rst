@@ -6,6 +6,11 @@ Changelog
 
 - Add support for Python 3.10.
 
+- Fix Python 2 compatibility in
+  ``Shared.DC.ZRDB.Connection.Connection.connect``
+  (`#41 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/41>`_)
+
+
 3.14 (2021-06-29)
 -----------------
 
