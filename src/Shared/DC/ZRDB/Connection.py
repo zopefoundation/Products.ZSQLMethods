@@ -21,6 +21,7 @@ import sys
 from logging import getLogger
 
 from six import StringIO
+from six import reraise
 
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_connections
@@ -202,9 +203,12 @@ class Connection(Persistent, RoleManager, Item, Implicit):
                 self._v_database_connection = DB(s)
             except Exception:
                 t, v, tb = sys.exc_info()
-                raise BadRequest(
-                    '<strong>Error connecting to DB.</strong><br>\n'
-                    '<!--\n%s\n%s\n-->\n' % (t, v)).with_traceback(tb)
+                raise reraise(
+                    BadRequest,
+                    BadRequest(
+                        '<strong>Error connecting to DB.</strong><br>\n'
+                        '<!--\n%s\n%s\n-->\n' % (t, v)),
+                    tb)
         finally:
             tb = None
         self._v_connected = DateTime()

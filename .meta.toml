@@ -15,7 +15,7 @@ with-future-python = false
 use-flake8 = true
 
 [coverage]
-fail-under = 65
+fail-under = 70
 
 [coverage-run]
 source = "src"
