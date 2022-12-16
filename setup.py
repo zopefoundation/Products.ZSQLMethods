@@ -16,7 +16,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '3.16.dev0'
+version = '3.16'
 
 with open('README.rst') as f:
     README = f.read()
@@ -58,6 +58,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Database',
         'Topic :: Database :: Front-Ends',
