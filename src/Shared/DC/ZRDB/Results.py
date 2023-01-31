@@ -144,7 +144,7 @@ class Results:
             else:
                 nstrings.append(i)
             if 'width' in item:
-                append('%s%s' % (item['width'], t))
+                append('{}{}'.format(item['width'], t))
             else:
                 r.append(t)
 

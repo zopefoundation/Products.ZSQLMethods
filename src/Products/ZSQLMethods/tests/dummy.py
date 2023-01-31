@@ -19,4 +19,4 @@ class DummySQLConnection(Base, Implicit):
     def title_and_id(self):
         if not self.title:
             return self._id
-        return '%s (%s)' % (self.title, self._id)
+        return '{} ({})'.format(self.title, self._id)

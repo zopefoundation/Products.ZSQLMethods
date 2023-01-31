@@ -16,10 +16,8 @@ import copy
 import os
 import re
 import sys
+from io import StringIO
 from time import time
-
-import six
-from six import StringIO
 
 import Products
 from AccessControl.class_init import InitializeClass
@@ -69,7 +67,7 @@ def _getPath(home, prefix, name, suffixes):
 
     for suffix in suffixes:
         if suffix:
-            fqn = '%s.%s' % (fn, suffix)
+            fqn = '{}.{}'.format(fn, suffix)
         else:
             fqn = fn
         if os.path.exists(fqn):
@@ -152,7 +150,7 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
 
             for suffix in suffixes:
                 if suffix:
-                    fn = '%s.%s' % (prefix, suffix)
+                    fn = '{}.{}'.format(prefix, suffix)
                 else:
                     fn = prefix
                 if os.path.exists(fn):
@@ -268,10 +266,10 @@ class DA(PathReprProvider,
             cols = str(min(100, max(25, int(cols[:-1]) + dc))) + '%'
         else:
             cols = str(max(35, int(cols) + dc))
-        e = (DateTime('GMT') + 365).rfc822()
+        expires = (DateTime('GMT') + 365).rfc822()
         setCookie = REQUEST['RESPONSE'].setCookie
-        setCookie('dtpref_rows', rows, path='/', expires=e)
-        setCookie('dtpref_cols', cols, path='/', expires=e)
+        setCookie('dtpref_rows', rows, path='/', expires=expires)
+        setCookie('dtpref_cols', cols, path='/', expires=expires)
         REQUEST.other.update({'dtpref_cols': cols, 'dtpref_rows': rows})
         return self.manage_main(self, REQUEST, title=title,
                                 arguments_src=arguments,
@@ -378,7 +376,7 @@ class DA(PathReprProvider,
     @security.protected(view_management_screens)
     def PrincipiaSearchSource(self):
         """Return content for use by the Find machinery."""
-        return '%s\n%s' % (self.arguments_src, self.src)
+        return '{}\n{}'.format(self.arguments_src, self.src)
 
     # WebDAV / FTP support
 
@@ -389,7 +387,7 @@ class DA(PathReprProvider,
         """Return unprocessed document source."""
         if RESPONSE is not None:
             RESPONSE.setHeader('Content-Type', self.default_content_type)
-        return '<params>%s</params>\n%s' % (self.arguments_src, self.src)
+        return '<params>{}</params>\n{}'.format(self.arguments_src, self.src)
 
     def manage_DAVget(self):
         """Get source for WebDAV"""
@@ -419,10 +417,8 @@ class DA(PathReprProvider,
         body = REQUEST.get('BODY', '')
         parameters = {}
         connection_id = self.connection_id
-        if six.PY3 and isinstance(body, bytes):
+        if isinstance(body, bytes):
             body = body.decode('UTF-8')
-        elif six.PY2 and not isinstance(body, bytes):
-            body = body.encode('UTF-8')
 
         re_expr = r'\s*<dtml-comment>(.*)</dtml-comment>\s*\n'
         m = re.match(re_expr, body, re.I | re.S)
@@ -522,7 +518,7 @@ class DA(PathReprProvider,
                     r = 'This statement returned no results.'
             except Exception:
                 t, v, tb = sys.exc_info()
-                r = '<strong>Error, <em>%s</em>:</strong> %s' % (t, v)
+                r = '<strong>Error, <em>{}</em>:</strong> {}'.format(t, v)
 
             report = HTML(
                 '<html>\n'
@@ -730,7 +726,7 @@ class DA(PathReprProvider,
             brain = self._v_brain = getBrain(
                 self.class_file_, self.class_name_)
 
-        if isinstance(result, type('')):
+        if isinstance(result, str):
             f = StringIO()
             f.write(result)
             f.seek(0)
@@ -781,7 +777,7 @@ class DA(PathReprProvider,
 
         if isinstance(exception.args, (list, tuple)):
             for part in exception.args:
-                err_msg = '%s\n%s' % (err_msg, part)
+                err_msg = '{}\n{}'.format(err_msg, part)
         else:
             err_msg = str(exception)
 

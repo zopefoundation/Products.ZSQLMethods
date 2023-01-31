@@ -44,7 +44,7 @@ class ConnectionTests(unittest.TestCase):
         # It raises a BadRequest exception. This is a regression test for
         # https://github.com/zopefoundation/Products.ZSQLMethods/issues/41
 
-        class FakeFactory(object):
+        class FakeFactory:
 
             def __call__(self, s):
                 raise RuntimeError
@@ -106,5 +106,6 @@ class ConnectionTests(unittest.TestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ConnectionTests))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(ConnectionTests))
     return suite

@@ -15,8 +15,6 @@
 import array
 import re
 
-import six
-
 from Acquisition import Implicit
 from DateTime import DateTime
 from ExtensionClass import Base
@@ -34,8 +32,7 @@ def parse_text(s):
     return '\\'.join(r)
 
 
-if six.PY3:
-    long = int
+long = int
 
 Parsers = {'n': float,
            'i': int,
@@ -57,7 +54,7 @@ class NoBrains(Base):
     pass
 
 
-class DatabaseResults(object):
+class DatabaseResults:
     """Class for reading RDB files
     """
     _index = None
@@ -132,7 +129,7 @@ class DatabaseResults(object):
 
             mo = defre.match(_def)
             if mo is None:
-                err = 'Invalid column definition for, %s, for %s' % (
+                err = 'Invalid column definition for, {}, for {}'.format(
                       _def, names[i])
                 raise ValueError(err)
 

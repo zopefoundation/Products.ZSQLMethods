@@ -113,8 +113,8 @@ class TM:
 class Surrogate:
 
     def __init__(self, db):
-        warn(u'The Surrogate class is deprecated and will be removed in '
-             u'Products.ZSQLMethods version 4.')
+        warn('The Surrogate class is deprecated and will be removed in '
+             'Products.ZSQLMethods version 4.')
         self._p_jar = db
         self.__inform_commit__ = db.tpc_finish
         self.__inform_abort__ = db.tpc_abort

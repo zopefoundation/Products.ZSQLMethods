@@ -12,16 +12,10 @@
 ##############################################################################
 """Generic Database Connection Support"""
 
-try:
-    from html import escape
-except ImportError:  # Python 2
-    from cgi import escape
-
 import sys
+from html import escape
+from io import StringIO
 from logging import getLogger
-
-from six import StringIO
-from six import reraise
 
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_connections
@@ -126,7 +120,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
         dbc = self()  # get our connection
         res = dbc.query(query)
 
-        if isinstance(res, type('')):
+        if isinstance(res, str):
             f = StringIO()
             f.write(res)
             f.seek(0)
@@ -203,12 +197,9 @@ class Connection(Persistent, RoleManager, Item, Implicit):
                 self._v_database_connection = DB(s)
             except Exception:
                 t, v, tb = sys.exc_info()
-                raise reraise(
-                    BadRequest,
-                    BadRequest(
+                raise BadRequest(
                         '<strong>Error connecting to DB.</strong><br>\n'
-                        '<!--\n%s\n%s\n-->\n' % (t, v)),
-                    tb)
+                        '<!--\n%s\n%s\n-->\n' % (t, v)).with_traceback(tb)
         finally:
             tb = None
         self._v_connected = DateTime()

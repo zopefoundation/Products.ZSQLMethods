@@ -11,11 +11,8 @@ class SQLMethodTests(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_class_conforms_to_IWriteLock(self):
+        from OFS.interfaces import IWriteLock
         from zope.interface.verify import verifyClass
-        try:
-            from OFS.interfaces import IWriteLock
-        except ImportError:
-            from webdav.interfaces import IWriteLock
         verifyClass(IWriteLock, self._getTargetClass())
 
 
@@ -25,7 +22,7 @@ class SQLConnectionIdsTests(unittest.TestCase):
         from OFS.Folder import Folder
 
         from .dummy import DummySQLConnection
-        super(SQLConnectionIdsTests, self).setUp()
+        super().setUp()
 
         self.root = Folder('root')
         conn1 = DummySQLConnection('conn1', 'Title1')
@@ -58,5 +55,7 @@ class SQLConnectionIdsTests(unittest.TestCase):
 
 
 def test_suite():
-    return unittest.TestSuite((unittest.makeSuite(SQLMethodTests),
-                               unittest.makeSuite(SQLConnectionIdsTests)))
+    loader = unittest.defaultTestLoader
+    return unittest.TestSuite(
+        (loader.loadTestsFromTestCase(SQLMethodTests),
+         loader.loadTestsFromTestCase(SQLConnectionIdsTests)))
