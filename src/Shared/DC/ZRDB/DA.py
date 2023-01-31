@@ -67,7 +67,7 @@ def _getPath(home, prefix, name, suffixes):
 
     for suffix in suffixes:
         if suffix:
-            fqn = '{}.{}'.format(fn, suffix)
+            fqn = f'{fn}.{suffix}'
         else:
             fqn = fn
         if os.path.exists(fqn):
@@ -150,7 +150,7 @@ def getPath(prefix, name, checkProduct=1, suffixes=('',), cfg=None):
 
             for suffix in suffixes:
                 if suffix:
-                    fn = '{}.{}'.format(prefix, suffix)
+                    fn = f'{prefix}.{suffix}'
                 else:
                     fn = prefix
                 if os.path.exists(fn):
@@ -376,7 +376,7 @@ class DA(PathReprProvider,
     @security.protected(view_management_screens)
     def PrincipiaSearchSource(self):
         """Return content for use by the Find machinery."""
-        return '{}\n{}'.format(self.arguments_src, self.src)
+        return f'{self.arguments_src}\n{self.src}'
 
     # WebDAV / FTP support
 
@@ -387,7 +387,7 @@ class DA(PathReprProvider,
         """Return unprocessed document source."""
         if RESPONSE is not None:
             RESPONSE.setHeader('Content-Type', self.default_content_type)
-        return '<params>{}</params>\n{}'.format(self.arguments_src, self.src)
+        return f'<params>{self.arguments_src}</params>\n{self.src}'
 
     def manage_DAVget(self):
         """Get source for WebDAV"""
@@ -518,7 +518,7 @@ class DA(PathReprProvider,
                     r = 'This statement returned no results.'
             except Exception:
                 t, v, tb = sys.exc_info()
-                r = '<strong>Error, <em>{}</em>:</strong> {}'.format(t, v)
+                r = f'<strong>Error, <em>{t}</em>:</strong> {v}'
 
             report = HTML(
                 '<html>\n'
@@ -777,7 +777,7 @@ class DA(PathReprProvider,
 
         if isinstance(exception.args, (list, tuple)):
             for part in exception.args:
-                err_msg = '{}\n{}'.format(err_msg, part)
+                err_msg = f'{err_msg}\n{part}'
         else:
             err_msg = str(exception)
 

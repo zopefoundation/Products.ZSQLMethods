@@ -70,7 +70,7 @@ class BaseQuery(Persistent, Item, Implicit, RoleManager):
         missing = []
 
         for name in args.keys():
-            idname = '{}/{}'.format(id, name)
+            idname = f'{id}/{name}'
             try:
                 r[name] = REQUEST[idname]
             except Exception:

@@ -82,11 +82,11 @@ def manage_addZSQLMethod(self, id, title,
         except Exception:
             u = REQUEST['URL1']
         if submit == ' Add and Edit ':
-            u = '{}/{}/manage_main'.format(u, id)
+            u = f'{u}/{id}/manage_main'
         elif submit == ' Add and Test ':
-            u = '{}/{}/manage_testForm'.format(u, id)
+            u = f'{u}/{id}/manage_testForm'
         else:
-            u = u + '/manage_main'
+            u = f'{u}/manage_main'
 
         REQUEST.RESPONSE.redirect(u)
     return ''

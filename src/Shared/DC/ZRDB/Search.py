@@ -54,7 +54,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
         if input_id:
             for name, arg in q._searchable_arguments().items():
                 if len(qs) > 1:
-                    key = '{}/{}'.format(id, name)
+                    key = f'{id}/{name}'
                 else:
                     key = name
                 arguments[key] = arg

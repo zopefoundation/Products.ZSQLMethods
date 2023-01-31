@@ -61,7 +61,7 @@ from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
-StringTypes = (str,) + (bytes,)
+StringTypes = (str, bytes)
 
 
 class SQLTest:
@@ -193,11 +193,11 @@ class SQLTest:
             if self.op == '<>':
                 # Do the equivalent of 'not-equal' for a list,
                 # "a not in (b,c)"
-                return '{} not in ({})'.format(self.column, vs)
+                return f'{self.column} not in ({vs})'
             else:
                 # "a in (b,c)"
-                return '{} in ({})'.format(self.column, vs)
-        return '{} {} {}'.format(self.column, self.op, vs[0])
+                return f'{self.column} in ({vs})'
+        return f'{self.column} {self.op} {vs[0]}'
 
     __call__ = render
 

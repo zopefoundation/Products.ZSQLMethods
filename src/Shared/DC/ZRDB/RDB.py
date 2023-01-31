@@ -129,8 +129,7 @@ class DatabaseResults:
 
             mo = defre.match(_def)
             if mo is None:
-                err = 'Invalid column definition for, {}, for {}'.format(
-                      _def, names[i])
+                err = f'Invalid column definition for, {_def}, for {names[i]}'
                 raise ValueError(err)
 
             type = mo.group(2).lower()

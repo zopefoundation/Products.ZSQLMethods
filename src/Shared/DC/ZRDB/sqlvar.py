@@ -53,7 +53,7 @@ from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
-StringTypes = (str,) + (bytes,)
+StringTypes = (str, bytes)
 
 
 class SQLVar:
