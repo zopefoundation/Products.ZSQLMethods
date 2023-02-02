@@ -32,11 +32,9 @@ def parse_text(s):
     return '\\'.join(r)
 
 
-long = int
-
 Parsers = {'n': float,
            'i': int,
-           'l': long,
+           'l': int,
            'd': DateTime,
            't': parse_text}
 
