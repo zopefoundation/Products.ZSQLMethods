@@ -79,7 +79,7 @@ class SQLGroup:
         self.encoding = encoding
         self.blocks = blocks
         tname, args, section = blocks[0]
-        self.__name__ = '%s %s' % (tname, args)
+        self.__name__ = f'{tname} {args}'
         args = parse_params(args, required=1, where=1, set=1, noparens=1)
         if '' in args:
             args[args['']] = 1

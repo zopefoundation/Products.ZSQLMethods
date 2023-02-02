@@ -12,8 +12,7 @@
 ##############################################################################
 
 import logging
-
-from six.moves._thread import allocate_lock
+from _thread import allocate_lock
 
 from transaction.interfaces import IDataManager
 from transaction.interfaces import TransactionFailedError

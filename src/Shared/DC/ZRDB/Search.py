@@ -12,10 +12,7 @@
 ##############################################################################
 """Search Interface Wizard"""
 
-try:
-    from html import escape  # noqa
-except ImportError:
-    from cgi import escape  # noqa
+from html import escape
 
 from AccessControl import getSecurityManager
 from App.special_dtml import DTMLFile
@@ -57,20 +54,20 @@ def manage_addZSearch(self, report_id, report_title, report_style,
         if input_id:
             for name, arg in q._searchable_arguments().items():
                 if len(qs) > 1:
-                    key = '%s/%s' % (id, name)
+                    key = f'{id}/{name}'
                 else:
                     key = name
                 arguments[key] = arg
                 keys.append(key)
         if q._searchable_result_columns() is None:
             raise ValueError(
-                """The input searchable object, <em>%s</em>,
+                """The input searchable object, <em>{}</em>,
                 has not been tested.  Until it has been tested,
                 it\'s output schema is unknown, and a report
                 cannot be generated.  Before creating a report
                 from this query, you must try out the query.  To
-                try out the query, <a href="%s">click here</a>.
-                """ % (escape(q.title_and_id()), escape(url, 1)))
+                try out the query, <a href="{}">click here</a>.
+                """.format(escape(q.title_and_id()), escape(url, 1)))
 
     if object_type == 'dtml_methods':
 
@@ -181,7 +178,7 @@ def default_input_form(arguments, action='query',
     if arguments:
         items = arguments.items()
         return (
-            '%s\n%s%s' % (
+            '{}\n{}{}'.format(
                 '<html><head><title><dtml-var title_or_id></title>'
                 '</head><body bgcolor="#FFFFFF">\n%s\n'
                 '<form action="%s" method="get">\n'
@@ -198,7 +195,7 @@ def default_input_form(arguments, action='query',
                          '</td></tr>'
                          % (nicify(a[0]),
                             'type' in a[1]
-                            and ('%s:%s' % (a[0], a[1]['type'])) or a[0],
+                            and ('{}:{}'.format(a[0], a[1]['type'])) or a[0],
                             'default' in a[1] and a[1]['default'] or '',
                             )), items)),
                 '\n<tr><td colspan=2 align=center>\n'
@@ -221,7 +218,7 @@ def default_input_zpt_form(arguments, action='query', tabs=''):
     if arguments:
         items = arguments.items()
         return (
-            '%s\n%s%s' % (
+            '{}\n{}{}'.format(
                 '<html><body>\n%s\n'
                 '<form action="%s" method="get">\n'
                 '<h2 tal:content="template/title_or_id">Title</h2>\n'
@@ -237,7 +234,7 @@ def default_input_zpt_form(arguments, action='query', tabs=''):
                          '</td></tr>'
                          % (nicify(a[0]),
                             'type' in a[1]
-                            and ('%s:%s' % (a[0], a[1]['type'])) or a[0],
+                            and ('{}:{}'.format(a[0], a[1]['type'])) or a[0],
                             'default' in a[1] and a[1]['default'] or '',
                             )), items)),
                 '\n<tr><td colspan=2 align=center>\n'

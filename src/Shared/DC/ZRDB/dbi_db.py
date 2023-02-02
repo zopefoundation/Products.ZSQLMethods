@@ -46,7 +46,7 @@ class DB:
         db = self.db = self.Database_Connection(connection)
         self.cursor = db.cursor()
 
-    def str(self, v, StringType=type('')):
+    def str(self, v, StringType=str):
         if v is None:
             return ''
         r = str(v)
@@ -127,7 +127,7 @@ class DB:
             result = ''
 
         return (
-            '%s\n%s\n%s' % (
+            '{}\n{}\n{}'.format(
                 '\t'.join(map(lambda d: d[0], desc)),
                 '\t'.join(
                     map(lambda d, defs=self.defs: '%d%s' % (d[2], defs[d[1]]),

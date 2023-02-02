@@ -14,8 +14,7 @@
 import binascii
 import os
 import re
-
-from six import StringIO
+from io import StringIO
 
 from Acquisition import Implicit
 from App.Common import package_home
@@ -71,7 +70,7 @@ class BaseQuery(Persistent, Item, Implicit, RoleManager):
         missing = []
 
         for name in args.keys():
-            idname = '%s/%s' % (id, name)
+            idname = f'{id}/{name}'
             try:
                 r[name] = REQUEST[idname]
             except Exception:
@@ -138,7 +137,7 @@ class Searchable(BaseQuery):
         raise Redirect('%s/manage_testForm' % URL1)
 
 
-class Composite(object):
+class Composite:
 
     def _getquery(self, id):
 
@@ -172,7 +171,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
     if arguments:
         items = arguments.items()
         return (
-            '%s\n%s%s' % (
+            '{}\n{}{}'.format(
                 '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"'
                 ' "http://www.w3.org/TR/REC-html40/loose.dtd">\n'
                 '<html lang="en"><head><title>%s Input Data</title></head>\n'
@@ -192,7 +191,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
                          '     </td></tr>'
                          % (nicify(a[0]),
                             'type' in a[1]
-                             and ('%s:%s' % (a[0], a[1]['type']))
+                             and ('{}:{}'.format(a[0], a[1]['type']))
                              or a[0],
                             'default' in a[1] and a[1]['default'] or '')),
                             items)),
@@ -254,7 +253,7 @@ def custom_default_report(id, result, action='', no_table=0,
         row.append('          %s<dtml-var %s%s>%s'
                    % (td, n, c['type'] != 's' and ' null=""' or '', _td))
 
-    row = ('     %s\n%s\n        %s' % (
+    row = ('     {}\n{}\n        {}'.format(
         tr, delim.join(row), _tr))
 
     return custom_default_report_src(
@@ -283,7 +282,7 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
         tpl = '          %s<span tal:replace="result/%s">%s goes here</span>%s'
         row.append(tpl % (td, n, n, _td))
 
-    row = ('     %s\n%s\n        %s' % (
+    row = ('     {}\n{}\n        {}'.format(
         tr, delim.join(row), _tr))
 
     return custom_default_zpt_report_src(
@@ -313,7 +312,7 @@ def decodestring(s):
     return g.getvalue()
 
 
-class Args(object):
+class Args:
 
     def __init__(self, data=None, keys=None):
         self._data = data or {}
@@ -446,7 +445,7 @@ def decapitate(html, RESPONSE=None,
         else:
             mo = space_re.match(headers[i])
             if mo:
-                headers[i - 1] = '%s %s' % (
+                headers[i - 1] = '{} {}'.format(
                     headers[i - 1], headers[i][len(mo.group(1)):])
                 del headers[i]
             else:
@@ -472,7 +471,7 @@ def delimited_output(results, REQUEST, RESPONSE):
         output_type = 'text/plain'
 
     RESPONSE.setHeader('content-type', output_type)
-    return '%s\n%s\n' % (
+    return '{}\n{}\n'.format(
         delim.join(results.names()),
         '\n'.join(map(lambda row, delim=delim:
                   delim.join(map(str, row)),

@@ -1,8 +1,13 @@
 Changelog
 =========
 
-3.17 (unreleased)
------------------
+4.0 (unreleased)
+----------------
+
+- Drop support for Python 2.7, 3.5, 3.6.
+
+- Removed deprecated class ``Shared.DC.ZRDB.TM.Surrogate``
+  that was slated to be removed in version 4.0.
 
 
 3.16 (2022-12-16)

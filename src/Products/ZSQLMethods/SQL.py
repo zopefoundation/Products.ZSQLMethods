@@ -11,6 +11,7 @@
 #
 ##############################################################################
 
+from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import change_database_methods
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_inner
@@ -18,13 +19,6 @@ from Acquisition import aq_parent
 from App.special_dtml import DTMLFile
 
 from Shared.DC.ZRDB.DA import DA
-
-
-# BBB Zope 2.12
-try:
-    from AccessControl.class_init import InitializeClass
-except ImportError:
-    from App.class_init import InitializeClass
 
 
 def SQLConnectionIDs(container):
@@ -88,11 +82,11 @@ def manage_addZSQLMethod(self, id, title,
         except Exception:
             u = REQUEST['URL1']
         if submit == ' Add and Edit ':
-            u = '%s/%s/manage_main' % (u, id)
+            u = f'{u}/{id}/manage_main'
         elif submit == ' Add and Test ':
-            u = '%s/%s/manage_testForm' % (u, id)
+            u = f'{u}/{id}/manage_testForm'
         else:
-            u = u + '/manage_main'
+            u = f'{u}/manage_main'
 
         REQUEST.RESPONSE.redirect(u)
     return ''

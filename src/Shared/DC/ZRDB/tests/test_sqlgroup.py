@@ -197,5 +197,6 @@ update actors
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SQLGroupTests))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(SQLGroupTests))
     return suite

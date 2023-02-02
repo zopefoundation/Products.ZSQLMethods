@@ -1,8 +1,7 @@
+from io import StringIO
 from unittest import TestCase
 from unittest import TestSuite
 from unittest import makeSuite
-
-from six import StringIO
 
 from ExtensionClass import Base
 

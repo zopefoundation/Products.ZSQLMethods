@@ -56,14 +56,12 @@
 
 """
 
-import six
-
 from DocumentTemplate.DT_Util import ParseError
 from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
-StringTypes = six.string_types + (six.binary_type,)
+StringTypes = (str, bytes)
 
 
 class SQLTest:
@@ -140,7 +138,7 @@ class SQLTest:
             if t == 'int':
                 try:
                     if isinstance(v, StringTypes):
-                        if six.PY3 and isinstance(v, bytes):
+                        if isinstance(v, bytes):
                             v = v.decode(self.encoding or 'UTF-8')
                         if v[-1:] == 'L':
                             v = v[:-1]
@@ -154,7 +152,7 @@ class SQLTest:
                 if not v and isinstance(v, StringTypes):
                     continue
                 try:
-                    if six.PY3 and isinstance(v, bytes):
+                    if isinstance(v, bytes):
                         v = v.decode(self.encoding or 'UTF-8')
                     if isinstance(v, StringTypes):
                         float(v)
@@ -167,12 +165,12 @@ class SQLTest:
             else:
                 if not isinstance(v, StringTypes):
                     v = str(v)
-                if isinstance(v, six.binary_type):
+                if isinstance(v, bytes):
                     v = v.decode('utf-8')
                 # The call to sql_quote__ can return something that is not
                 # a native string anymore!
                 v = md.getitem('sql_quote__', 0)(v)
-                if isinstance(v, six.binary_type):
+                if isinstance(v, bytes):
                     v = v.decode('utf-8')
                 # if v.find("\'") >= 0: v="''".(v.split("\'"))
                 # v="'%s'" % v
@@ -195,11 +193,11 @@ class SQLTest:
             if self.op == '<>':
                 # Do the equivalent of 'not-equal' for a list,
                 # "a not in (b,c)"
-                return '%s not in (%s)' % (self.column, vs)
+                return f'{self.column} not in ({vs})'
             else:
                 # "a in (b,c)"
-                return '%s in (%s)' % (self.column, vs)
-        return '%s %s %s' % (self.column, self.op, vs[0])
+                return f'{self.column} in ({vs})'
+        return f'{self.column} {self.op} {vs[0]}'
 
     __call__ = render
 

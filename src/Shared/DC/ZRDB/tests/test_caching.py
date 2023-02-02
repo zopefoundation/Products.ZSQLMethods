@@ -61,7 +61,7 @@ class TestCaching(TestCase):
                 missing.append(key)
             else:
                 if ai != value:
-                    different.append('%r: %r != %r' % (key, value, ai))
+                    different.append(f'{key!r}: {value!r} != {ai!r}')
         for key in actual.keys():
             try:
                 expected[key]

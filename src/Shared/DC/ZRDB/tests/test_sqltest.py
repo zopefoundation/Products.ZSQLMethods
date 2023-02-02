@@ -11,8 +11,7 @@
 #
 ##############################################################################
 import unittest
-
-from six.moves import UserDict
+from collections import UserDict
 
 
 def _sql_quote(v):
@@ -78,5 +77,6 @@ class SQLTestTests(unittest.TestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SQLTestTests))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(SQLTestTests))
     return suite

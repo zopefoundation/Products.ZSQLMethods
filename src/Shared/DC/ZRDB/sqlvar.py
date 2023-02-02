@@ -48,14 +48,12 @@
     inserted is 'null'.
 """
 
-import six
-
 from DocumentTemplate.DT_Util import ParseError
 from DocumentTemplate.DT_Util import name_param
 from DocumentTemplate.DT_Util import parse_params
 
 
-StringTypes = six.string_types + (six.binary_type,)
+StringTypes = (str, bytes)
 
 
 class SQLVar:
