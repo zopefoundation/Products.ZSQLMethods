@@ -24,7 +24,7 @@ with open('CHANGES.rst') as f:
 
 setup(
     name='Products.ZSQLMethods',
-    version='4.0',
+    version='4.1.dev0',
     url='https://github.com/zopefoundation/Products.ZSQLMethods',
     project_urls={
         'Issue Tracker': ('https://github.com/zopefoundation'
