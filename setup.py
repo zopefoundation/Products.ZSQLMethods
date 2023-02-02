@@ -16,8 +16,6 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '4.0.dev0'
-
 with open('README.rst') as f:
     README = f.read()
 
@@ -26,7 +24,7 @@ with open('CHANGES.rst') as f:
 
 setup(
     name='Products.ZSQLMethods',
-    version=version,
+    version='4.0',
     url='https://github.com/zopefoundation/Products.ZSQLMethods',
     project_urls={
         'Issue Tracker': ('https://github.com/zopefoundation'
