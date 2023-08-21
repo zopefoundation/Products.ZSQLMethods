@@ -67,46 +67,46 @@ class SQLGroupTests(unittest.TestCase):
         self.assertFalse(group.noparens)
 
     def test_render_empty_optional(self):
-        group = self._makeOne([('sqlgroup', '', lambda x, y:'')])
+        group = self._makeOne([('sqlgroup', '', lambda x, y: '')])
         md = {}
         self.assertEqual(group.render(md), '')
 
     def test_render_empty_optional_where(self):
-        group = self._makeOne([('sqlgroup', 'where', lambda x, y:'')])
+        group = self._makeOne([('sqlgroup', 'where', lambda x, y: '')])
         md = {}
         self.assertEqual(group.render(md), '')
 
     def test_render_empty_optional_set(self):
-        group = self._makeOne([('sqlgroup', 'set', lambda x, y:'')])
+        group = self._makeOne([('sqlgroup', 'set', lambda x, y: '')])
         md = {}
         self.assertEqual(group.render(md), '')
 
     def test_render_empty_required_raises_ValueError(self):
-        group = self._makeOne([('sqlgroup', 'required', lambda x, y:'')])
+        group = self._makeOne([('sqlgroup', 'required', lambda x, y: '')])
         md = {}
         self.assertRaises(ValueError, group.render, md)
 
     def test_render_one_block(self):
-        group = self._makeOne([('sqlgroup', '', lambda x, y:'abc')])
+        group = self._makeOne([('sqlgroup', '', lambda x, y: 'abc')])
         md = {}
         rendered = group.render(md)
         rendered = ''.join(rendered.split('\n'))
         self.assertEqual(rendered, 'abc')
 
     def test_render_one_block_where(self):
-        group = self._makeOne([('sqlgroup', 'where', lambda x, y:'abc')])
+        group = self._makeOne([('sqlgroup', 'where', lambda x, y: 'abc')])
         md = {}
         rendered = group.render(md)
         self.assertEqual(rendered, 'where\nabc\n')
 
     def test_render_one_block_set(self):
-        group = self._makeOne([('sqlgroup', 'set', lambda x, y:'abc')])
+        group = self._makeOne([('sqlgroup', 'set', lambda x, y: 'abc')])
         md = {}
         rendered = group.render(md)
         self.assertEqual(rendered, 'set\nabc\n')
 
     def test_render_multiple_blocks_with_tname(self):
-        group = self._makeOne([('sqlgroup', '', lambda x, y:'abc'),
+        group = self._makeOne([('sqlgroup', '', lambda x, y: 'abc'),
                                ('baz', '', lambda x, y: 'def'),
                                ('qux', '', lambda x, y: 'ghi')])
         md = {}
@@ -115,7 +115,7 @@ class SQLGroupTests(unittest.TestCase):
         self.assertEqual(rendered, '(abc baz def qux ghi)')
 
     def test_render_multiple_blocks_with_tname_noparens(self):
-        group = self._makeOne([('sqlgroup', 'noparens', lambda x, y:'abc'),
+        group = self._makeOne([('sqlgroup', 'noparens', lambda x, y: 'abc'),
                                ('baz', '', lambda x, y: 'def'),
                                ('qux', '', lambda x, y: 'ghi')])
         md = {}
@@ -124,7 +124,7 @@ class SQLGroupTests(unittest.TestCase):
         self.assertEqual(rendered, 'abc baz def qux ghi')
 
     def test_render_multiple_blocks_with_tname_and_where(self):
-        group = self._makeOne([('sqlgroup', 'where', lambda x, y:'abc'),
+        group = self._makeOne([('sqlgroup', 'where', lambda x, y: 'abc'),
                                ('baz', '', lambda x, y: 'def'),
                                ('qux', '', lambda x, y: 'ghi')])
         md = {}
