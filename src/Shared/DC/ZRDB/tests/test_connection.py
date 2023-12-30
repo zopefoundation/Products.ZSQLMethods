@@ -14,6 +14,7 @@ import unittest
 
 from zExceptions import BadRequest
 
+from Testing.makerequest import makerequest
 
 class ConnectionTests(unittest.TestCase):
 
@@ -103,6 +104,41 @@ class ConnectionTests(unittest.TestCase):
         self.assertEqual(conn.sql_quote__(TO_QUOTE),
                          "'w''embedded carriagereturn'")
 
+    def _makeDbFactory(self):
+        class FakeDB:
+            def query(self, sql):
+                return """\
+                foo\tbar
+                2i\tt
+                1\ta<xyz>b
+                3\t7<15\
+                """
+        class FakeFactory:
+            def __call__(self, s):
+                return FakeDB()
+        return FakeFactory
+
+    def test_manage_test_html_quote(self):
+        # test the Connection.manage_test() method for html quoting
+
+        conn = self._makeOne('conn', '', 'conn string')
+        conn = makerequest(conn)
+
+        conn.factory = self._makeDbFactory()
+
+        # do not render management screen
+        conn.manage_tabs = ''
+
+        # we need a REQUEST arg to do the rendering
+        report = conn.manage_test('abc', REQUEST={})
+
+        # check html quoting in result table
+        idx = report.find('xyz')
+        idx0 = report.rfind('<td>', 0, idx)
+        idx1 = report.find('</td>', idx) + 5
+
+        td_expected = '<td>a&lt;xyz&gt;b</td>'
+        self.assertEqual(report[idx0:idx1], td_expected)
 
 def test_suite():
     suite = unittest.TestSuite()

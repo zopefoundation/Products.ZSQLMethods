@@ -107,6 +107,60 @@ class TestTM(unittest.TestCase):
                            'foo bar', '<dtml-var bar>')
         self.assertEqual(da.__repr__(), '<DA at test_id>')
 
+    def _makeConnection(self):
+        # build a minimal fake DB connection
+        # the query returns values with "<" in it
+        class FakeDB:
+            def query(self, sql, limit=100):
+                return """\
+                foo\tbar
+                2i\tt
+                1\ta<xyz>b
+                3\t7<15\
+                """
+        class FakeConnection:
+            sql_quote__ = "select 'a<xyz>b' VALUE from dual"
+            def __call__(self):
+                return FakeDB()
+            def connected(self):
+                return True
+        conn = FakeConnection()
+        return conn
+
+    def test_mange_testForm(self):
+        # check if the rendered testForm is "html_quoted"
+
+        arguments = '' # no input args
+        template = '<dtml-var sql_quote__>'
+        da = self._makeOne(
+            'test_id', 'Test Title', 'conn_id', arguments, template)
+
+        # add the DB connection
+        da.conn_id = self._makeConnection()
+
+        # wrap it in the request for acquistion
+        qs = 'num_rows=10&QUERY_SUBMIT=Submit+Query&query_start=0'
+        da = makerequest(da, environ={'QUERY_STRING': qs})
+        da.REQUEST.processInputs() # put qs into request.form
+
+        # do not render management screens (in <dtml-var manage_*> vars)
+        da.manage_page_header = da.manage_tabs = da.manage_page_footer = ''
+
+        # call/render the manage_testForm
+        report = da.manage_testForm()
+
+        # check html quoting in query
+        idx = report.find('xyz')
+        idx0 = report.rfind('a', 0, idx)
+        idx1 = report.find('b', idx) + 1
+        self.assertEqual(report[idx0:idx1], 'a&lt;xyz&gt;b')
+
+        # check html quoting in result table
+        idx = report.find('xyz', idx1)
+        idx0 = report.rfind('<td>', 0, idx)
+        idx1 = report.find('</td>', idx) + 5
+        self.assertEqual(report[idx0:idx1], '<td>a&lt;xyz&gt;b</td>')
+
 
 DEFAULT_DAV_SOURCE = """\
 <dtml-comment>

@@ -250,7 +250,7 @@ def custom_default_report(id, result, action='', no_table=0,
         n = c['name']
         if goofy(n) is not None:
             n = 'expr="_[\'%s]"' % (repr('"' + n)[2:])
-        row.append('          %s<dtml-var %s%s>%s'
+        row.append('          %s<dtml-var %s%s html_quote>%s'
                    % (td, n, c['type'] != 's' and ' null=""' or '', _td))
 
     row = ('     {}\n{}\n        {}'.format(
