@@ -4,6 +4,9 @@ Changelog
 4.1 (unreleased)
 ----------------
 
+- Fix Z Search Interface Creation
+  (`#46 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/46>`_)
+
 
 4.0 (2023-02-02)
 ----------------
