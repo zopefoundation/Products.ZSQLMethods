@@ -12,9 +12,9 @@
 ##############################################################################
 import unittest
 
+from Testing.makerequest import makerequest
 from zExceptions import BadRequest
 
-from Testing.makerequest import makerequest
 
 class ConnectionTests(unittest.TestCase):
 
