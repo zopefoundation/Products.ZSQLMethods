@@ -113,6 +113,7 @@ class ConnectionTests(unittest.TestCase):
                 1\ta<xyz>b
                 3\t7<15\
                 """
+
         class FakeFactory:
             def __call__(self, s):
                 return FakeDB()
@@ -139,6 +140,7 @@ class ConnectionTests(unittest.TestCase):
 
         td_expected = '<td>a&lt;xyz&gt;b</td>'
         self.assertEqual(report[idx0:idx1], td_expected)
+
 
 def test_suite():
     suite = unittest.TestSuite()
