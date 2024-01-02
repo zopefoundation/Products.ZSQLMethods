@@ -113,14 +113,14 @@ class TestTM(unittest.TestCase):
         class FakeDB:
             def query(self, sql, limit=100):
                 return """\
-                foo\tbar
+                foo<m4rker>\tbar
                 2i\tt
                 1\ta<xyz>b
                 3\t7<15\
                 """
 
         class FakeConnection:
-            sql_quote__ = "select 'a<xyz>b' VALUE from dual"
+            sql_quote__ = "select 'a<xyz>b' \"foo<m4rker>\" from dual"
 
             def __call__(self):
                 return FakeDB()
@@ -159,7 +159,14 @@ class TestTM(unittest.TestCase):
         idx1 = report.find('b', idx) + 1
         self.assertEqual(report[idx0:idx1], 'a&lt;xyz&gt;b')
 
-        # check html quoting in result table
+        # check html quoting in result table header
+        idx = report.find('m4rker', idx1 + 50)
+        idx0 = report.rfind('<th>', 0, idx)
+        idx1 = report.find('</th>', idx) + 5
+        self.assertEqual(
+            report[idx0:idx1].lower(), '<th>foo&lt;m4rker&gt;</th>')
+
+        # check html quoting in result table data
         idx = report.find('xyz', idx1)
         idx0 = report.rfind('<td>', 0, idx)
         idx1 = report.find('</td>', idx) + 5

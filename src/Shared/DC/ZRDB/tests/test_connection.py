@@ -108,7 +108,7 @@ class ConnectionTests(unittest.TestCase):
         class FakeDB:
             def query(self, sql):
                 return """\
-                foo\tbar
+                foo<mark3r>foo2\tbar
                 2i\tt
                 1\ta<xyz>b
                 3\t7<15\
@@ -131,15 +131,31 @@ class ConnectionTests(unittest.TestCase):
         conn.manage_tabs = ''
 
         # we need a REQUEST arg to do the rendering
-        report = conn.manage_test('abc', REQUEST={})
+        report = conn.manage_test('select<m4rker>', REQUEST={})
 
-        # check html quoting in result table
+        # check html quoting in result table header
+        idx = report.find('mark3r')
+        idx0 = report.rfind('<th>', 0, idx)
+        idx1 = report.find('</th>', idx) + 5
+
+        th_expected = '<th>foo&lt;mark3r&gt;foo2</th>'
+        self.assertEqual(report[idx0:idx1].lower(), th_expected)
+
+        # check html quoting in result table data
         idx = report.find('xyz')
         idx0 = report.rfind('<td>', 0, idx)
         idx1 = report.find('</td>', idx) + 5
 
         td_expected = '<td>a&lt;xyz&gt;b</td>'
         self.assertEqual(report[idx0:idx1], td_expected)
+
+        # check html quoting in "sql used:"
+        idx = report.find('m4rker')
+        idx0 = report.rfind('<pre>', 0, idx)
+        idx1 = report.find('</pre>', idx) + 6
+
+        pre_expected = '<pre>\nselect&lt;m4rker&gt;\n</pre>'
+        self.assertEqual(report[idx0:idx1], pre_expected)
 
 
 def test_suite():

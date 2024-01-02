@@ -21,6 +21,7 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
 from DocumentTemplate import File
+from DocumentTemplate.html_quote import html_quote
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
@@ -189,7 +190,7 @@ def default_input_form(id, arguments, action='query', tabs=''):
                          '     <td><input name="%s"\n'
                          '                size="30" value="%s">'
                          '     </td></tr>'
-                         % (nicify(a[0]),
+                         % (html_quote(nicify(a[0])),
                             'type' in a[1]
                              and ('{}:{}'.format(a[0], a[1]['type']))
                              or a[0],
@@ -237,7 +238,8 @@ def custom_default_report(id, result, action='', no_table=0,
     heading = ('<tr>\n%s        </tr>' %
                ''.join(
                    map(lambda c:
-                       '          <th>%s</th>\n' % nicify(c['name']),
+                       '          <th>%s</th>\n' %
+                       html_quote(nicify(c['name'])),
                        columns)))
 
     if no_table:
@@ -268,7 +270,8 @@ def custom_default_zpt_report(id, result, action='', no_table=0,
     heading = ('<tr>\n%s        </tr>' %
                ''.join(
                    map(lambda c:
-                       '          <th>%s</th>\n' % nicify(c['name']),
+                       '          <th>%s</th>\n' %
+                       html_quote(nicify(c['name'])),
                        columns)))
 
     if no_table:
