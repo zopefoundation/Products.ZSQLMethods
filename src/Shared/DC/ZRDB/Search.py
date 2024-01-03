@@ -18,6 +18,7 @@ from AccessControl import getSecurityManager
 from App.special_dtml import DTMLFile
 from OFS.DTMLMethod import addDTMLMethod
 from Products.PageTemplates.ZopePageTemplate import manage_addPageTemplate
+from zExceptions import BadRequest
 from zExceptions import Unauthorized
 
 from .Aqueduct import Args
@@ -35,13 +36,13 @@ def manage_addZSearch(self, report_id, report_title, report_style,
     """add a report"""
 
     if not queries:
-        raise ValueError('No <em>searchable objects</em> were selected')
+        raise BadRequest('No <em>searchable objects</em> were selected')
 
     if not report_id:
-        raise ValueError('No <em>report id</em> were specified')
+        raise BadRequest('No <em>report id</em> were specified')
 
     if input_title and not input_id:
-        raise ValueError('No <em>input id</em> were specified')
+        raise BadRequest('No <em>input id</em> were specified')
 
     qs = list(map(lambda q, self=self: _getquery(self, q), queries))
     arguments = {}
@@ -60,7 +61,7 @@ def manage_addZSearch(self, report_id, report_title, report_style,
                 arguments[key] = arg
                 keys.append(key)
         if q._searchable_result_columns() is None:
-            raise ValueError(
+            raise BadRequest(
                 """The input searchable object, <em>{}</em>,
                 has not been tested.  Until it has been tested,
                 it\'s output schema is unknown, and a report

@@ -491,8 +491,13 @@ class DA(PathReprProvider,
                 mod_value = kws.get(mod_key, None)
                 if mod_value is not None:
                     kws[mod_key] = self._convert_zmi_values(mod_value, val)
-
-        return self(src__=src__, **kws)
+        if src__:
+            # return query template source only
+            return self(src__=src__, **kws)
+        # otherwise call it with test__=1 to cache result columns
+        # in the self._col attribute
+        src, result = self(test__=1, **kws)
+        return result
 
     @security.protected(change_database_methods)
     def manage_test(self, REQUEST):

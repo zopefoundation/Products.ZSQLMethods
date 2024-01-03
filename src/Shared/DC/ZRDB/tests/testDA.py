@@ -172,6 +172,26 @@ class TestTM(unittest.TestCase):
         idx1 = report.find('</td>', idx) + 5
         self.assertEqual(report[idx0:idx1], '<td>a&lt;xyz&gt;b</td>')
 
+    def test_manage_zmi_test_src(self):
+        da = self._makeOne('test_id', 'Test Title', 'conn_id',
+                           'foo bar', '<dtml-var bar>')
+        da = makerequest(da)
+        da.REQUEST['bar'] = 'BAR'
+        da.conn_id = self._makeConnection()
+        src = da.manage_zmi_test(da.REQUEST, src__=1)
+        self.assertEqual(src, 'BAR')
+
+    def test_manage_zmi_test_notsrc(self):
+        da = self._makeOne('test_id', 'Test Title', 'conn_id',
+                           'foo bar', '<dtml-var bar>')
+        da = makerequest(da)
+        da.REQUEST['bar'] = 'BAR'
+        da.conn_id = self._makeConnection()
+        result = da.manage_zmi_test(da.REQUEST, src__=0)
+        # after this call (with src__=0) there should be a da._col
+        # attribute with col descriptions matching result
+        self.assertEqual([c['name'] for c in da._col], result.names())
+
 
 DEFAULT_DAV_SOURCE = """\
 <dtml-comment>

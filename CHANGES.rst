@@ -4,6 +4,9 @@ Changelog
 4.1 (unreleased)
 ----------------
 
+- Fix Z Search Interface Creation
+  (`#46 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/46>`_)
+
 - Fix HTML quoting in test forms
   (`#44 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/44>`_)
 
