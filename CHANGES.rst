@@ -7,6 +7,9 @@ Changelog
 - Fix Z Search Interface Creation
   (`#46 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/46>`_)
 
+- Fix HTML quoting in test forms
+  (`#44 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/44>`_)
+
 
 4.0 (2023-02-02)
 ----------------

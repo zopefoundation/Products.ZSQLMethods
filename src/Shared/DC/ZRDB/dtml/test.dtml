@@ -94,7 +94,7 @@
           </p>
           <pre class="form-control code col-sm-12 bg-dark text-white small border-0"
             name="template:text" data-contenttype="sql"
-            ><dtml-var "this().manage_zmi_test(REQUEST, src__=1)"></pre>
+            ><dtml-var "this().manage_zmi_test(REQUEST, src__=1)" html_quote></pre>
 
           <br clear="all"/><hr/>
 
@@ -148,7 +148,7 @@
                 <tr>
                   <dtml-let rec=sequence-item>
                     <dtml-in "res.names()">
-                      <td><dtml-var "getattr(rec, _['sequence-item'])"></td>
+                      <td><dtml-var "getattr(rec, _['sequence-item'])" html_quote></td>
                     </dtml-in>
                   </dtml-let>
                 </tr>
