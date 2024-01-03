@@ -4,6 +4,8 @@ Changelog
 4.1 (unreleased)
 ----------------
 
+- Add support for Python 3.12.
+
 - Fix Z Search Interface Creation
   (`#46 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/46>`_)
 
