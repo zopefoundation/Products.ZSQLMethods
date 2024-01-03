@@ -107,6 +107,50 @@ class TestTM(unittest.TestCase):
                            'foo bar', '<dtml-var bar>')
         self.assertEqual(da.__repr__(), '<DA at test_id>')
 
+    def _makeConnection(self):
+        # build a minimal fake DB connection
+        # the query returns values with "<" in it
+        class FakeDB:
+            def query(self, sql, limit=100):
+                return """\
+                foo<m4rker>\tbar
+                2i\tt
+                1\ta<xyz>b
+                3\t7<15\
+                """
+
+        class FakeConnection:
+            sql_quote__ = "select 'a<xyz>b' \"foo<m4rker>\" from dual"
+
+            def __call__(self):
+                return FakeDB()
+
+            def connected(self):
+                return True
+
+        conn = FakeConnection()
+        return conn
+
+    def test_manage_zmi_test_src(self):
+        da = self._makeOne('test_id', 'Test Title', 'conn_id',
+                           'foo bar', '<dtml-var bar>')
+        da = makerequest(da)
+        da.REQUEST['bar'] = 'BAR'
+        da.conn_id = self._makeConnection()
+        src = da.manage_zmi_test(da.REQUEST, src__=1)
+        self.assertEqual(src, 'BAR')
+
+    def test_manage_zmi_test_notsrc(self):
+        da = self._makeOne('test_id', 'Test Title', 'conn_id',
+                           'foo bar', '<dtml-var bar>')
+        da = makerequest(da)
+        da.REQUEST['bar'] = 'BAR'
+        da.conn_id = self._makeConnection()
+        result = da.manage_zmi_test(da.REQUEST, src__=0)
+        # after this call (with src__=0) there should be a da._col
+        # attribute with col descriptions matching result
+        self.assertEqual([c['name'] for c in da._col], result.names())
+
 
 DEFAULT_DAV_SOURCE = """\
 <dtml-comment>
