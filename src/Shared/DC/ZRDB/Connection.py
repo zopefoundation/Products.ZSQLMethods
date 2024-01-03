@@ -29,6 +29,7 @@ from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from DocumentTemplate import HTML
 from DocumentTemplate.DT_Var import sql_quote
+from DocumentTemplate.html_quote import html_quote
 from OFS.role import RoleManager
 from OFS.SimpleItem import Item
 from Persistence import Persistent
@@ -141,7 +142,7 @@ class Connection(Persistent, RoleManager, Item, Implicit):
             '<dtml-var name="manage_tabs">\n<hr>\n%s\n\n'
             '<hr><h4>SQL Used:</strong><br>\n<pre>\n%s\n</pre>\n<hr>\n'
             '</body></html>'
-            % (r, query))
+            % (r, html_quote(query)))
 
         report = report(*(self, REQUEST), **{self.id: result})
 
