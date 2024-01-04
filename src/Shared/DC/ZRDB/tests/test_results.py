@@ -1,5 +1,6 @@
 """ Unit tests for Products.RHGDelivery.simpleresults
 """
+import sys
 import unittest
 
 from Acquisition import aq_parent
@@ -164,7 +165,13 @@ class TestResults(unittest.TestCase):
     def _slice(self, row):
         return row[1:]
 
+    @unittest.skipIf(sys.version_info >= (3, 12),
+                     'Only valid before Python 3.12')
     def test_record_slice(self):
+        # This test relies on the fact that instances of class slice
+        # are unhashable and they cannot be used as keys. However,
+        # Python 3.12 made slice instances hashable, so this test
+        # no longer makes sense there.
         ob = self._makeOne((self.columns, self.data))
         row = ob[0]
         self.assertRaises(TypeError, self._slice, row)
