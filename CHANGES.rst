@@ -5,6 +5,8 @@ Changelog
 ----------------
 
 
+- Drop support for Python 3.8.
+
 - Drop support for Python 3.7.
 
 4.1 (2024-01-04)
