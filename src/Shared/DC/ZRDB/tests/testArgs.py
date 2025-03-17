@@ -56,7 +56,7 @@ class TestArgs(TestCase):
         args = self._makeOne({'arg1': {'type': 'string', 'default': 'n/a'}},
                              ['arg1'])
         self.assertIn('arg1', args)
-        self.assertTrue('arg1' in args)
+        self.assertIn('arg1', args)
         self.assertDictEqual(args['arg1'],
                              {'default': 'n/a', 'type': 'string'})
         self.assertEqual(args.keys(), ['arg1'])

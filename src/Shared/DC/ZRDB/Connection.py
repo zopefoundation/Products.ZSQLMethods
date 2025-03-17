@@ -199,8 +199,8 @@ class Connection(Persistent, RoleManager, Item, Implicit):
             except Exception:
                 t, v, tb = sys.exc_info()
                 raise BadRequest(
-                        '<strong>Error connecting to DB.</strong><br>\n'
-                        '<!--\n%s\n%s\n-->\n' % (t, v)).with_traceback(tb)
+                    '<strong>Error connecting to DB.</strong><br>\n'
+                    '<!--\n%s\n%s\n-->\n' % (t, v)).with_traceback(tb)
         finally:
             tb = None
         self._v_connected = DateTime()

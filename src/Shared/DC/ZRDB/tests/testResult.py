@@ -40,7 +40,7 @@ class TestResults(TestCase):
         self.assertEqual(row.bar, 4)
         self.assertEqual(row.FOO, 3)
         self.assertEqual(row.BAR, 4)
-        self.assertTrue(isinstance(row, Brain))
+        self.assertIsInstance(row, Brain)
 
     def test_rdb_file(self):
         infile = StringIO("""\
@@ -67,7 +67,7 @@ class TestResults(TestCase):
         self.assertEqual(row.bar, 4)
         self.assertEqual(row.FOO, 3)
         self.assertEqual(row.BAR, 4)
-        self.assertTrue(isinstance(row, Brain))
+        self.assertIsInstance(row, Brain)
 
 
 def test_suite():
