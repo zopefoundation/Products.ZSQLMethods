@@ -1,7 +1,5 @@
 from io import StringIO
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 
 from ExtensionClass import Base
 
@@ -68,7 +66,3 @@ class TestResults(TestCase):
         self.assertEqual(row.FOO, 3)
         self.assertEqual(row.BAR, 4)
         self.assertIsInstance(row, Brain)
-
-
-def test_suite():
-    return TestSuite((makeSuite(TestResults),))

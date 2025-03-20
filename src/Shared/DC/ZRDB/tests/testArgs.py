@@ -13,8 +13,6 @@
 
 import pickle
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 
 
 class TestArgs(TestCase):
@@ -81,7 +79,3 @@ class TestArgs(TestCase):
 
         del args['arg2']
         self.assertEqual(len(args), 0)
-
-
-def test_suite():
-    return TestSuite((makeSuite(TestArgs),))

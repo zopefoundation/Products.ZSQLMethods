@@ -13,7 +13,7 @@ branch = true
 source = ["src"]
 
 [tool.coverage.report]
-fail_under = 70
+fail_under = 73
 precision = 2
 ignore_errors = true
 show_missing = true

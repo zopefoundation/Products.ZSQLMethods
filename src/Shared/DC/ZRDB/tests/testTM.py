@@ -12,8 +12,6 @@
 ##############################################################################
 
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 
 
 class TestTM(TestCase):
@@ -55,7 +53,3 @@ class TestTM(TestCase):
 
         tm.setSortKey([])
         self.assertEqual(tm.sortKey(), '[]')
-
-
-def test_suite():
-    return TestSuite((makeSuite(TestTM),))
