@@ -1,8 +1,6 @@
 from pprint import pprint
 from time import time
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 
 
 class DummyDB:
@@ -357,11 +355,3 @@ class TestFullChain(TestCase):
         self.da.max_cache_ = 1
         # check that we get an exception
         self.assertRaises(TypeError, self.da)
-
-
-def test_suite():
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCaching))
-    suite.addTest(makeSuite(TestCacheKeys))
-    suite.addTest(makeSuite(TestFullChain))
-    return suite

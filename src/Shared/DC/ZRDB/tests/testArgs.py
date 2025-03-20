@@ -13,8 +13,6 @@
 
 import pickle
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 
 
 class TestArgs(TestCase):
@@ -56,7 +54,7 @@ class TestArgs(TestCase):
         args = self._makeOne({'arg1': {'type': 'string', 'default': 'n/a'}},
                              ['arg1'])
         self.assertIn('arg1', args)
-        self.assertTrue('arg1' in args)
+        self.assertIn('arg1', args)
         self.assertDictEqual(args['arg1'],
                              {'default': 'n/a', 'type': 'string'})
         self.assertEqual(args.keys(), ['arg1'])
@@ -81,7 +79,3 @@ class TestArgs(TestCase):
 
         del args['arg2']
         self.assertEqual(len(args), 0)
-
-
-def test_suite():
-    return TestSuite((makeSuite(TestArgs),))

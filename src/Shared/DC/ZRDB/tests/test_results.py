@@ -73,12 +73,12 @@ class TestResults(unittest.TestCase):
     def test_suppliedbrain(self):
         ob = self._makeOne((self.columns, self.data), brains=Brain)
         row = ob[0]
-        self.assertTrue(isinstance(row, Brain))
+        self.assertIsInstance(row, Brain)
 
     def test_suppliedparent(self):
         ob = self._makeOne((self.columns, self.data), parent=Parent)
         row = ob[0]
-        self.assertTrue(aq_parent(row) is Parent)
+        self.assertIs(aq_parent(row), Parent)
 
     def test_tuples(self):
         ob = self._makeOne((self.columns, self.data))
@@ -146,7 +146,7 @@ class TestResults(unittest.TestCase):
     def test_record_hash(self):
         ob = self._makeOne((self.columns, self.data))
         row = ob[0]
-        self.assertTrue(isinstance(hash(row), int))
+        self.assertIsInstance(hash(row), int)
 
     def test_record_len(self):
         ob = self._makeOne((self.columns, self.data))
