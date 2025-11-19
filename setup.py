@@ -59,4 +59,5 @@ setup(
         'Record',
         'DocumentTemplate >= 3.2.2',
     ],
+    include_package_data=True,
 )
