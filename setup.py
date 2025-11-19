@@ -12,7 +12,6 @@
 #
 ##############################################################################
 
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -36,9 +35,6 @@ setup(
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.dev',
     long_description=(README + '\n' + CHANGES),
-    packages=find_packages('src'),
-    namespace_packages=['Products', 'Shared', 'Shared.DC'],
-    package_dir={'': 'src'},
     classifiers=[
         'Development Status :: 6 - Mature',
         'Environment :: Web Environment',
@@ -47,23 +43,20 @@ setup(
         'License :: OSI Approved :: Zope Public License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Database',
         'Topic :: Database :: Front-Ends',
     ],
-    python_requires='>=3.9',
+    python_requires='>=3.10',
     install_requires=[
-        'setuptools',
         'Zope >= 4.2.1',
         'Missing',
         'Record',
         'DocumentTemplate >= 3.2.2',
     ],
-    include_package_data=True,
-    zip_safe=False,
 )
