@@ -23,7 +23,7 @@ with open('CHANGES.rst') as f:
 
 setup(
     name='Products.ZSQLMethods',
-    version='5.0.dev0',
+    version='5.0',
     url='https://github.com/zopefoundation/Products.ZSQLMethods',
     project_urls={
         'Issue Tracker': ('https://github.com/zopefoundation'
