@@ -15,49 +15,5 @@
 from setuptools import setup
 
 
-with open('README.rst') as f:
-    README = f.read()
-
-with open('CHANGES.rst') as f:
-    CHANGES = f.read()
-
-setup(
-    name='Products.ZSQLMethods',
-    version='5.1.dev0',
-    url='https://github.com/zopefoundation/Products.ZSQLMethods',
-    project_urls={
-        'Issue Tracker': ('https://github.com/zopefoundation'
-                          '/Products.ZSQLMethods/issues'),
-        'Sources': 'https://github.com/zopefoundation/Products.ZSQLMethods',
-    },
-    license='ZPL-2.1',
-    description='SQL method support for Zope.',
-    author='Zope Foundation and Contributors',
-    author_email='zope-dev@zope.dev',
-    long_description=(README + '\n' + CHANGES),
-    classifiers=[
-        'Development Status :: 6 - Mature',
-        'Environment :: Web Environment',
-        'Framework :: Zope',
-        'Framework :: Zope :: 5',
-        'License :: OSI Approved :: Zope Public License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'Programming Language :: Python :: 3.14',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Topic :: Database',
-        'Topic :: Database :: Front-Ends',
-    ],
-    python_requires='>=3.10',
-    install_requires=[
-        'Zope >= 4.2.1',
-        'Missing',
-        'Record',
-        'DocumentTemplate >= 3.2.2',
-    ],
-    include_package_data=True,
-)
+# See pyproject.toml for package metadata
+setup()
