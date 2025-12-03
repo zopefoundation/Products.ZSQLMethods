@@ -38,7 +38,7 @@ maintainers = [
     {name = "Plone Foundation and contributors",email = "zope-dev@zope.dev"},
 ]
 dependencies = [
-    "Zope >= 4.2.1",
+    "Zope >= 5",
     "Missing",
     "Record",
     "DocumentTemplate >= 3.2.2",
