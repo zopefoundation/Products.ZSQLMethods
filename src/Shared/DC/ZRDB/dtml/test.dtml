@@ -4,6 +4,14 @@
   <dtml-var manage_tabs>
 </dtml-with>
 
+<style>
+  button#copyToClipboard {
+    position: absolute;
+    right: 1.5rem;
+    z-index: 10;
+  }
+</style>
+
 <main class="container-fluid">
 
   <dtml-let num_rows="REQUEST.get('num_rows') or 20">
@@ -92,6 +100,10 @@
             The final query sent to the database may contain additional
             elements inserted automatically, such as a <em>LIMIT</em> clause.
           </p>
+          <button type="button" class="btn btn-secondary mt-2"
+                  id="copyToClipboard" title="Copy to Clipboard">
+            <i class="fas fa-copy"></i>
+          </button>
           <pre class="form-control code col-sm-12 bg-dark text-white small border-0"
             name="template:text" data-contenttype="sql"
             ><dtml-var "this().manage_zmi_test(REQUEST, src__=1)" html_quote></pre>
@@ -192,11 +204,32 @@
           </dtml-try>
 
           <script>
-            $(function() {
-              editor.setOptions({
-                  'readOnly': true,
+              $(function() {
+                  try {
+                      editor.setOptions({
+                          'readOnly': true,
+                      });
+                  } catch (err) {
+                      // Ignore
+                  }
+                  $('#copyToClipboard').on('click', function(e) {
+                      const $icon = $(e.currentTarget).find('i');
+                      const tempInput = document.createElement('textarea');
+                      tempInput.value = document.querySelector('pre[name="template:text"]').innerText;
+                      document.body.appendChild(tempInput);
+                      tempInput.select();
+                      try {
+                          document.execCommand('copy');
+                          $icon.removeClass('fa-copy').addClass('fa-check');
+                          setTimeout(function() {
+                              $icon.removeClass('fa-check').addClass('fa-copy');
+                          }, 2000);
+                      } catch (err) {
+                          alert('Failed to copy text: ' + err);
+                      }
+                      document.body.removeChild(tempInput);
+                  });
               });
-            });
           </script>
 
         <dtml-except>

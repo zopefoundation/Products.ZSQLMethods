@@ -4,6 +4,10 @@ Changelog
 5.1 (unreleased)
 ----------------
 
+- Add "Copy to clipboard" button to the ZMI `Test` tab.
+  The button copies the rendered SQL output to the user's clipboard.
+  (`#53 <https://github.com/zopefoundation/Products.ZSQLMethods/issues/53>`_)
+
 - Move package metadata from setup.py to pyproject.toml.
 
 
