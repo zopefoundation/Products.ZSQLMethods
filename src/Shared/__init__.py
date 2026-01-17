@@ -1,24 +1,13 @@
 ##############################################################################
 #
-# Copyright (c) 2010 Zope Foundation and Contributors.
-# All Rights Reserved.
+# Copyright (c) 2002 Zope Foundation and Contributors.
 #
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
+# FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-
-from setuptools import find_packages
-from setuptools import setup
-
-
-# See pyproject.toml for package metadata
-setup(
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    namespace_packages=['Shared', 'Shared.DC'],
-)
+__import__('pkg_resources').declare_namespace(__name__)
