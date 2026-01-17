@@ -7,7 +7,6 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-
 [project]
 name = "Products.ZSQLMethods"
 version = "5.1.dev0"
