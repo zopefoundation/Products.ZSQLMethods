@@ -7,7 +7,7 @@
 <style>
   button#copyToClipboard {
     position: absolute;
-    right: 1.5rem;
+    right: 1rem;
     z-index: 10;
   }
 </style>
@@ -33,12 +33,13 @@
             </p>
             <dtml-in args mapping>
               <div class="form-group row">
-                <label for="&dtml-name;"
-                       class="form-label col-sm-3 col-md-2">&dtml-name;</label>
-
-                <dtml-let typ="type or REQUEST.get('%s_type' % name, 'string')">
-                  <div class="col-sm-3 col-md-2">
-                    <select name="&dtml-name;_type" class="form-control">
+                <div class="input-group col">
+                  <label for="&dtml-name;"
+                    class="form-control col-sm-3 col-md-2 input-group-text bg-light">
+                    <code>&dtml-name;</code>
+                  </label>
+                  <dtml-let typ="type or REQUEST.get('%s_type' % name, 'string')">
+                    <select name="&dtml-name;_type" class="form-control col-sm-3 col-md-2">
                       <option <dtml-if "typ == 'float'">selected</dtml-if>>
                         float
                       </option>
@@ -52,14 +53,11 @@
                         tokens
                       </option>
                     </select>
-                  </div>
-                </dtml-let>
-
-                <div class="col-sm-6 col-md-7">
-                  <input type="text" class="form-control" size="40"
-                         name="&dtml-name;"
-                         id="&dtml-name;"
-                         value="<dtml-var "REQUEST.get(name, default)">"/>
+                  </dtml-let>
+                  <input type="text" class="form-control"
+                        name="&dtml-name;"
+                        id="&dtml-name;"
+                        value="<dtml-var "REQUEST.get(name, default)">"/>
                 </div>
               </div>
             </dtml-in>
@@ -70,10 +68,12 @@
         </dtml-let>
 
         <div class="form-group row">
-          <label for="num_rows"
-                 class="form-label col-sm-3 col-md-2">Rows per page</label>
-          <div class="col-sm-3 col-md-2">
-            <select name="num_rows" class="form-control">
+          <div class="input-group col">
+            <label for="num_rows" 
+              class="form-control col-sm-3 col-md-2 input-group-text bg-light text-muted">
+              Rows per page
+            </label>
+            <select name="num_rows" class="form-control col-sm-3 col-md-2">
               <dtml-in "[10, 20, 50, 100, 500, 1000]">
                 <option <dtml-if "_.int(num_rows)==_['sequence-item']">selected</dtml-if>>
                   <dtml-var sequence-item>
@@ -100,11 +100,11 @@
             The final query sent to the database may contain additional
             elements inserted automatically, such as a <em>LIMIT</em> clause.
           </p>
-          <button type="button" class="btn btn-secondary mt-2"
+          <button type="button" class="btn btn-secondary mt-0"
                   id="copyToClipboard" title="Copy to Clipboard">
             <i class="fas fa-copy"></i>
           </button>
-          <pre class="form-control code col-sm-12 bg-dark text-white small border-0"
+          <pre class="form-control code col-sm-12 bg-dark text-white small border-dark"
             name="template:text" data-contenttype="sql"
             ><dtml-var "this().manage_zmi_test(REQUEST, src__=1)" html_quote></pre>
 
