@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Products.ZSQLMethods"
-version = "5.1.dev0"
+version = "5.1"
 description = "SQL method support for Zope."
 license = "ZPL-2.1"
 classifiers = [

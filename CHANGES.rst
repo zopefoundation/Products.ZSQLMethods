@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.1 (unreleased)
+5.1 (2026-01-17)
 ----------------
 
 - Add "Copy to clipboard" button to the ZMI `Test` tab.
