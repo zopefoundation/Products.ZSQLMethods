@@ -31,3 +31,8 @@ additional-rules = [
 [isort]
 known_zope = "Products"
 known_local_folder = "Shared.DC.ZRDB"
+
+[pre-commit]
+# The following test file contains formatted output that includes
+# spaces at the end of lines.
+whitespace-exclude = "^src/Shared/DC/ZRDB/tests/testDA\\.py$"
