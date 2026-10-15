@@ -44,7 +44,7 @@
     <td align="left" valign="top">
     <div class="form-element">
     <br />
-    <input class="form-element" type="submit" name="submit"  
+    <input class="form-element" type="submit" name="submit"
      value="Save Changes">
     </div>
     </td>

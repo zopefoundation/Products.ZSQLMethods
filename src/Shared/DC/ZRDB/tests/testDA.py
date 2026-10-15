@@ -202,10 +202,10 @@ arguments : foo bar
 max_rows : 1000
 max_cache : 100
 cache_time : 0
-class_name : 
-class_file : 
-connection_hook : 
-allow_simple_one_argument_traversal : 
+class_name :
+class_file :
+connection_hook :
+allow_simple_one_argument_traversal :
 </dtml-comment>
 <dtml-var bar>
 """  # NOQA: W291
