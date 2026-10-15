@@ -18,7 +18,7 @@
 
     <p class="zmi-form-title m-0 font-weight-bold">
       Test query <a href="manage_main" title="Edit Z SQLMethod">&dtml-title_or_id;</a>
-    </p> 
+    </p>
 
     <dtml-if connectionIsValid>
       <form action="manage_testForm" method="get">
@@ -69,7 +69,7 @@
 
         <div class="form-group row">
           <div class="input-group col">
-            <label for="num_rows" 
+            <label for="num_rows"
               class="form-control col-sm-3 col-md-2 input-group-text bg-light text-muted">
               Rows per page
             </label>
@@ -189,7 +189,7 @@
           <dtml-except>
 
             <h2 class="zmi-form-title">Query results</h2>
-            
+
             <p class="form-help">The query failed with an error.</p>
             <p class="form-help">
               <ul>
@@ -262,7 +262,7 @@
 <dtml-if "REQUEST.get('query_start', None)">
   <script>
     //<!--
-    document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function(event) {
       el = document.getElementById("query_results");
       el.scrollIntoView();
     });

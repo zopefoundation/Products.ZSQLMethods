@@ -1,8 +1,8 @@
 <html>
   <body tal:define="results  here/%(id)s;
                     start request/start|python:0;
-                    batch python:modules['ZTUtils'].Batch(results, 
-                                                          size=20, 
+                    batch python:modules['ZTUtils'].Batch(results,
+                                                          size=20,
                                                           start=start);
                     previous python:batch.previous;
                     next python:batch.next">
@@ -19,9 +19,9 @@
   %(else no_table)[<table border>
         %(heading)s
       %(else)]
- 
+
   <tal:x repeat="result batch" >
-  
+
     %(row)s
 
   </tal:x>

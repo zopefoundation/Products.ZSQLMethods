@@ -22,7 +22,7 @@
           <select class="form-control" name="connection_id">
             <option value=""> -- No database adapter selected -- </option>
             <dtml-in SQLConnectionIDs>
-               <option value="&dtml-sequence-item;"<dtml-if 
+               <option value="&dtml-sequence-item;"<dtml-if
                 expr="connection_id==_vars['sequence-item']">
                 selected</dtml-if>>&dtml-sequence-key;</option>
             </dtml-in>
@@ -76,10 +76,10 @@
       </div>
 
     </form>
-  
+
   <dtml-else>
     <p class="form-help">
-      There are no SQL database connections.  You need to add a Zope SQL 
+      There are no SQL database connections.  You need to add a Zope SQL
       database connection before you can edit a Zope SQL Method.
     </p>
   </dtml-if>
@@ -87,5 +87,3 @@
 </main>
 
 <dtml-var manage_page_footer>
-
-
