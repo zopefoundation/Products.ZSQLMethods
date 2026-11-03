@@ -10,7 +10,7 @@
 
     <p class="zmi-form-title m-0 font-weight-bold">
       Test database connection
-      <a href="manage_main" title="Edit database connection" 
+      <a href="manage_main" title="Edit database connection"
         class="text-<dtml-if connected>success<dtml-else>warning</dtml-if>">
         &dtml-title_or_id;
       </a>
@@ -19,7 +19,7 @@
     <dtml-if connected>
 
       <p class="form-help">
-        You can write a test query and run it with this database connection 
+        You can write a test query and run it with this database connection
         using the form below. Click <em>submit query</em> to run the query.
       </p>
 
@@ -148,10 +148,10 @@
         </dtml-try>
 
       </dtml-if>
- 
+
     <dtml-else>
       <p class="form-help">
-        This database connection is currently closed. You must click on the 
+        This database connection is currently closed. You must click on the
         <em>status</em> or <em>Properties</em> tab and open the connection
         before you can test it.
       </p>

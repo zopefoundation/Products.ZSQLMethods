@@ -16,14 +16,14 @@
         Relational database connectivity chapter in the Zope Book
       </a>.
     </p>
-  
+
     <p class="form-help">
-      In the form below <em>connection id</em> is the name of the SQL Database 
+      In the form below <em>connection id</em> is the name of the SQL Database
       Connection to use. <em>Arguments</em> is a list of variables which the
-      SQL Method accepts. <em>Query template</em> is a template of the SQL 
+      SQL Method accepts. <em>Query template</em> is a template of the SQL
       statement which the SQL Method will execute.
     </p>
-    
+
     <form action="manage_addZSQLMethod" method="post">
 
       <div class="form-group row">
@@ -87,10 +87,10 @@
       </div>
 
     </form>
-  
+
   <dtml-else>
     <p class="form-text">
-      There are no SQL database connections.  You need to add a Zope 
+      There are no SQL database connections.  You need to add a Zope
       SQL database connection before you can create a Zope SQL Method.
     </p>
   </dtml-if>

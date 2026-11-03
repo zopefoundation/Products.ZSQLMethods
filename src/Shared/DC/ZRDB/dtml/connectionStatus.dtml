@@ -5,7 +5,7 @@
 </dtml-with>
 
 <main class="container-fluid">
-    
+
   <p class="form-text">
     The database connection is <dtml-if connected>open<dtml-else>closed</dtml-if>.
   </p>
@@ -14,12 +14,12 @@
 
     <dtml-if connected>
       <form action="manage_close_connection" method="get">
-      <input class="btn btn-primary" type="submit" name="submit" 
+      <input class="btn btn-primary" type="submit" name="submit"
        value="Close Connection">
       </form>
     <dtml-else>
       <form action="manage_open_connection" method="get">
-      <input class="btn btn-primary" type="submit" name="submit" 
+      <input class="btn btn-primary" type="submit" name="submit"
        value="Open Connection">
       </form>
     </dtml-if>

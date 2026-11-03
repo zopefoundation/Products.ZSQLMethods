@@ -10,19 +10,19 @@
 
 <p class="form-help">
 A Search Interface allows you to search Zope databases.
-The Search Interface will create a 
+The Search Interface will create a
  search-input form and a report for displaying the search results.
 </p>
 
 <p class="form-help">
 In the form below, <em>searchable objects</em> are the objects
-(usually SQL Methods) to be searched. <em>report id</em> and 
-<em>search input id</em> are the ids of the 
+(usually SQL Methods) to be searched. <em>report id</em> and
+<em>search input id</em> are the ids of the
 report and search form objects that will be created.
 <em>report style</em> indicates the type of report to generate.
 </p>
 
-<table>    
+<table>
 <tr>
   <td align="left" valign="top">
   <div class="form-label">
@@ -99,7 +99,7 @@ report and search form objects that will be created.
   </td>
   <td align="left" valign="top">
   <div class="form-element">
-  <input class="form-element" type="radio" name="object_type" 
+  <input class="form-element" type="radio" name="object_type"
    value="dtml_methods">Generate DTML Methods
   </div>
   </td>
@@ -109,7 +109,7 @@ report and search form objects that will be created.
   </td>
   <td align="left" valign="top">
   <div class="form-element">
-  <input class="form-element" type="radio" name="object_type" 
+  <input class="form-element" type="radio" name="object_type"
    value="page_templates">Generate Page Templates
   </div>
   </td>
@@ -119,7 +119,7 @@ report and search form objects that will be created.
   </td>
   <td align="left" valign="top">
   <div class="form-element">
-  <input class="form-element" type="submit" name="submit" 
+  <input class="form-element" type="submit" name="submit"
    value="Add">
   </div>
   </td>
@@ -128,4 +128,3 @@ report and search form objects that will be created.
 </form>
 
 <dtml-var manage_page_footer>
-
